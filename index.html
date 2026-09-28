@@ -74,6 +74,12 @@
       gap: 16px;
     }
 
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
     .brand {
       display: flex;
       align-items: center;
@@ -102,6 +108,45 @@
       text-transform: uppercase;
       margin-top: 3px;
       font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-link {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate-700);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--blue-600);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--blue-600);
+      transition: width 0.2s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
 
     .nav-cta {
@@ -490,6 +535,16 @@
       display: none;
     }
 
+    @media (max-width: 1024px) {
+      .nav-links {
+        gap: 16px;
+      }
+
+      .nav-link {
+        font-size: 12px;
+      }
+    }
+
     @media (max-width: 950px) {
       .coach-body {
         grid-template-columns: 1fr;
@@ -507,6 +562,32 @@
 
       .role-buttons {
         grid-template-columns: repeat(2, 1fr);
+      }
+
+      .nav-links {
+        gap: 12px;
+      }
+
+      .nav-link {
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-left {
+        gap: 16px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .brand-text small {
+        display: none;
+      }
+
+      .brand {
+        gap: 8px;
       }
     }
 
@@ -539,6 +620,15 @@
       .stat-group {
         grid-template-columns: 1fr;
       }
+
+      .nav {
+        min-height: 64px;
+      }
+
+      .nav-cta {
+        padding: 9px 14px;
+        font-size: 12px;
+      }
     }
   </style>
 </head>
@@ -546,20 +636,30 @@
 <body>
   <header class="topbar">
     <div class="container nav">
-      <div class="brand">
-        <div class="brand-mark">✚</div>
-        <div>
-          <div>Healthcare Executive Copilot</div>
-          <small>Dynamic Outreach Messaging</small>
+      <div class="nav-left">
+        <div class="brand">
+          <div class="brand-mark">✚</div>
+          <div>
+            <div>Healthcare Executive Copilot</div>
+            <small>Dynamic Outreach Messaging</small>
+          </div>
         </div>
+        <nav class="nav-links">
+          <a class="nav-link" href="#how-it-works">How It Works</a>
+          <a class="nav-link" href="#executive-roles">Executive Roles</a>
+          <a class="nav-link" href="#outreach-builder">Outreach Builder</a>
+          <a class="nav-link" href="#conversation-guide">Conversation Guide</a>
+        </nav>
       </div>
-      <a class="nav-cta" href="https://www.amnhealthcare.com/" target="_blank" rel="noopener noreferrer">Visit AMN Healthcare</a>
+      <div class="nav-right">
+        <a class="nav-cta" href="https://www.amnhealthcare.com/" target="_blank" rel="noopener noreferrer">Visit AMN Healthcare</a>
+      </div>
     </div>
   </header>
 
   <main class="section">
     <div class="container">
-      <div class="coach-shell">
+      <div class="coach-shell" id="outreach-builder">
         <div class="coach-head">
           <h1>Healthcare Executive Engagement Coach</h1>
           <p>Turn solution-focused language into buyer-centric outreach for healthcare leaders.</p>
@@ -885,7 +985,7 @@
         context ? `Given your context—${context}—` : 'I believe'
       } this could support your priorities, and I'd welcome a brief conversation to explore whether we're a fit.\n\nWould you be open to 15 minutes in the next two weeks?\n\nBest regards,\n[Your Name]`;
 
-      const voicemail = `Hi [Name], this is [Your Name] with [Company]. We help healthcare leaders address ${exec.pain.toLowerCase()} and improve ${exec.focus.toLowerCase()}. ${message} I'd like to explore whether we could support [Organization]. My number is [Your Phone]. I'll follow up by email. Thanks.`;
+      const voicemail = `Hi [Name], this is [Your Name] with [Company]. We help healthcare leaders address ${exec.pain.toLowerCase()} and improve ${exec.focus.toLowerCase()}. ${message} I'd like to explore if there's a fit. Would you have 15 minutes in the next two weeks? You can reach me at [Phone].`;
 
       document.getElementById('emailSubject').textContent = `Subject: Exploring ${exec.focus.toLowerCase()} priorities`;
       document.getElementById('emailSubject').classList.add('show');

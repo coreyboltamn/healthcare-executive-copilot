@@ -1,1093 +1,1345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Healthcare Executive Engagement Copilot</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #0066cc;
-            --primary-dark: #0052a3;
-            --secondary: #00a3e0;
-            --accent: #ff6b35;
-            --success: #22c55e;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --neutral-50: #f9fafb;
-            --neutral-100: #f3f4f6;
-            --neutral-200: #e5e7eb;
-            --neutral-300: #d1d5db;
-            --neutral-400: #9ca3af;
-            --neutral-500: #6b7280;
-            --neutral-600: #4b5563;
-            --neutral-700: #374151;
-            --neutral-800: #1f2937;
-            --neutral-900: #111827;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-            color: var(--neutral-800);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            background: white;
-            border-bottom: 2px solid var(--primary);
-            padding: 24px 0;
-            margin-bottom: 32px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        header .container {
-            padding: 0 20px;
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--primary);
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        .header-subtitle {
-            font-size: 12px;
-            color: var(--neutral-500);
-            font-weight: 400;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
-            margin-bottom: 40px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 28px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            box-shadow: 0 12px 16px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-
-        h1 {
-            font-size: 28px;
-            margin-bottom: 12px;
-            color: var(--neutral-900);
-        }
-
-        h2 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        h3 {
-            font-size: 16px;
-            margin-bottom: 12px;
-            color: var(--neutral-900);
-            font-weight: 600;
-        }
-
-        .section-description {
-            font-size: 14px;
-            color: var(--neutral-500);
-            margin-bottom: 24px;
-            line-height: 1.6;
-        }
-
-        .role-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .role-btn {
-            padding: 12px;
-            border: 2px solid var(--neutral-200);
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            text-align: center;
-            transition: all 0.2s ease;
-            color: var(--neutral-700);
-        }
-
-        .role-btn:hover {
-            border-color: var(--primary);
-            background: var(--neutral-50);
-            color: var(--primary);
-        }
-
-        .role-btn.active {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-
-        .button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
-        }
-
-        .btn-secondary {
-            background: var(--neutral-100);
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-
-        .btn-secondary:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .input-group {
-            margin-bottom: 16px;
-        }
-
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--neutral-700);
-            margin-bottom: 6px;
-        }
-
-        input[type="text"],
-        textarea,
-        select {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--neutral-300);
-            border-radius: 6px;
-            font-size: 14px;
-            font-family: inherit;
-            transition: border-color 0.2s ease;
-        }
-
-        input[type="text"]:focus,
-        textarea:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .output-panel {
-            background: var(--neutral-50);
-            border-left: 4px solid var(--secondary);
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-            display: none;
-        }
-
-        .output-panel.active {
-            display: block;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .output-label {
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--secondary);
-            margin-bottom: 12px;
-            letter-spacing: 0.5px;
-        }
-
-        .output-content {
-            font-size: 14px;
-            color: var(--neutral-700);
-            line-height: 1.8;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        .tips-list {
-            list-style: none;
-            margin-top: 16px;
-        }
-
-        .tips-list li {
-            padding: 12px;
-            margin-bottom: 8px;
-            background: white;
-            border-left: 3px solid var(--success);
-            border-radius: 4px;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-        .badge-priority {
-            background: var(--warning);
-            color: white;
-        }
-
-        .badge-focus {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .scenario-group {
-            margin-bottom: 24px;
-        }
-
-        .scenario-item {
-            padding: 12px;
-            background: var(--neutral-50);
-            border-left: 3px solid var(--accent);
-            border-radius: 4px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .scenario-item:hover {
-            background: var(--neutral-100);
-            transform: translateX(4px);
-        }
-
-        .scenario-title {
-            font-weight: 600;
-            color: var(--neutral-900);
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
-
-        .scenario-desc {
-            font-size: 12px;
-            color: var(--neutral-500);
-        }
-
-        .profile-section {
-            background: var(--neutral-50);
-            padding: 16px;
-            border-radius: 8px;
-            margin-top: 16px;
-        }
-
-        .profile-stat {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            font-size: 13px;
-            border-bottom: 1px solid var(--neutral-200);
-        }
-
-        .profile-stat:last-child {
-            border-bottom: none;
-        }
-
-        .stat-label {
-            color: var(--neutral-600);
-            font-weight: 600;
-        }
-
-        .stat-value {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        footer {
-            background: white;
-            border-top: 1px solid var(--neutral-200);
-            padding: 24px 0;
-            margin-top: 48px;
-            text-align: center;
-            font-size: 13px;
-            color: var(--neutral-500);
-        }
-
-        .copy-btn {
-            padding: 6px 12px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-top: 12px;
-        }
-
-        .copy-btn:hover {
-            background: var(--primary-dark);
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--success);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-size: 13px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            animation: toastSlide 0.3s ease;
-        }
-
-        @keyframes toastSlide {
-            from {
-                transform: translateX(400px);
-            }
-            to {
-                transform: translateX(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                padding: 16px;
-            }
-
-            h1 {
-                font-size: 22px;
-            }
-
-            .header-content {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .role-grid {
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            }
-
-            .card {
-                padding: 20px;
-            }
-        }
-
-        .tabs {
-            display: flex;
-            gap: 0;
-            border-bottom: 2px solid var(--neutral-200);
-            margin-bottom: 20px;
-        }
-
-        .tab {
-            padding: 12px 16px;
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--neutral-500);
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s ease;
-            margin-bottom: -2px;
-        }
-
-        .tab:hover {
-            color: var(--primary);
-        }
-
-        .tab.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .note-box {
-            background: #e3f2fd;
-            border-left: 4px solid var(--primary);
-            padding: 12px;
-            border-radius: 4px;
-            font-size: 13px;
-            margin-top: 12px;
-        }
-
-        .note-box strong {
-            color: var(--primary);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Healthcare Executive Engagement Copilot</title>
+  <meta name="description" content="A communication coach for healthcare sales executives preparing buyer-centric conversations with healthcare leaders." />
+  <style>
+    :root {
+      --blue-900: #0a2540;
+      --blue-800: #123d66;
+      --blue-700: #0d5ea8;
+      --blue-600: #1b75d0;
+      --blue-500: #2a8cff;
+      --cyan-400: #54d3ff;
+      --teal-500: #1fb8a6;
+      --orange-500: #ff7b54;
+      --red-500: #e85a5a;
+      --slate-50: #f8fafc;
+      --slate-100: #eef3f8;
+      --slate-200: #dfe7f0;
+      --slate-300: #ccd7e3;
+      --slate-500: #607089;
+      --slate-700: #2f3d52;
+      --slate-800: #1d2b3a;
+      --slate-900: #0f1b2a;
+      --success: #17a673;
+      --warning: #f0b429;
+      --shadow-soft: 0 12px 30px rgba(13, 32, 51, 0.10);
+      --shadow-strong: 0 18px 38px rgba(13, 32, 51, 0.15);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 18%, #f5f7fb 100%);
+      color: var(--slate-800);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.86);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(15,27,42,0.08);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 74px;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      color: var(--slate-900);
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--blue-600), var(--cyan-400));
+      border-radius: 12px;
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .brand-text small {
+      display: block;
+      color: var(--slate-500);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 3px;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      color: var(--slate-700);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: var(--blue-700);
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero {
+      padding: 72px 0 34px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 38px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--blue-700);
+      background: rgba(42, 140, 255, 0.10);
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(42, 140, 255, 0.15);
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: clamp(2.5rem, 5vw, 4.1rem);
+      line-height: 1.04;
+      letter-spacing: -0.05em;
+      color: var(--slate-900);
+    }
+
+    .hero-copy {
+      margin: 0 0 26px;
+      font-size: 1.08rem;
+      color: var(--slate-600);
+      max-width: 680px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 26px;
+    }
+
+    .primary-btn, .secondary-btn, .mini-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    }
+
+    .primary-btn {
+      padding: 14px 22px;
+      background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
+      color: white;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .secondary-btn {
+      padding: 14px 22px;
+      background: rgba(255,255,255,0.9);
+      color: var(--slate-800);
+      border: 1px solid rgba(17,24,39,0.08);
+    }
+
+    .mini-btn {
+      padding: 9px 14px;
+      border-radius: 10px;
+      background: var(--slate-100);
+      color: var(--slate-700);
+      font-size: 13px;
+    }
+
+    .primary-btn:hover, .secondary-btn:hover, .mini-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      color: var(--slate-600);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .hero-meta strong {
+      color: var(--slate-900);
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .hero-panel {
+      background: linear-gradient(180deg, rgba(10,37,64,0.98), rgba(19,61,102,0.96));
+      border-radius: 28px;
+      padding: 26px 22px;
+      color: white;
+      box-shadow: var(--shadow-strong);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(84, 211, 255, 0.18);
+      right: -60px;
+      top: -60px;
+      filter: blur(12px);
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .mini-card h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: rgba(255,255,255,0.86);
+      letter-spacing: 0.02em;
+    }
+
+    .mini-card p {
+      margin: 0;
+      color: rgba(255,255,255,0.76);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .score-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .score {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 12px 10px;
+      text-align: center;
+    }
+
+    .score strong {
+      display: block;
+      font-size: 1.3rem;
+      color: white;
+      margin-bottom: 4px;
+    }
+
+    .score span {
+      font-size: 11px;
+      color: rgba(255,255,255,0.72);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .section {
+      padding: 34px 0 14px;
+    }
+
+    .section-heading {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 24px;
+    }
+
+    .section-heading h2 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      letter-spacing: -0.04em;
+      color: var(--slate-900);
+    }
+
+    .section-heading p {
+      margin: 0 auto;
+      color: var(--slate-600);
+      font-size: 1.02rem;
+      max-width: 700px;
+    }
+
+    .feature-grid, .playbook-grid, .use-case-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 24px;
+      margin-top: 22px;
+    }
+
+    .feature-card, .playbook-card, .use-case-card {
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(17,24,39,0.06);
+      border-radius: 18px;
+      padding: 22px 20px 18px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .icon-badge {
+      width: 56px;
+      height: 56px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      margin-bottom: 14px;
+      font-size: 26px;
+      background: linear-gradient(135deg, rgba(42,140,255,0.16), rgba(84,211,255,0.11));
+      border: 1px solid rgba(42,140,255,0.12);
+    }
+
+    .feature-card h3, .playbook-card h3, .use-case-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.12rem;
+      color: var(--slate-800);
+    }
+
+    .feature-card p, .playbook-card p, .use-case-card p {
+      margin: 0;
+      color: var(--slate-600);
+      font-size: 0.96rem;
+      line-height: 1.72;
+    }
+
+    .how-it-works {
+      padding-top: 24px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 22px;
+      margin-top: 26px;
+    }
+
+    .step {
+      background: white;
+      border-radius: 22px;
+      padding: 24px 20px;
+      border: 1px solid rgba(17,24,39,0.06);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+    }
+
+    .step-number {
+      display: inline-flex;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
+      color: white;
+      margin-bottom: 14px;
+    }
+
+    .step h3 {
+      margin: 0 0 8px;
+      font-size: 1.08rem;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--slate-600);
+      line-height: 1.7;
+    }
+
+    .coach-shell {
+      margin-top: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(246,249,252,0.98));
+      border: 1px solid rgba(17,24,39,0.05);
+      border-radius: 28px;
+      box-shadow: var(--shadow-strong);
+      overflow: hidden;
+    }
+
+    .coach-header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid rgba(17,24,39,0.06);
+      background: linear-gradient(135deg, rgba(17,76,140,0.06), rgba(84,211,255,0.08));
+    }
+
+    .coach-header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .coach-header h2 {
+      margin: 0;
+      font-size: clamp(1.7rem, 3vw, 2.2rem);
+      letter-spacing: -0.04em;
+      color: var(--slate-900);
+    }
+
+    .coach-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: rgba(17,24,39,0.06);
+    }
+
+    .coach-panel {
+      background: rgba(255,255,255,0.95);
+      padding: 28px;
+    }
+
+    .panel-title {
+      margin: 0 0 14px;
+      font-size: 1.14rem;
+      color: var(--slate-800);
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .role-btn {
+      border: 1px solid rgba(17,24,39,0.08);
+      background: white;
+      color: var(--slate-700);
+      padding: 12px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+
+    .role-btn.active {
+      background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
+      border-color: transparent;
+      color: white;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--slate-700);
+    }
+
+    textarea,
+    input {
+      width: 100%;
+      border: 1px solid rgba(17,24,39,0.12);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font: inherit;
+      background: white;
+      color: var(--slate-800);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    textarea:focus,
+    input:focus {
+      outline: none;
+      border-color: rgba(42,140,255,0.8);
+      box-shadow: 0 0 0 4px rgba(42,140,255,0.12);
+    }
+
+    .field-group {
+      margin-bottom: 16px;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .coach-output {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .output-card {
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(42,140,255,0.06), rgba(84,211,255,0.03));
+      border: 1px solid rgba(42,140,255,0.10);
+      padding: 18px;
+    }
+
+    .output-label {
+      display: inline-block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--blue-700);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .output-text {
+      margin: 0;
+      font-size: 0.98rem;
+      color: var(--slate-700);
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+
+    .tab-list {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+      border-bottom: 1px solid rgba(17,24,39,0.08);
+      padding-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      color: var(--slate-500);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 10px;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: rgba(42,140,255,0.10);
+      color: var(--blue-700);
+    }
+
+    .tab-panel {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .tip-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--slate-700);
+      line-height: 1.9;
+      font-size: 0.96rem;
+    }
+
+    .tip-list li + li {
+      margin-top: 8px;
+    }
+
+    .profile-box {
+      background: rgba(15,27,42,0.04);
+      border: 1px solid rgba(15,27,42,0.06);
+      border-radius: 16px;
+      padding: 14px 16px;
+    }
+
+    .profile-box h4 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      color: var(--slate-800);
+    }
+
+    .profile-box p {
+      margin: 0;
+      color: var(--slate-600);
+      line-height: 1.6;
+      font-size: 0.92rem;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .stat {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid rgba(17,24,39,0.06);
+      padding: 12px 10px;
+    }
+
+    .stat-label {
+      display: block;
+      font-size: 11px;
+      color: var(--slate-500);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .stat-value {
+      color: var(--slate-800);
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .cta-band {
+      margin: 48px auto 28px;
+      background: linear-gradient(135deg, var(--blue-900), var(--blue-700));
+      color: white;
+      border-radius: 24px;
+      padding: 30px 26px;
+      box-shadow: var(--shadow-strong);
+      text-align: center;
+    }
+
+    .cta-band h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.6rem, 3vw, 2.25rem);
+      letter-spacing: -0.04em;
+    }
+
+    .cta-band p {
+      margin: 0 auto 18px;
+      max-width: 760px;
+      color: rgba(255,255,255,0.8);
+      font-size: 1rem;
+    }
+
+    .footer {
+      padding: 22px 0 36px;
+      color: var(--slate-500);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .coach-body, .feature-grid, .playbook-grid, .use-case-grid, .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .role-grid {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .hero {
+        padding-top: 42px;
+      }
+
+      .role-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .coach-panel, .coach-output {
+        padding: 18px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div>
-                    <div class="logo">
-                        <div class="logo-icon">💼</div>
-                        <div>
-                            <div>Healthcare Executive Copilot</div>
-                            <div class="header-subtitle">Transform Solution Talk Into Executive Conversations</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <header class="topbar">
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-mark">✚</div>
+        <div class="brand-text">
+          Healthcare Executive Copilot
+          <small>Executive Engagement</small>
         </div>
-    </header>
+      </div>
 
-    <main class="container">
-        <div class="main-content">
-            <!-- Left Panel: Input & Role Selection -->
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#how-it-works">How it works</a>
+        <a href="#roles">Roles</a>
+        <a href="#coach">Coach</a>
+        <a href="#examples">Examples</a>
+      </nav>
+
+      <a class="nav-cta" href="#coach">Launch Coach</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Buyer-centric conversation coaching</div>
+          <h1>Turn feature-heavy pitches into executive conversations that resonate.</h1>
+          <p class="hero-copy">
+            Built for healthcare sales teams that need to prepare smarter conversations with CEOs, CFOs, COOs,
+            CHROs, CNOs, CX leaders, CMOs, and Supply Chain executives. This tool helps translate product language into
+            business outcomes, operational priorities, and executive-level value.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#coach" class="primary-btn">Open the coach</a>
+            <a href="#how-it-works" class="secondary-btn">See how it works</a>
+          </div>
+
+          <div class="hero-meta">
             <div>
-                <div class="card">
-                    <h2>🎯 Choose Your Executive</h2>
-                    <p class="section-description">Select the C-suite role you're preparing to engage with</p>
-                    
-                    <div class="role-grid">
-                        <button class="role-btn active" data-role="ceo">CEO</button>
-                        <button class="role-btn" data-role="cfo">CFO</button>
-                        <button class="role-btn" data-role="coo">COO</button>
-                        <button class="role-btn" data-role="cno">CNO</button>
-                        <button class="role-btn" data-role="chro">CHRO</button>
-                        <button class="role-btn" data-role="cxo">CXO</button>
-                        <button class="role-btn" data-role="cmo">CMO</button>
-                        <button class="role-btn" data-role="supply">Supply Chain</button>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="solution-message">Your Solution-Focused Message</label>
-                        <textarea id="solution-message" placeholder="Paste or describe your current sales pitch. Example: 'Our platform reduces operational costs through real-time workflow automation and AI-powered analytics.'"></textarea>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="business-context">Business Context (Optional)</label>
-                        <textarea id="business-context" placeholder="Any relevant context about their organization or the conversation. Example: 'Post-merger integration happening, cost pressures from CMS reimbursement cuts'"></textarea>
-                    </div>
-
-                    <button class="button btn-primary" onclick="transformMessage()">Transform Message</button>
-                </div>
-
-                <div class="card" style="margin-top: 20px;">
-                    <h2>📋 Quick Scenarios</h2>
-                    <p class="section-description">Select a pre-built scenario to explore</p>
-                    
-                    <div class="scenario-group">
-                        <div class="scenario-item" onclick="loadScenario('cost-reduction')">
-                            <div class="scenario-title">💰 Cost Reduction</div>
-                            <div class="scenario-desc">Messaging for CFO/COO cost initiatives</div>
-                        </div>
-                        <div class="scenario-item" onclick="loadScenario('revenue-growth')">
-                            <div class="scenario-title">📈 Revenue Growth</div>
-                            <div class="scenario-desc">Revenue cycle & market expansion focus</div>
-                        </div>
-                        <div class="scenario-item" onclick="loadScenario('patient-experience')">
-                            <div class="scenario-title">🏥 Patient Experience</div>
-                            <div class="scenario-desc">CXO/CNO clinical & satisfaction priorities</div>
-                        </div>
-                        <div class="scenario-item" onclick="loadScenario('workforce')">
-                            <div class="scenario-title">👥 Workforce Retention</div>
-                            <div class="scenario-desc">CHRO talent management & burnout</div>
-                        </div>
-                        <div class="scenario-item" onclick="loadScenario('compliance')">
-                            <div class="scenario-title">✅ Compliance & Risk</div>
-                            <div class="scenario-desc">Risk mitigation & regulatory focus</div>
-                        </div>
-                        <div class="scenario-item" onclick="loadScenario('innovation')">
-                            <div class="scenario-title">🚀 Digital Transformation</div>
-                            <div class="scenario-desc">Future-ready strategy & innovation</div>
-                        </div>
-                    </div>
-                </div>
+              <strong>8</strong>
+              executive roles
             </div>
-
-            <!-- Right Panel: Output & Guidance -->
             <div>
-                <div class="card">
-                    <h2>💡 Executive Translation</h2>
-                    <p class="section-description">Your buyer-centric message tailored to this executive</p>
-
-                    <div id="role-profile" class="profile-section" style="display: none;">
-                        <h3 id="profile-title"></h3>
-                        <div class="profile-stat">
-                            <span class="stat-label">Primary Focus:</span>
-                            <span class="stat-value" id="primary-focus"></span>
-                        </div>
-                        <div class="profile-stat">
-                            <span class="stat-label">Pain Point:</span>
-                            <span class="stat-value" id="pain-point"></span>
-                        </div>
-                        <div class="profile-stat">
-                            <span class="stat-label">Success Metric:</span>
-                            <span class="stat-value" id="success-metric"></span>
-                        </div>
-                    </div>
-
-                    <div id="output-panel" class="output-panel">
-                        <div class="output-label">📢 Buyer-Centric Opening</div>
-                        <div class="output-content" id="buyer-opening"></div>
-                        <button class="copy-btn" onclick="copyToClipboard('buyer-opening')">Copy</button>
-                    </div>
-
-                    <div class="tabs" style="margin-top: 20px;">
-                        <button class="tab active" onclick="switchTab('talking-points')">Talking Points</button>
-                        <button class="tab" onclick="switchTab('questions')">Discovery Questions</button>
-                        <button class="tab" onclick="switchTab('dos-donts')">Do's & Don'ts</button>
-                    </div>
-
-                    <div id="talking-points" class="tab-content active">
-                        <ul class="tips-list" id="talking-points-list"></ul>
-                    </div>
-
-                    <div id="questions" class="tab-content">
-                        <ul class="tips-list" id="questions-list"></ul>
-                    </div>
-
-                    <div id="dos-donts" class="tab-content">
-                        <div style="margin-bottom: 20px;">
-                            <h3 style="color: var(--success); margin-bottom: 12px;">✅ Do's</h3>
-                            <ul class="tips-list" id="dos-list"></ul>
-                        </div>
-                        <div>
-                            <h3 style="color: var(--danger); margin-bottom: 12px;">❌ Don'ts</h3>
-                            <ul class="tips-list" id="donts-list" style="border-left-color: var(--danger);"></ul>
-                        </div>
-                    </div>
-
-                    <div class="note-box">
-                        <strong>💬 Pro Tip:</strong> Start with a discovery question to understand their current state before launching into your opening.
-                    </div>
-                </div>
+              <strong>3-step</strong>
+              conversation prep
             </div>
+            <div>
+              <strong>1-click</strong>
+              copy-ready outputs
+            </div>
+          </div>
         </div>
-    </main>
 
-    <footer>
-        <p>Healthcare Executive Engagement Copilot | Built for sales teams engaging C-suite leaders | 2024</p>
-    </footer>
+        <aside class="hero-panel" aria-label="Executive engagement summary">
+          <div class="mini-card">
+            <h3>Executive focus</h3>
+            <p>Shift from product features to enterprise value, operating performance, and strategic outcomes.</p>
+          </div>
 
-    <script>
-        const executiveProfiles = {
-            ceo: {
-                title: "Chief Executive Officer (CEO)",
-                focus: "Organizational Strategy & Performance",
-                painPoint: "Enterprise growth, competitive differentiation, shareholder value",
-                successMetric: "Revenue growth, market share, operational efficiency",
-                keywords: ["strategic", "enterprise", "growth", "competitive advantage", "performance", "board", "shareholder"]
-            },
-            cfo: {
-                title: "Chief Financial Officer (CFO)",
-                focus: "Financial Performance & Risk Management",
-                painPoint: "Cost containment, revenue cycle management, regulatory compliance, financial forecasting",
-                successMetric: "Revenue per patient, cost per case, margin improvement, cash flow",
-                keywords: ["cost", "ROI", "financial", "margin", "efficiency", "compliance", "audit", "expense reduction"]
-            },
-            coo: {
-                title: "Chief Operating Officer (COO)",
-                focus: "Operational Excellence & Execution",
-                painPoint: "Process efficiency, workflow optimization, labor productivity, supply chain cost",
-                successMetric: "Operational efficiency, turnaround time, resource utilization, capacity",
-                keywords: ["operations", "efficiency", "workflow", "productivity", "execution", "process", "capacity"]
-            },
-            cno: {
-                title: "Chief Nursing Officer (CNO)",
-                focus: "Clinical Quality & Nursing Excellence",
-                painPoint: "Nurse retention, burnout reduction, clinical outcomes, care quality, patient safety",
-                successMetric: "Nurse retention rate, patient satisfaction, clinical outcomes, quality metrics",
-                keywords: ["clinical", "quality", "patient safety", "outcomes", "nursing", "care", "patient satisfaction"]
-            },
-            chro: {
-                title: "Chief Human Resources Officer (CHRO)",
-                focus: "Talent Management & Organizational Culture",
-                painPoint: "Talent acquisition, retention, workforce engagement, training, burnout prevention",
-                successMetric: "Employee retention, engagement scores, time-to-fill, training effectiveness",
-                keywords: ["talent", "retention", "engagement", "culture", "workforce", "recruitment", "training"]
-            },
-            cxo: {
-                title: "Chief Experience Officer (CXO)",
-                focus: "Patient & Customer Experience",
-                painPoint: "Patient satisfaction, experience consistency, omnichannel engagement, loyalty",
-                successMetric: "NPS score, patient satisfaction, HCAHPS scores, experience metrics",
-                keywords: ["experience", "satisfaction", "patient", "engagement", "loyalty", "omnichannel", "NPS"]
-            },
-            cmo: {
-                title: "Chief Marketing Officer (CMO)",
-                focus: "Brand & Market Positioning",
-                painPoint: "Brand awareness, patient acquisition, market differentiation, reputation management",
-                successMetric: "Brand awareness, patient acquisition cost, market share, engagement",
-                keywords: ["brand", "market", "positioning", "acquisition", "engagement", "reputation", "awareness"]
-            },
-            supply: {
-                title: "Supply Chain Leader",
-                focus: "Supply Chain Optimization",
-                painPoint: "Cost reduction, supply reliability, inventory management, vendor relationships",
-                successMetric: "Cost per unit, inventory turns, supplier performance, procurement savings",
-                keywords: ["supply", "cost", "vendor", "procurement", "inventory", "logistics", "efficiency"]
-            }
-        };
+          <div class="mini-card">
+            <h3>Best use</h3>
+            <p>Prepare for executive conversations, craft stronger discovery questions, and move from solution-first to buyer-first messaging.</p>
+          </div>
 
-        const scenarioTemplates = {
-            "cost-reduction": {
-                message: "Our platform automates manual processes and consolidates legacy systems to reduce operational overhead by 20-30% year-over-year.",
-                role: "cfo",
-                title: "Cost Reduction Initiative"
-            },
-            "revenue-growth": {
-                message: "We help you capture missed revenue opportunities through real-time claim tracking, faster cash conversion, and expanded service line visibility.",
-                role: "cfo",
-                title: "Revenue Cycle Optimization"
-            },
-            "patient-experience": {
-                message: "Our solution improves patient satisfaction through seamless scheduling, faster wait times, and personalized engagement throughout their care journey.",
-                role: "cxo",
-                title: "Patient Experience Enhancement"
-            },
-            "workforce": {
-                message: "By automating administrative burden and streamlining workflows, we reduce clinician burnout and improve retention by 15-25%.",
-                role: "chro",
-                title: "Workforce Retention & Satisfaction"
-            },
-            "compliance": {
-                message: "Our built-in compliance framework automates regulatory requirements and creates audit trails, reducing risk and ensuring data security.",
-                role: "cfo",
-                title: "Compliance & Risk Management"
-            },
-            "innovation": {
-                message: "This solution positions your organization as a digital leader, enabling data-driven decisions and future-ready operations.",
-                role: "ceo",
-                title: "Digital Transformation"
-            }
-        };
+          <div class="score-strip">
+            <div class="score">
+              <strong>30%</strong>
+              <span>Faster prep</span>
+            </div>
+            <div class="score">
+              <strong>8</strong>
+              <span>Roles</span>
+            </div>
+            <div class="score">
+              <strong>1</strong>
+              <span>Conversation</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-        let currentRole = "ceo";
+    <section class="section" id="roles">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Built for the way healthcare executives actually buy</h2>
+          <p>Different leaders care about different outcomes. The app helps tailor your message to what matters most—financial performance, patient experience, operational efficiency, workforce strategy, and growth.</p>
+        </div>
 
-        // Event listeners for role buttons
-        document.querySelectorAll(".role-btn").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                document.querySelectorAll(".role-btn").forEach(b => b.classList.remove("active"));
-                e.target.classList.add("active");
-                currentRole = e.target.dataset.role;
-                showRoleProfile(currentRole);
-            });
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="icon-badge">💰</div>
+            <h3>Financial leaders</h3>
+            <p>Translate value into margin improvement, efficiency, risk reduction, and measurable ROI for CFOs and operating executives.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="icon-badge">🏥</div>
+            <h3>Care and experience leaders</h3>
+            <p>Frame your value around quality, patient experience, clinical outcomes, and workforce resilience for CNOs and CX leaders.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="icon-badge">📈</div>
+            <h3>Strategic growth leaders</h3>
+            <p>Position your solution for CEO and CMO conversations focused on strategic differentiation, growth, and competitive advantage.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section how-it-works" id="how-it-works">
+      <div class="container">
+        <div class="section-heading">
+          <h2>How to use this tool in under 5 minutes</h2>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Select the executive</h3>
+            <p>Choose the leader you are meeting with—CEO, CFO, COO, CHRO, CNO, CXO, CMO, or Supply Chain.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Paste your current pitch</h3>
+            <p>Drop in your current solution-focused language or use one of the built-in scenarios to see a stronger buyer-first version.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Review and adapt</h3>
+            <p>Use the refreshed opening, discovery questions, and talking points to guide the conversation and tailor your approach.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="coach">
+      <div class="container">
+        <div class="coach-shell">
+          <div class="coach-header">
+            <div class="coach-header-inner">
+              <h2>Healthcare Executive Engagement Coach</h2>
+              <button type="button" class="mini-btn" id="load-sample-btn">Load sample message</button>
+            </div>
+          </div>
+
+          <div class="coach-body">
+            <div class="coach-panel">
+              <h3 class="panel-title">1. Pick the executive</h3>
+              <div class="role-grid" id="role-grid">
+                <button class="role-btn active" data-role="ceo">CEO</button>
+                <button class="role-btn" data-role="cfo">CFO</button>
+                <button class="role-btn" data-role="coo">COO</button>
+                <button class="role-btn" data-role="cno">CNO</button>
+                <button class="role-btn" data-role="chro">CHRO</button>
+                <button class="role-btn" data-role="cxo">CXO</button>
+                <button class="role-btn" data-role="cmo">CMO</button>
+                <button class="role-btn" data-role="supply">Supply</button>
+              </div>
+
+              <div class="field-group">
+                <label class="field-label" for="message-input">Your current message</label>
+                <textarea id="message-input" placeholder="Example: 'Our platform reduces operational costs through AI-powered workflow automation and real-time analytics.'"></textarea>
+              </div>
+
+              <div class="field-group">
+                <label class="field-label" for="context-input">Context or situation</label>
+                <textarea id="context-input" placeholder="Optional: 'Their organization is focused on margin pressure and operational efficiency after expansion.'"></textarea>
+              </div>
+
+              <div class="action-row">
+                <button class="primary-btn" id="transform-btn">Transform message</button>
+                <button class="secondary-btn" id="reset-btn">Reset</button>
+              </div>
+            </div>
+
+            <div class="coach-output">
+              <div class="profile-box" id="profile-box">
+                <h4 id="profile-title">Chief Executive Officer (CEO)</h4>
+                <p id="profile-description">Focus on strategic direction, performance, and competitive differentiation.</p>
+                <div class="profile-grid">
+                  <div class="stat">
+                    <span class="stat-label">Primary focus</span>
+                    <span class="stat-value" id="focus-value">Organizational Strategy & Performance</span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label">Pain point</span>
+                    <span class="stat-value" id="pain-value">Enterprise growth and competitive differentiation</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="output-card">
+                <div class="output-label">Buyer-centric opening</div>
+                <p class="output-text" id="result-output">Your re-framed executive message will appear here.</p>
+              </div>
+
+              <div>
+                <div class="tab-list" aria-label="Conversation guidance tabs">
+                  <button type="button" class="tab-btn active" data-tab="talking-points">Talking points</button>
+                  <button type="button" class="tab-btn" data-tab="questions">Discovery questions</button>
+                  <button type="button" class="tab-btn" data-tab="dos-donts">Do's & don'ts</button>
+                </div>
+
+                <div class="tab-panel active" id="talking-points-panel">
+                  <ul class="tip-list" id="talking-points-list"></ul>
+                </div>
+
+                <div class="tab-panel" id="questions-panel">
+                  <ul class="tip-list" id="questions-list"></ul>
+                </div>
+
+                <div class="tab-panel" id="dos-donts-panel">
+                  <ul class="tip-list" id="dos-list"></ul>
+                  <ul class="tip-list" id="donts-list" style="margin-top:10px;"></ul>
+                </div>
+              </div>
+
+              <div class="action-row" style="margin-top:0;">
+                <button class="primary-btn" id="copy-btn">Copy opening</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="examples">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Quick playbooks for common executive scenarios</h2>
+        </div>
+
+        <div class="playbook-grid">
+          <article class="playbook-card">
+            <div class="icon-badge">💸</div>
+            <h3>Cost reduction</h3>
+            <p>Prepare CFO and COO conversations focused on margin, productivity, and operational efficiency.</p>
+          </article>
+          <article class="playbook-card">
+            <div class="icon-badge">🧑‍⚕️</div>
+            <h3>Patient experience</h3>
+            <p>Shift language toward patient satisfaction, retention, and care experience improvement for CX and clinical leaders.</p>
+          </article>
+          <article class="playbook-card">
+            <div class="icon-badge">🚀</div>
+            <h3>Growth & strategy</h3>
+            <p>Help CEOs and CMOs position the solution as a strategic lever for competitive differentiation and performance outcomes.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="cta-band">
+        <h3>Your sales team can use this before every executive conversation.</h3>
+        <p>Use the coach to shape more relevant language, ask better questions, and create a stronger executive narrative without sounding overly product-driven.</p>
+        <a class="primary-btn" href="#coach" style="background: white; color: var(--blue-700);">Open the coach now</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Healthcare Executive Engagement Copilot • Built for healthcare sales teams preparing executive conversations
+  </footer>
+
+  <script>
+    const executiveProfiles = {
+      ceo: {
+        title: 'Chief Executive Officer (CEO)',
+        description: 'Focus on strategic direction, performance, and competitive differentiation.',
+        focus: 'Organizational Strategy & Performance',
+        pain: 'Enterprise growth and competitive differentiation',
+        talkingPoints: [
+          'Tie the solution to enterprise growth and market leadership.',
+          'Speak in terms of strategic advantage and operational scalability.',
+          'Show how the initiative supports broader corporate priorities and board-level outcomes.',
+          'Keep the conversation focused on measurable business performance.'
+        ],
+        questions: [
+          'What are your top strategic priorities for the next 12 to 18 months?',
+          'Where do you see the biggest growth or operating challenge in your market?',
+          'What would success look like from a strategic and performance perspective?'
+        ],
+        dos: [
+          'Connect the solution to enterprise goals and strategic positioning.',
+          'Lead with business outcomes and executive value.',
+          'Speak to long-term differentiation, not just short-term efficiencies.'
+        ],
+        donts: [
+          'Avoid getting stuck in product-level detail or feature lists.',
+          'Do not frame the conversation as a tactical workflow project alone.',
+          'Avoid vague language without a measurable outcome.'
+        ]
+      },
+      cfo: {
+        title: 'Chief Financial Officer (CFO)',
+        description: 'Focus on financial efficiency, risk, cost structure, and return on investment.',
+        focus: 'Financial Performance & ROI',
+        pain: 'Margin pressure, cost transparency, and revenue cycle efficiency',
+        talkingPoints: [
+          'Quantify the financial impact with clear ROI or cost reduction potential.',
+          'Tie the value to margin improvement, efficiency, and operating leverage.',
+          'Address risk, reliability, and predictability in financial outcomes.',
+          'Connect value to cash flow, productivity, and forecast accuracy.'
+        ],
+        questions: [
+          'Where do you most want to improve financial performance this year?',
+          'What is the greatest pressure on margin or operating spend right now?',
+          'How are you measuring ROI and value realization on strategic initiatives?'
+        ],
+        dos: [
+          'Show concrete financial impact and benchmarking.',
+          'Make the economics explicit and easy to evaluate.',
+          'Frame the effort as a disciplined investment decision.'
+        ],
+        donts: [
+          'Do not lead with feature-only value statements.',
+          'Avoid vague references to “better” without numbers.',
+          'Do not ignore risk, compliance, or operational cost considerations.'
+        ]
+      },
+      coo: {
+        title: 'Chief Operating Officer (COO)',
+        description: 'Focus on execution, throughput, workflow optimization, and operational consistency.',
+        focus: 'Operational Excellence & Execution',
+        pain: 'Workflow friction, process inefficiency, and team productivity',
+        talkingPoints: [
+          'Focus on operational efficiency and reducing friction across key workflows.',
+          'Highlight the impact on throughput, turnaround time, and resource utilization.',
+          'Demonstrate how it improves process consistency and team productivity.',
+          'Anchor the conversation in execution and service continuity.'
+        ],
+        questions: [
+          'Where are your teams experiencing the most friction in daily operations?',
+          'What operational metric would have the biggest impact if improved by 10 to 15%?',
+          'How are you currently managing workflow complexity and team productivity?' 
+        ],
+        dos: [
+          'Speak to workflow efficiency and execution quality.',
+          'Discuss operational leverage and capacity management.',
+          'Address implementation realities and change management.'
+        ],
+        donts: [
+          'Do not get lost in technical detail or platform architecture.',
+          'Avoid positioning the solution as isolated from operational workflows.',
+          'Do not ignore adoption and frontline workflow realities.'
+        ]
+      },
+      cno: {
+        title: 'Chief Nursing Officer (CNO)',
+        description: 'Focus on patient safety, nurse workload, quality, and care team performance.',
+        focus: 'Clinical Quality & Nursing Excellence',
+        pain: 'Burnout, staffing pressure, quality consistency, and care delivery burden',
+        talkingPoints: [
+          'Emphasize reducing burden on frontline clinicians and nurses.',
+          'Connect the solution to quality outcomes, patient safety, and care consistency.',
+          'Show how it supports nurse retention and team effectiveness.',
+          'Highlight how the solution strengthens the care experience for both patients and staff.'
+        ],
+        questions: [
+          'What are your biggest concerns around care team burden and retention?',
+          'How are you measuring patient safety and nursing team effectiveness today?',
+          'What would help your teams focus more time on patient care and less on administrative work?'
+        ],
+        dos: [
+          'Put patient quality and staff experience at the center.',
+          'Respect the realities of bedside workflows and nursing burden.',
+          'Tie the solution to practical care team impact.'
+        ],
+        donts: [
+          'Avoid making the solution sound like a compliance-only tool.',
+          'Do not ignore frontline nurse input and operational realities.',
+          'Do not present it as removing human connection from care.'
+        ]
+      },
+      chro: {
+        title: 'Chief Human Resources Officer (CHRO)',
+        description: 'Focus on workforce engagement, retention, culture, and talent strategy.',
+        focus: 'Talent Management & Workforce Experience',
+        pain: 'Retention, talent burnout, workforce engagement, and labor challenges',
+        talkingPoints: [
+          'Link the initiative to workforce engagement and retention.',
+          'Position it as helping teams reduce administrative burden and focus on higher-value work.',
+          'Connect the solution to culture, employee experience, and talent strategy.',
+          'Frame the value around better retention and better experience for the workforce.'
+        ],
+        questions: [
+          'What is your biggest workforce challenge today?',
+          'How do you measure employee engagement, retention, and burnout?',
+          'What would help your leaders create a stronger employee experience?' 
+        ],
+        dos: [
+          'Address workforce experience and retention directly.',
+          'Speak to the employee experience and organizational culture.',
+          'Focus on support for leaders and frontline teams.'
+        ],
+        donts: [
+          'Do not make it sound like a surveillance or control tool.',
+          'Avoid focusing only on cost reduction without workforce impact.',
+          'Do not overlook organizational change management.'
+        ]
+      },
+      cxo: {
+        title: 'Chief Experience Officer (CXO)',
+        description: 'Focus on patient-centered experience, satisfaction, accessibility, and consumer expectations.',
+        focus: 'Patient & Member Experience',
+        pain: 'Experience inconsistency, operational friction, and patient satisfaction challenges',
+        talkingPoints: [
+          'Position the solution as a patient experience enhancer across the journey.',
+          'Speak to accessibility, responsiveness, and personalization at scale.',
+          'Tie value to satisfaction scoring and patient loyalty outcomes.',
+          'Discuss meaningful experience improvements for patients and care teams.'
+        ],
+        questions: [
+          'How does your organization currently measure patient experience?',
+          'Where do patient interactions feel most fragmented or frustrating?',
+          'What changes would create the most meaningful difference in patient experience?' 
+        ],
+        dos: [
+          'Keep the patient at the center of the story.',
+          'Talk about consistency, personalization, and emotional impact.',
+          'Tie the solution to experience metrics and trust.'
+        ],
+        donts: [
+          'Do not over-index on cost reduction alone.',
+          'Avoid talking only about technology without patient impact.',
+          'Do not ignore frontline experience and care team adoption.'
+        ]
+      },
+      cmo: {
+        title: 'Chief Marketing Officer (CMO)',
+        description: 'Focus on brand strategy, patient acquisition, demand generation, and market positioning.',
+        focus: 'Brand & Growth Strategy',
+        pain: 'Acquisition efficiency, patient engagement, and competitive differentiation',
+        talkingPoints: [
+          'Tie the solution to stronger growth and market positioning.',
+          'Show how it improves patient acquisition efficiency and engagement.',
+          'Highlight data-informed decision-making and campaign optimization.',
+          'Connect the product to a more differentiated brand and stronger patient reach.'
+        ],
+        questions: [
+          'How are you approaching patient acquisition and engagement in this market?',
+          'Where do you see the biggest opportunity to differentiate your brand?',
+          'What outcomes matter most when evaluating the effectiveness of growth efforts?' 
+        ],
+        dos: [
+          'Frame the discussion around market differentiation and demand outcomes.',
+          'Connect value to conversion, engagement, and awareness.',
+          'Show how intelligence supports better decision-making.'
+        ],
+        donts: [
+          'Do not lead with operational efficiency without growth implications.',
+          'Avoid speaking only to internal process metrics.',
+          'Do not ignore brand and patient journey implications.'
+        ]
+      },
+      supply: {
+        title: 'Supply Chain Leader',
+        description: 'Focus on procurement efficiency, inventory management, reliability, and vendor performance.',
+        focus: 'Supply Chain Optimization',
+        pain: 'Inventory volatility, procurement cost, supplier reliability, and service continuity',
+        talkingPoints: [
+          'Focus on cost per unit, inventory optimization, and process efficiency.',
+          'Show how the solution strengthens supply continuity and vendor performance.',
+          'Highlight scalability and operational visibility across the network.',
+          'Tie the value to procurement savings and operating resilience.'
+        ],
+        questions: [
+          'Where do you see the biggest cost or reliability issues in your supply chain?',
+          'How are you currently tracking supplier performance and inventory risk?',
+          'What outcomes matter most for your procurement and operations teams?' 
+        ],
+        dos: [
+          'Quantify cost and reliability impact.',
+          'Connect the solution to operational continuity and vendor management.',
+          'Keep the focus on inventory and procurement discipline.'
+        ],
+        donts: [
+          'Do not rely on generic “efficiency” language without specifics.',
+          'Avoid overlooking supply continuity and vendor dynamics.',
+          'Do not discuss only technology without business continuity impact.'
+        ]
+      }
+    };
+
+    const sampleMessages = {
+      ceo: "Our platform helps health systems improve operating performance, strengthen strategic execution, and create a more resilient model for growth in a changing market.",
+      cfo: "Our solution reduces administrative burden and improves revenue cycle performance to create measurable savings and better financial visibility across the organization.",
+      coo: "Our platform streamlines clinical and operational workflows so teams can work more efficiently, reduce manual effort, and improve throughput across departments.",
+      cno: "Our solution reduces clinician burden, supports care team efficiency, and helps improve nursing retention and patient care experience.",
+      chro: "Our platform reduces administrative complexity for leaders and teams, improves employee experience, and supports stronger retention and workforce engagement.",
+      cxo: "Our solution helps organizations deliver a more consistent, personalized patient experience while improving satisfaction and engagement.",
+      cmo: "Our platform helps health systems strengthen patient engagement and acquisition strategies while improving data-driven decision-making and brand differentiation.",
+      supply: "Our solution improves inventory visibility, streamlines procurement, and reduces supply chain friction while strengthening continuity and cost control."
+    };
+
+    let activeRole = 'ceo';
+
+    function setActiveRole(role) {
+      activeRole = role;
+      document.querySelectorAll('.role-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.role === role);
+      });
+
+      const profile = executiveProfiles[role];
+      document.getElementById('profile-title').textContent = profile.title;
+      document.getElementById('profile-description').textContent = profile.description;
+      document.getElementById('focus-value').textContent = profile.focus;
+      document.getElementById('pain-value').textContent = profile.pain;
+
+      const sample = sampleMessages[role];
+      const messageInput = document.getElementById('message-input');
+      if (!messageInput.value.trim()) {
+        messageInput.value = sample;
+      }
+      renderTabs(role);
+    }
+
+    function renderTabs(role) {
+      const profile = executiveProfiles[role];
+      const points = profile.talkingPoints;
+      const questions = profile.questions;
+      const dos = profile.dos;
+      const donts = profile.donts;
+
+      document.getElementById('talking-points-list').innerHTML = points.map(item => `<li>${item}</li>`).join('');
+      document.getElementById('questions-list').innerHTML = questions.map(item => `<li>${item}</li>`).join('');
+      document.getElementById('dos-list').innerHTML = dos.map(item => `<li>${item}</li>`).join('');
+      document.getElementById('donts-list').innerHTML = donts.map(item => `<li>${item}</li>`).join('');
+    }
+
+    function generateBuyerMessage() {
+      const message = document.getElementById('message-input').value.trim();
+      const context = document.getElementById('context-input').value.trim();
+      const profile = executiveProfiles[activeRole];
+
+      if (!message) {
+        document.getElementById('result-output').textContent = 'Please paste the solution-focused message you want to reframe.';
+        return;
+      }
+
+      const normalized = message.toLowerCase();
+      const contextualSentence = context ? `Given the current context—${context}—` : '';
+
+      const roleOpeners = {
+        ceo: `${contextualSentence}we can help your organization pursue stronger strategic performance by aligning this capability with the priorities that matter most to leadership: enterprise growth, operational resilience, and competitive differentiation. The key is less about the technology itself and more about the business outcomes it enables for your team and your market position.`,
+        cfo: `${contextualSentence}the real question is not whether the platform has features, but whether it creates measurable financial value. We help finance leaders improve margin, create clarity around performance, and reduce unnecessary cost while supporting stronger operational execution.`,
+        coo: `${contextualSentence}the value is in how the solution reduces friction across operations and improves execution at scale. We help teams move faster, remove manual work, and create more consistent performance across key processes and workflows.`,
+        cno: `${contextualSentence}the value is in reducing clinical burden while improving quality and care experience. This helps your team spend more time on patient-centered care and less time on process friction that slows teams down.`,
+        chro: `${contextualSentence}the value is in how the solution supports workforce experience, reduces administrative burden, and strengthens retention and engagement across the organization. It gives leaders and employees more time to focus on meaningful work.`,
+        cxo: `${contextualSentence}the most important opportunity is improving the experience patients and members have throughout their journey. This solution helps create more consistent, personalized, accessible engagement that builds trust and strengthens loyalty.`,
+        cmo: `${contextualSentence}the value is in how this capability strengthens patient acquisition, engagement, and brand differentiation in a competitive market. It gives your team more clarity into what is driving growth and how to optimize the patient journey.`,
+        supply: `${contextualSentence}the value is in improving continuity, visibility, and cost control across the supply chain. This helps your team reduce avoidable friction, support stronger vendor performance, and improve inventory and procurement outcomes.`
+      };
+
+      const finalMessage = `“${roleOpeners[activeRole]} ${normalized.includes('cost') || normalized.includes('reduction') ? 'For a leader focused on performance, the conversation is about controlling cost without sacrificing service or quality.' : 'The conversation is about business impact, not simply technology capability.'}”`;
+
+      document.getElementById('result-output').textContent = finalMessage;
+    }
+
+    function copyResult() {
+      const text = document.getElementById('result-output').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-btn');
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = original; }, 1300);
+      }).catch(() => {
+        alert('Copy failed. You can still highlight and copy the text manually.');
+      });
+    }
+
+    function resetForm() {
+      document.getElementById('message-input').value = '';
+      document.getElementById('context-input').value = '';
+      document.getElementById('result-output').textContent = 'Your re-framed executive message will appear here.';
+      setActiveRole('ceo');
+    }
+
+    document.querySelectorAll('.role-btn').forEach((btn) => {
+      btn.addEventListener('click', () => setActiveRole(btn.dataset.role));
+    });
+
+    document.getElementById('transform-btn').addEventListener('click', generateBuyerMessage);
+    document.getElementById('copy-btn').addEventListener('click', copyResult);
+    document.getElementById('reset-btn').addEventListener('click', resetForm);
+    document.getElementById('load-sample-btn').addEventListener('click', () => {
+      const sample = sampleMessages[activeRole];
+      document.getElementById('message-input').value = sample;
+      generateBuyerMessage();
+    });
+
+    document.querySelectorAll('.tab-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn === button));
+        const selected = button.dataset.tab;
+        document.querySelectorAll('.tab-panel').forEach(panel => {
+          panel.classList.toggle('active', panel.id === `${selected}-panel`);
         });
+      });
+    });
 
-        function showRoleProfile(role) {
-            const profile = executiveProfiles[role];
-            document.getElementById("profile-title").textContent = profile.title;
-            document.getElementById("primary-focus").textContent = profile.focus;
-            document.getElementById("pain-point").textContent = profile.painPoint;
-            document.getElementById("success-metric").textContent = profile.successMetric;
-            document.getElementById("role-profile").style.display = "block";
-        }
-
-        function transformMessage() {
-            const solutionMessage = document.getElementById("solution-message").value.trim();
-            const businessContext = document.getElementById("business-context").value.trim();
-
-            if (!solutionMessage) {
-                alert("Please enter your solution-focused message to transform.");
-                return;
-            }
-
-            const profile = executiveProfiles[currentRole];
-            const buyerMessage = generateBuyerMessage(solutionMessage, currentRole, profile, businessContext);
-            const talkingPoints = generateTalkingPoints(solutionMessage, currentRole, profile);
-            const questions = generateDiscoveryQuestions(currentRole, profile);
-            const { dos, donts } = generateDosDonts(currentRole, profile);
-
-            displayOutput(buyerMessage, talkingPoints, questions, dos, donts);
-        }
-
-        function generateBuyerMessage(solution, role, profile, context) {
-            const contextLine = context ? `Given that ${context.toLowerCase()}, ` : "";
-            
-            const templates = {
-                ceo: `We're working with leading healthcare systems to ${solution.toLowerCase().includes('cost') ? 'unlock operational efficiency and accelerated growth' : 'build competitive advantage in a shifting market'}. ${contextLine}our solution helps enterprise organizations like yours achieve strategic objectives through [specific outcome]. Would it make sense to explore how we're helping peer organizations address [key challenge]?`,
-                cfo: `We help finance leaders like you improve financial performance. Many CFOs we work with struggle with ${profile.painPoint.split(',')[0].toLowerCase()}. ${contextLine}our approach typically delivers 20-30% improvement in cost structure. How are you currently managing this?`,
-                coo: `Operational leaders tell us their biggest opportunity is improving execution velocity and resource utilization. ${contextLine}our platform helps teams like yours eliminate bottlenecks and scale efficiently. What does an ideal outcome look like for your operations team?`,
-                cno: `Nursing leaders face immense pressure around care quality and team retention. ${contextLine}we've helped organizations like yours reduce clinician burden so your best people stay and thrive. What's your top priority for your nursing team right now?`,
-                chro: `Talent leaders need to focus on what matters most—culture, engagement, and retention. ${contextLine}many of our clients use our platform to reduce administrative friction so leaders can focus on people. What's keeping your team up at night regarding talent?`,
-                cxo: `Experience leaders are creating differentiated competitive advantage through patient engagement. ${contextLine}leading organizations use our solution to deliver consistent, personalized experiences at scale. How is your organization thinking about experience transformation?`,
-                cmo: `Market leaders are leveraging data to drive patient acquisition and loyalty. ${contextLine}our solution gives your team visibility into what's working so you can scale it. What's your priority for market differentiation?`,
-                supply: `Supply chain leaders are under pressure to reduce costs while maintaining reliability. ${contextLine}we help procurement teams optimize vendor partnerships and inventory management. What would a 10-15% cost reduction mean for your bottom line?`
-            };
-
-            return templates[role] || templates.ceo;
-        }
-
-        function generateTalkingPoints(solution, role, profile) {
-            const points = {
-                ceo: [
-                    `📊 Strategic Advantage: ${solution.includes('cost') ? 'Reduces operational drag' : 'Drives competitive differentiation'} so you can invest in growth`,
-                    `📈 Performance Catalyst: Enables data-driven decision-making at enterprise scale`,
-                    `🎯 Board-Ready Outcomes: Clear ROI and market positioning storytelling for shareholder communication`,
-                    `🌟 Talent Magnet: Positions your organization as an innovation leader to attract top talent`
-                ],
-                cfo: [
-                    `💰 Direct Financial Impact: Quantifiable cost reduction or revenue improvement`,
-                    `📊 Predictable Outcomes: Proven ROI based on peer benchmarking`,
-                    `🔍 Transparent Economics: Clear visibility into cost per unit and performance metrics`,
-                    `📋 Risk Mitigation: Built-in compliance and audit trail capabilities`
-                ],
-                coo: [
-                    `⚡ Efficiency First: Measurable improvement in throughput and utilization`,
-                    `🔄 Process Clarity: Eliminates bottlenecks and streamlines workflow`,
-                    `📊 Real-Time Visibility: Data-driven decisions for continuous improvement`,
-                    `👥 Team Enablement: Gives frontline staff tools to work smarter, not harder`
-                ],
-                cno: [
-                    `💪 Clinician-Focused: Reduces documentation burden and non-care activities`,
-                    `🏥 Quality Outcomes: Supports clinical excellence and patient safety`,
-                    `👥 Retention Impact: Improves nursing satisfaction and reduces burnout`,
-                    `📈 Evidence-Based: Supported by clinical outcomes data and peer results`
-                ],
-                chro: [
-                    `👥 Talent Retention: Directly impacts hiring costs and team stability`,
-                    `😊 Engagement & Culture: Improves employee experience and satisfaction`,
-                    `🎓 Development Focus: Frees HR leadership to invest in growth and training`,
-                    `📊 Measurable Impact: Clear metrics on retention, engagement, and cost-per-hire`
-                ],
-                cxo: [
-                    `🌟 Experience Consistency: Delivers seamless engagement across touchpoints`,
-                    `😊 Satisfaction Metrics: Drives NPS and HCAHPS scores`,
-                    `👤 Personalization at Scale: Makes every patient feel valued`,
-                    `📈 Loyalty Building: Transforms one-time patients into lifelong advocates`
-                ],
-                cmo: [
-                    `📢 Market Differentiation: Positions your brand distinctly against competitors`,
-                    `��� Acquisition Efficiency: Lowers cost per patient and improves conversion`,
-                    `🎯 Reputation Building: Amplifies positive patient stories and outcomes`,
-                    `📊 Campaign Effectiveness: Data to optimize marketing ROI`
-                ],
-                supply: [
-                    `💰 Vendor Optimization: Reduces cost per unit through smarter procurement`,
-                    `🔄 Supply Reliability: Improves inventory turns and reduces waste`,
-                    `📊 Visibility & Control: Real-time insights into supply chain performance`,
-                    `🤝 Relationship Leverage: Strengthens vendor negotiations with better data`
-                ]
-            };
-
-            return points[role] || points.ceo;
-        }
-
-        function generateDiscoveryQuestions(role, profile) {
-            const questions = {
-                ceo: [
-                    "How are you thinking about competitive differentiation in your market right now?",
-                    "What are your top 3 strategic priorities for the next 18 months?",
-                    "What does successful execution look like for your leadership team this year?"
-                ],
-                cfo: [
-                    "Where do you see the biggest opportunity for cost improvement in your organization?",
-                    "How are you currently tracking financial performance against budget?",
-                    "What's your priority—revenue growth, cost reduction, or both?"
-                ],
-                coo: [
-                    "What operational metric would have the biggest impact on your business if you improved it by 15%?",
-                    "Where are you experiencing the most friction in your workflows today?",
-                    "How do you currently measure operational efficiency across your teams?"
-                ],
-                cno: [
-                    "What's your top concern regarding your nursing team right now?",
-                    "How are you tracking nurse satisfaction and retention metrics?",
-                    "What would reduce clinical burden on your frontline staff?"
-                ],
-                chro: [
-                    "What's driving your biggest talent challenges right now?",
-                    "How do you measure employee engagement and retention?",
-                    "What would make your team more effective in supporting the organization?"
-                ],
-                cxo: [
-                    "How do you currently measure patient experience across your organization?",
-                    "What's your biggest opportunity to improve patient satisfaction?",
-                    "How do you want patients to feel about their experience with your organization?"
-                ],
-                cmo: [
-                    "How are you approaching patient acquisition in this market environment?",
-                    "What's your brand differentiation strategy?",
-                    "What metrics matter most for your marketing effectiveness?"
-                ],
-                supply: [
-                    "Where do you see the biggest cost savings opportunity in your supply chain?",
-                    "How are you currently managing vendor relationships and performance?",
-                    "What's impacting your procurement efficiency right now?"
-                ]
-            };
-
-            return questions[role] || questions.ceo;
-        }
-
-        function generateDosDonts(role, profile) {
-            const guidance = {
-                ceo: {
-                    dos: [
-                        "Connect to their strategic vision and competitive positioning",
-                        "Lead with business outcomes, not features",
-                        "Speak to enterprise-scale impact and scalability",
-                        "Acknowledge their complexity and competitive pressures"
-                    ],
-                    donts: [
-                        "Dive into implementation details or technical jargon",
-                        "Focus solely on one department—think enterprise impact",
-                        "Assume they care about cost alone—position for growth",
-                        "Make it sound like a quick fix—acknowledge transformation timeline"
-                    ]
-                },
-                cfo: {
-                    dos: [
-                        "Quantify everything—show concrete ROI metrics",
-                        "Reference peer benchmarks and comparative data",
-                        "Clarify financial model and cost structure",
-                        "Explain how this improves cash flow or margin"
-                    ],
-                    donts: [
-                        "Use vague language like 'better' or 'faster' without data",
-                        "Promise results that can't be measured",
-                        "Ignore their risk management concerns",
-                        "Lead with features instead of financial outcomes"
-                    ]
-                },
-                coo: {
-                    dos: [
-                        "Focus on measurable operational improvements",
-                        "Address specific workflow bottlenecks they experience",
-                        "Speak to team enablement and tool adoption",
-                        "Discuss scalability and capacity implications"
-                    ],
-                    donts: [
-                        "Overcomplicate the implementation approach",
-                        "Ignore change management and training needs",
-                        "Focus only on efficiency—include quality outcomes",
-                        "Assume one-size-fits-all solution"
-                    ]
-                },
-                cno: {
-                    dos: [
-                        "Emphasize clinician burden reduction and workload",
-                        "Connect to clinical quality and patient safety outcomes",
-                        "Show how it supports your best nurses in staying",
-                        "Speak to care team collaboration improvements"
-                    ],
-                    donts: [
-                        "Present as a 'management tool' against nursing autonomy",
-                        "Focus only on administrative efficiency",
-                        "Ignore input from frontline nurses on design",
-                        "Oversell technology benefits without clinical validation"
-                    ]
-                },
-                chro: {
-                    dos: [
-                        "Connect to talent retention and engagement",
-                        "Show impact on employee experience and satisfaction",
-                        "Address burnout and workforce well-being",
-                        "Frame as enabling HR to focus on strategic initiatives"
-                    ],
-                    donts: [
-                        "Lead with cost reduction—focus on capability and culture",
-                        "Ignore workforce diversity and inclusion impact",
-                        "Position as replacement for human connection",
-                        "Make it sound like surveillance or control"
-                    ]
-                },
-                cxo: {
-                    dos: [
-                        "Emphasize patient-centric experience and personalization",
-                        "Reference satisfaction and loyalty metrics",
-                        "Show how it delivers consistent experiences at scale",
-                        "Connect to omnichannel patient engagement"
-                    ],
-                    donts: [
-                        "Focus only on cost savings",
-                        "Ignore patient feedback and sentiment",
-                        "Present as technology-first rather than patient-first",
-                        "Forget about operational team adoption"
-                    ]
-                },
-                cmo: {
-                    dos: [
-                        "Show market differentiation and competitive advantage",
-                        "Provide data on patient acquisition and engagement",
-                        "Connect to brand positioning and market perception",
-                        "Demonstrate campaign effectiveness and ROI"
-                    ],
-                    donts: [
-                        "Lead with operational efficiency alone",
-                        "Ignore competitive intelligence and market trends",
-                        "Focus only on volume—discuss quality of leads",
-                        "Separate marketing from patient outcomes"
-                    ]
-                },
-                supply: {
-                    dos: [
-                        "Quantify cost savings and procurement efficiency gains",
-                        "Show vendor performance improvements and cost per unit",
-                        "Address supply reliability and inventory optimization",
-                        "Demonstrate competitive leverage and negotiation insights"
-                    ],
-                    donts: [
-                        "Focus on generic 'efficiency' without financial specifics",
-                        "Ignore vendor relationship and partnership implications",
-                        "Present as technology-first rather than outcomes-first",
-                        "Forget the compliance and quality assurance angle"
-                    ]
-                ]
-            };
-
-            return guidance[role] || guidance.ceo;
-        }
-
-        function displayOutput(message, points, questions, dos, donts) {
-            document.getElementById("buyer-opening").textContent = message;
-            document.getElementById("output-panel").classList.add("active");
-
-            const pointsList = document.getElementById("talking-points-list");
-            pointsList.innerHTML = points.map(p => `<li>${p}</li>`).join("");
-
-            const questionsList = document.getElementById("questions-list");
-            questionsList.innerHTML = questions.map(q => `<li><strong>Q:</strong> ${q}</li>`).join("");
-
-            const dosList = document.getElementById("dos-list");
-            dosList.innerHTML = dos.map(d => `<li>${d}</li>`).join("");
-            dosList.parentElement.style.borderLeftColor = "var(--success)";
-
-            const dontsList = document.getElementById("donts-list");
-            dontsList.innerHTML = donts.map(d => `<li>${d}</li>`).join("");
-            dontsList.parentElement.style.borderLeftColor = "var(--danger)";
-
-            document.querySelector(".tab.active").click();
-        }
-
-        function copyToClipboard(elementId) {
-            const text = document.getElementById(elementId).textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                showToast("Copied to clipboard!");
-            });
-        }
-
-        function showToast(message) {
-            const toast = document.createElement("div");
-            toast.className = "toast";
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-
-        function switchTab(tabName) {
-            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-            document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
-
-            event.target.classList.add("active");
-            document.getElementById(tabName).classList.add("active");
-        }
-
-        function loadScenario(scenarioKey) {
-            const scenario = scenarioTemplates[scenarioKey];
-            document.getElementById("solution-message").value = scenario.message;
-
-            document.querySelectorAll(".role-btn").forEach(b => {
-                b.classList.remove("active");
-                if (b.dataset.role === scenario.role) b.classList.add("active");
-            });
-
-            currentRole = scenario.role;
-            showRoleProfile(currentRole);
-            transformMessage();
-
-            showToast(`Scenario loaded: ${scenario.title}`);
-        }
-
-        // Initialize on load
-        window.addEventListener("load", () => {
-            showRoleProfile("ceo");
-        });
-    </script>
+    setActiveRole('ceo');
+  </script>
 </body>
 </html>

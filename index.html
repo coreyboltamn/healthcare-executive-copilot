@@ -180,6 +180,28 @@
       padding: 34px 0 14px;
     }
 
+    .info-section {
+      margin-top: 28px;
+      padding: 42px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(246, 249, 252, 0.98));
+      border: 1px solid rgba(17, 24, 39, 0.05);
+      border-radius: 28px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .info-section h2 {
+      margin: 0 0 16px 0;
+      font-size: clamp(1.5rem, 2vw, 2rem);
+      color: var(--slate-900);
+    }
+
+    .info-section p {
+      margin: 0;
+      font-size: 16px;
+      color: var(--slate-700);
+      line-height: 1.8;
+    }
+
     .coach-shell {
       margin-top: 28px;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(246, 249, 252, 0.98));
@@ -571,6 +593,10 @@
       .nav-link {
         font-size: 11px;
       }
+
+      .info-section {
+        padding: 28px;
+      }
     }
 
     @media (max-width: 768px) {
@@ -629,6 +655,18 @@
         padding: 9px 14px;
         font-size: 12px;
       }
+
+      .info-section {
+        padding: 20px;
+      }
+
+      .info-section h2 {
+        font-size: 1.3rem;
+      }
+
+      .info-section p {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -659,6 +697,19 @@
 
   <main class="section">
     <div class="container">
+      <!-- HOW IT WORKS SECTION -->
+      <div class="info-section" id="how-it-works">
+        <h2>How It Works</h2>
+        <p>Learn how to select an executive role, add your message and context, and generate tailored outreach.</p>
+      </div>
+
+      <!-- EXECUTIVE ROLES SECTION -->
+      <div class="info-section" id="executive-roles">
+        <h2>Executive Roles</h2>
+        <p>Choose the healthcare leader you want to engage so the tool can tailor priorities, pain points, and questions.</p>
+      </div>
+
+      <!-- OUTREACH BUILDER SECTION -->
       <div class="coach-shell" id="outreach-builder">
         <div class="coach-head">
           <h1>Healthcare Executive Engagement Coach</h1>
@@ -735,6 +786,12 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- CONVERSATION GUIDE SECTION -->
+      <div class="info-section" id="conversation-guide">
+        <h2>Conversation Guide</h2>
+        <p>Review talking points, discovery questions, and practical do's and don'ts for the conversation.</p>
       </div>
     </div>
   </main>

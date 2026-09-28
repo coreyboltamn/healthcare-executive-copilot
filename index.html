@@ -1,28 +1,938 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Healthcare Executive Engagement Copilot</title>
-<style>
-:root{--navy:#0a2540;--blue:#1267b1;--cyan:#48c8f4;--ink:#172638;--muted:#607089;--pale:#f3f8fc;--line:#dce6ef;--shadow:0 14px 35px #0a25401a}*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--ink);background:linear-gradient(#eef7ff,#f8fafc 30%)}a{text-decoration:none}.container{width:min(1180px,calc(100% - 32px));margin:auto}.topbar{position:sticky;top:0;z-index:5;background:#ffffffed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;gap:12px;align-items:center;font-weight:800}.mark{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;color:white;font-size:23px;background:linear-gradient(135deg,#1674cc,var(--cyan));box-shadow:var(--shadow)}.brand small{display:block;color:var(--muted);font-size:11px;letter-spacing:.13em;text-transform:uppercase;margin-top:3px}.visit,.primary{border:0;border-radius:999px;padding:12px 19px;background:linear-gradient(135deg,var(--blue),#2c8cff);color:#fff;font-weight:800;box-shadow:var(--shadow);cursor:pointer}.section{padding:42px 0}.shell{background:#ffffffed;border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);overflow:hidden}.head{padding:25px 30px;background:linear-gradient(135deg,#edf7ff,#f7fbff);border-bottom:1px solid var(--line)}h1,h2,h3{margin-top:0}.head h1{font-size:clamp(1.7rem,3vw,2.3rem);margin-bottom:5px}.head p{margin:0;color:var(--muted)}.body{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line)}.panel{padding:28px;background:#fff}.label{display:block;margin:0 0 8px;font-size:13px;font-weight:800;color:var(--muted)}.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:20px}.role{padding:12px 8px;border:1px solid var(--line);background:#fff;border-radius:11px;color:var(--ink);font-weight:800;cursor:pointer}.role.active{background:linear-gradient(135deg,var(--blue),#2c8cff);color:#fff;border-color:transparent}.group{margin-bottom:16px}textarea{width:100%;min-height:120px;resize:vertical;border:1px solid var(--line);border-radius:11px;padding:13px;font:inherit;color:var(--ink)}textarea:focus{outline:0;border-color:var(--blue);box-shadow:0 0 0 4px #1267b11c}.actions{display:flex;gap:10px;flex-wrap:wrap}.secondary{border:1px solid var(--line);background:#fff;border-radius:11px;padding:11px 16px;font-weight:800;cursor:pointer}.out{padding:28px;background:#fff;max-height:85vh;overflow:auto}.profile{background:var(--pale);border:1px solid var(--line);padding:16px;border-radius:15px}.profile h3{font-size:17px;margin-bottom:5px}.profile p{color:var(--muted);margin:0}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px}.stat small{display:block;color:var(--muted);text-transform:uppercase;font-size:10px;font-weight:800}.stat b{font-size:13px}.card{padding:17px;border-radius:16px;border:1px solid #1267b126;background:linear-gradient(180deg,#f1f8ff,#fff);margin-top:17px}.tag{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);font-weight:900}.subject{margin-top:9px;padding:10px;border-left:3px solid var(--blue);background:#0a25400b;border-radius:7px;font-weight:800}.copy{margin-top:12px;border:0;border-radius:9px;background:var(--blue);color:white;padding:9px 13px;font-weight:800;cursor:pointer}.text{white-space:pre-wrap;line-height:1.75;color:#2f3d52;font-size:14px}.voice{font-style:italic;background:#fffaf0;border-color:#f0b42955}.tabs{display:flex;gap:7px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-top:20px}.tab{border:0;background:transparent;padding:9px 10px;border-radius:8px;color:var(--muted);font-weight:800;cursor:pointer}.tab.active{background:#1267b115;color:var(--blue)}.tabcontent{display:none}.tabcontent.active{display:block}.list{line-height:1.8;padding-left:20px;color:#2f3d52;font-size:14px}.footer{text-align:center;color:var(--muted);padding:25px}.hidden{display:none}@media(max-width:850px){.body{grid-template-columns:1fr}.out{max-height:none}.nav{min-height:68px}.brand{font-size:14px}}@media(max-width:480px){.roles{grid-template-columns:1fr 1fr}.panel,.out{padding:19px}.visit{font-size:12px;padding:10px 12px}.brand small{font-size:9px}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Healthcare Executive Engagement Copilot</title>
+  <meta name="description" content="A communication coach for healthcare sales executives preparing buyer-centric conversations with healthcare leaders." />
+  <style>
+    :root {
+      --blue-900: #0a2540;
+      --blue-800: #123d66;
+      --blue-700: #0d5ea8;
+      --blue-600: #1b75d0;
+      --blue-500: #2a8cff;
+      --cyan-400: #54d3ff;
+      --teal-500: #1fb8a6;
+      --orange-500: #ff7b54;
+      --red-500: #e85a5a;
+      --slate-50: #f8fafc;
+      --slate-100: #eef3f8;
+      --slate-200: #dfe7f0;
+      --slate-300: #ccd7e3;
+      --slate-500: #607089;
+      --slate-700: #2f3d52;
+      --slate-800: #1d2b3a;
+      --slate-900: #0f1b2a;
+      --success: #17a673;
+      --warning: #f0b429;
+      --shadow-soft: 0 12px 30px rgba(13, 32, 51, 0.10);
+      --shadow-strong: 0 18px 38px rgba(13, 32, 51, 0.15);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 18%, #f5f7fb 100%);
+      color: var(--slate-800);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(15, 27, 42, 0.08);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 74px;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      color: var(--slate-900);
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--blue-600), var(--cyan-400));
+      border-radius: 12px;
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .brand-text small {
+      display: block;
+      color: var(--slate-500);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 3px;
+      font-weight: 700;
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+      box-shadow: var(--shadow-soft);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+    }
+
+    .footer {
+      padding: 22px 0 36px;
+      color: var(--slate-500);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    .section {
+      padding: 34px 0 14px;
+    }
+
+    .coach-shell {
+      margin-top: 28px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(246, 249, 252, 0.98));
+      border: 1px solid rgba(17, 24, 39, 0.05);
+      border-radius: 28px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .coach-head {
+      padding: 32px 42px;
+      background: linear-gradient(135deg, rgba(237, 247, 255, 0.8), rgba(247, 251, 255, 0.6));
+      border-bottom: 1px solid rgba(17, 24, 39, 0.05);
+    }
+
+    .coach-head h1 {
+      margin: 0 0 8px 0;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      color: var(--slate-900);
+    }
+
+    .coach-head p {
+      margin: 0;
+      color: var(--slate-500);
+      font-size: 1rem;
+    }
+
+    .coach-body {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 2px;
+      background: rgba(17, 24, 39, 0.04);
+      min-height: 600px;
+    }
+
+    .coach-input {
+      padding: 32px 42px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .coach-output {
+      padding: 32px 42px;
+      background: white;
+      overflow-y: auto;
+      max-height: 85vh;
+    }
+
+    .role-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .role-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--slate-500);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .role-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .role-btn {
+      padding: 13px 10px;
+      border: 1px solid var(--slate-200);
+      background: white;
+      border-radius: 14px;
+      color: var(--slate-800);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .role-btn:hover {
+      border-color: var(--blue-600);
+      background: rgba(27, 117, 208, 0.02);
+    }
+
+    .role-btn.active {
+      background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
+      color: white;
+      border-color: transparent;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--slate-500);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .input-field {
+      padding: 13px 16px;
+      border: 1px solid var(--slate-200);
+      border-radius: 14px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--slate-800);
+      resize: vertical;
+      min-height: 110px;
+      transition: all 0.2s ease;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--blue-600);
+      box-shadow: 0 0 0 4px rgba(27, 117, 208, 0.1);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      flex: 1;
+      min-width: 140px;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .btn-secondary {
+      padding: 14px 18px;
+      border: 1px solid var(--slate-200);
+      border-radius: 14px;
+      background: white;
+      color: var(--slate-800);
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--slate-300);
+      background: var(--slate-50);
+    }
+
+    .output-card {
+      margin-bottom: 28px;
+      padding: 24px;
+      background: linear-gradient(135deg, rgba(237, 247, 255, 0.5), rgba(246, 249, 252, 0.8));
+      border: 1px solid rgba(27, 117, 208, 0.1);
+      border-radius: 18px;
+    }
+
+    .output-card h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      color: var(--slate-900);
+    }
+
+    .output-card p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--slate-600);
+      line-height: 1.6;
+    }
+
+    .stat-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .stat-item {
+      padding: 12px;
+      background: white;
+      border: 1px solid rgba(17, 24, 39, 0.05);
+      border-radius: 12px;
+    }
+
+    .stat-item small {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--slate-500);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+
+    .stat-item b {
+      display: block;
+      font-size: 14px;
+      color: var(--slate-900);
+    }
+
+    .message-card {
+      margin-top: 20px;
+      padding: 18px;
+      background: white;
+      border: 1px solid rgba(27, 117, 208, 0.15);
+      border-radius: 14px;
+      display: none;
+    }
+
+    .message-card.show {
+      display: block;
+    }
+
+    .message-card.voicemail {
+      background: rgba(255, 160, 96, 0.06);
+      border-color: rgba(255, 123, 84, 0.2);
+    }
+
+    .message-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--blue-600);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+    }
+
+    .message-tag.voicemail {
+      color: var(--orange-500);
+    }
+
+    .message-subject {
+      padding: 12px 14px;
+      background: rgba(13, 94, 168, 0.08);
+      border-left: 3px solid var(--blue-600);
+      border-radius: 8px;
+      font-weight: 700;
+      color: var(--slate-800);
+      font-size: 13px;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    .message-subject.show {
+      display: block;
+    }
+
+    .message-text {
+      font-size: 14px;
+      color: var(--slate-700);
+      line-height: 1.8;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      margin-bottom: 14px;
+    }
+
+    .copy-btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 10px;
+      background: var(--blue-600);
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      background: var(--blue-700);
+      transform: translateY(-1px);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+      border-bottom: 1px solid var(--slate-200);
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 11px 12px;
+      border: none;
+      background: transparent;
+      border-radius: 10px 10px 0 0;
+      color: var(--slate-500);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-transform: capitalize;
+    }
+
+    .tab-btn:hover {
+      background: rgba(27, 117, 208, 0.08);
+      color: var(--blue-600);
+    }
+
+    .tab-btn.active {
+      background: rgba(27, 117, 208, 0.1);
+      color: var(--blue-600);
+      border-bottom: 2px solid var(--blue-600);
+    }
+
+    .tab-content {
+      display: none;
+      padding-top: 16px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--slate-700);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .list li {
+      margin-bottom: 8px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 950px) {
+      .coach-body {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .coach-input {
+        padding: 24px 28px;
+      }
+
+      .coach-output {
+        padding: 24px 28px;
+        max-height: none;
+      }
+
+      .role-buttons {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .coach-head {
+        padding: 24px 20px;
+      }
+
+      .coach-input,
+      .coach-output {
+        padding: 20px;
+      }
+
+      .coach-head h1 {
+        font-size: 1.5rem;
+      }
+
+      .role-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .btn-primary {
+        min-width: auto;
+      }
+
+      .stat-group {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<header class="topbar"><div class="container nav"><div class="brand"><div class="mark">✚</div><div>Healthcare Executive Copilot<small>Dynamic Outreach Messaging</small></div></div><a class="visit" href="https://www.amnhealthcare.com/" target="_blank" rel="noopener noreferrer">Visit AMN Healthcare</a></div></header>
-<main class="section"><div class="container"><div class="shell"><div class="head"><h1>Healthcare Executive Engagement Coach</h1><p>Turn solution-focused language into buyer-centric outreach for healthcare leaders.</p></div><div class="body"><section class="panel"><h3>1. Pick the executive</h3><div class="roles"><button class="role active" data-role="ceo">CEO</button><button class="role" data-role="cfo">CFO</button><button class="role" data-role="coo">COO</button><button class="role" data-role="cno">CNO</button><button class="role" data-role="chro">CHRO</button><button class="role" data-role="cxo">CXO</button><button class="role" data-role="cmo">Chief Medical Officer</button><button class="role" data-role="supply">Supply Chain Leader</button><button class="role" data-role="language">Language Access Leader</button></div><div class="group"><label class="label" for="message">Your current message</label><textarea id="message" placeholder="Example: Our platform reduces operational costs through workflow automation and real-time analytics."></textarea></div><div class="group"><label class="label" for="context">Context or situation (optional)</label><textarea id="context" placeholder="Example: The health system is focused on margin pressure and patient access."></textarea></div><div class="actions"><button class="primary" id="generate">Generate Outreach</button><button class="secondary" id="reset">Reset</button></div></section><section class="out"><div class="profile"><h3 id="title">Chief Executive Officer (CEO)</h3><p id="description">Focus on strategic direction, performance, and competitive differentiation.</p><div class="stats"><div class="stat"><small>Primary focus</small><b id="focus">Organizational strategy</b></div><div class="stat"><small>Pain point</small><b id="pain">Enterprise growth</b></div></div></div><div class="card hidden" id="emailCard"><div class="tag">📧 Email suggestion</div><div class="subject" id="subject"></div><div class="text" id="email"></div><button class="copy" data-copy="email">Copy Email</button></div><div class="card voice hidden" id="voiceCard"><div class="tag">📞 Recommended voicemail</div><div class="text" id="voicemail"></div><button class="copy" data-copy="voicemail">Copy Voicemail</button></div><div class="tabs"><button class="tab active" data-tab="points">Talking points</button><button class="tab" data-tab="questions">Discovery questions</button><button class="tab" data-tab="guidance">Do's & don'ts</button></div><div class="tabcontent active" id="points"><ul class="list" id="pointList"></ul></div><div class="tabcontent" id="questions"><ul class="list" id="questionList"></ul></div><div class="tabcontent" id="guidance"><ul class="list" id="dosList"></ul><ul class="list" id="dontList"></ul></div></section></div></div></div></main><footer class="footer">Healthcare Executive Engagement Copilot • Dynamic outreach messaging for healthcare sales teams</footer>
-<script>
-const P={
-ceo:['Chief Executive Officer (CEO)','Strategic direction, performance, and competitive differentiation.','Organizational strategy','Enterprise growth',['Tie value to enterprise growth and market leadership.','Connect to board-level outcomes and strategic priorities.'],['What are your top strategic priorities for the next 12 to 18 months?','Where is the greatest strategic or operating challenge?']],
-cfo:['Chief Financial Officer (CFO)','Financial efficiency, risk, cost structure, and ROI.','Financial performance & ROI','Margin pressure and cost transparency',['Quantify financial impact and ROI.','Connect value to margin, cash flow, and risk.'],['Where is the greatest opportunity to improve financial performance?','How do you measure ROI on strategic initiatives?']],
-coo:['Chief Operating Officer (COO)','Execution, throughput, workflow optimization, and consistency.','Operational excellence','Workflow friction and productivity',['Focus on throughput, capacity, and process consistency.','Address adoption and operational change.'],['Where do teams experience the most workflow friction?','Which operating metric would have the greatest impact if improved?']],
-cno:['Chief Nursing Officer (CNO)','Patient safety, nurse workload, quality, and care team performance.','Clinical quality & nursing excellence','Burnout and staffing pressure',['Reduce frontline burden and connect to quality.','Show impact on retention and care-team effectiveness.'],['What is your greatest concern around care-team burden?','What would help nurses spend more time on patient care?']],
-chro:['Chief Human Resources Officer (CHRO)','Workforce engagement, retention, culture, and talent strategy.','Workforce experience','Retention and burnout',['Connect to engagement, retention, and employee experience.','Position the solution as enabling higher-value work.'],['What is your biggest workforce challenge today?','How do you measure engagement and retention?']],
-cxo:['Chief Experience Officer (CXO)','Patient-centered experience, satisfaction, and accessibility.','Patient experience','Experience inconsistency and patient friction',['Keep the patient at the center.','Connect to satisfaction, loyalty, and personalization.'],['Where does the patient journey feel most fragmented?','What would create the greatest improvement in patient experience?']],
-cmo:['Chief Medical Officer','Clinical strategy, physician alignment, quality, and outcomes.','Medical leadership & clinical outcomes','Clinical variation and physician alignment',['Connect to clinical outcomes, evidence, and physician engagement.','Respect clinical governance and patient safety.'],['Which clinical outcomes or quality priorities are most important right now?','Where could physician alignment improve care delivery?']],
-supply:['Supply Chain Leader','Procurement efficiency, inventory, reliability, and vendor performance.','Supply chain optimization','Cost, inventory, and continuity',['Quantify savings and reliability impact.','Connect to procurement discipline and continuity.'],['Where are the greatest cost or reliability issues?','How do you track supplier performance and inventory risk?']],
-language:['Language Access Leader','Equitable communication, interpretation, and patient access.','Language access & health equity','Communication barriers and unequal access',['Connect to equitable care, patient understanding, and compliance.','Show how access improves trust and care coordination.'],['Where do language barriers most affect the patient journey?','How do you measure the quality and reach of language access services?']]
-};let role='ceo';
-function render(){let p=P[role];title.textContent=p[0];description.textContent=p[1];focus.textContent=p[2];pain.textContent=p[3];pointList.innerHTML=p[4].map(x=>`<li>${x}</li>`).join('');questionList.innerHTML=p[5].map(x=>`<li>${x}</li>`).join('');dosList.innerHTML=`<li>Lead with outcomes relevant to the ${p[0]}.</li><li>Use specific evidence and measurable impact.</li>`;dontList.innerHTML=`<li>Avoid feature-heavy language without buyer context.</li><li>Do not assume the executive's priorities without discovery.</li>`}
-function generate(){let m=message.value.trim(),c=context.value.trim();if(!m){alert('Please paste your current message first.');return}let p=P[role],open=`Hi [Name],\n\nI’m reaching out because we help healthcare organizations address ${p[3].toLowerCase()} while advancing ${p[2].toLowerCase()}. ${m} ${c?`Given your context—${c}—`:''}I’d welcome a brief conversation to explore whether this could support your priorities.\n\nWould you be open to 15 minutes in the next two weeks?\n\nBest regards,\n[Your Name]`;subject.textContent='Subject: Exploring '+p[2].toLowerCase()+' priorities';email.textContent=open;voicemail.textContent=`Hi [Name], this is [Your Name] with [Company]. We help healthcare leaders address ${p[3].toLowerCase()} and improve ${p[2].toLowerCase()}. I’d like to explore whether we could support [Organization]. My number is [Your Phone]. I’ll follow up by email. Thanks.`;emailCard.classList.remove('hidden');voiceCard.classList.remove('hidden')}
-document.querySelectorAll('.role').forEach(b=>b.onclick=()=>{role=b.dataset.role;document.querySelectorAll('.role').forEach(x=>x.classList.toggle('active',x===b));render()});generate.onclick=generate;reset.onclick=()=>{message.value='';context.value='';emailCard.classList.add('hidden');voiceCard.classList.add('hidden');role='ceo';document.querySelectorAll('.role').forEach(x=>x.classList.toggle('active',x.dataset.role==='ceo'));render()};document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tabcontent').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.tab).classList.add('active')});document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>navigator.clipboard.writeText(document.getElementById(b.dataset.copy).textContent).then(()=>{let t=b.textContent;b.textContent='Copied!';setTimeout(()=>b.textContent=t,1500)}));render();
-</script></body></html>
+  <header class="topbar">
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-mark">✚</div>
+        <div>
+          <div>Healthcare Executive Copilot</div>
+          <small>Dynamic Outreach Messaging</small>
+        </div>
+      </div>
+      <a class="nav-cta" href="https://www.amnhealthcare.com/" target="_blank" rel="noopener noreferrer">Visit AMN Healthcare</a>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <div class="coach-shell">
+        <div class="coach-head">
+          <h1>Healthcare Executive Engagement Coach</h1>
+          <p>Turn solution-focused language into buyer-centric outreach for healthcare leaders.</p>
+        </div>
+
+        <div class="coach-body">
+          <!-- INPUT PANEL -->
+          <div class="coach-input">
+            <div class="role-group">
+              <label class="role-label">1. Pick the executive</label>
+              <div class="role-buttons" id="roleButtons"></div>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">2. Your current message</label>
+              <textarea class="input-field" id="userMessage" placeholder="Example: Our platform reduces operational costs through workflow automation and real-time analytics."></textarea>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">3. Context or situation (optional)</label>
+              <textarea class="input-field" id="userContext" placeholder="Example: The health system is focused on margin pressure and patient access."></textarea>
+            </div>
+
+            <div class="button-group">
+              <button class="btn-primary" id="generateBtn">Generate Outreach</button>
+              <button class="btn-secondary" id="resetBtn">Reset</button>
+            </div>
+          </div>
+
+          <!-- OUTPUT PANEL -->
+          <div class="coach-output">
+            <div class="output-card">
+              <h3 id="executiveTitle">Chief Executive Officer (CEO)</h3>
+              <p id="executiveDescription">Focus on strategic direction, performance, and competitive differentiation.</p>
+              <div class="stat-group">
+                <div class="stat-item">
+                  <small>Primary focus</small>
+                  <b id="primaryFocus">Organizational strategy</b>
+                </div>
+                <div class="stat-item">
+                  <small>Pain point</small>
+                  <b id="painPoint">Enterprise growth</b>
+                </div>
+              </div>
+            </div>
+
+            <div class="message-card" id="emailCard">
+              <div class="message-tag">📧 Email suggestion</div>
+              <div class="message-subject" id="emailSubject"></div>
+              <div class="message-text" id="emailText"></div>
+              <button class="copy-btn" data-target="emailText">Copy Email</button>
+            </div>
+
+            <div class="message-card voicemail" id="voicemailCard">
+              <div class="message-tag voicemail">📞 Recommended voicemail</div>
+              <div class="message-text" id="voicemailText"></div>
+              <button class="copy-btn" data-target="voicemailText">Copy Voicemail</button>
+            </div>
+
+            <div class="tabs" id="tabButtons"></div>
+
+            <div class="tab-content active" id="pointsTab">
+              <ul class="list" id="pointsList"></ul>
+            </div>
+            <div class="tab-content" id="questionsTab">
+              <ul class="list" id="questionsList"></ul>
+            </div>
+            <div class="tab-content" id="guidanceTab">
+              <p style="font-weight: 700; margin: 0 0 8px 0;">Do's:</p>
+              <ul class="list" id="dosList"></ul>
+              <p style="font-weight: 700; margin: 12px 0 8px 0;">Don'ts:</p>
+              <ul class="list" id="dontsList"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Healthcare Executive Engagement Copilot • Dynamic outreach messaging for healthcare sales teams
+  </footer>
+
+  <script>
+    const executives = {
+      ceo: {
+        title: 'Chief Executive Officer (CEO)',
+        description: 'Focus on strategic direction, performance, and competitive differentiation.',
+        focus: 'Organizational strategy',
+        pain: 'Enterprise growth',
+        points: [
+          'Tie value to enterprise growth and market leadership.',
+          'Connect to board-level outcomes and strategic priorities.',
+          'Show how the solution drives competitive advantage.',
+        ],
+        questions: [
+          'What are your top strategic priorities for the next 12 to 18 months?',
+          'Where is the greatest strategic or operating challenge?',
+          'How is your organization approaching the changing competitive landscape?',
+        ],
+      },
+      cfo: {
+        title: 'Chief Financial Officer (CFO)',
+        description: 'Financial efficiency, risk, cost structure, and ROI.',
+        focus: 'Financial performance & ROI',
+        pain: 'Margin pressure and cost transparency',
+        points: [
+          'Quantify financial impact and ROI.',
+          'Connect value to margin, cash flow, and risk.',
+          'Emphasize cost avoidance and efficiency gains.',
+        ],
+        questions: [
+          'Where is the greatest opportunity to improve financial performance?',
+          'How do you measure ROI on strategic initiatives?',
+          'What cost categories are getting the most scrutiny right now?',
+        ],
+      },
+      coo: {
+        title: 'Chief Operating Officer (COO)',
+        description: 'Execution, throughput, workflow optimization, and consistency.',
+        focus: 'Operational excellence',
+        pain: 'Workflow friction and productivity',
+        points: [
+          'Focus on throughput, capacity, and process consistency.',
+          'Address adoption and operational change.',
+          'Show impact on staff workload and retention.',
+        ],
+        questions: [
+          'Where do teams experience the most workflow friction?',
+          'Which operating metric would have the greatest impact if improved?',
+          'How are you managing operational change across the organization?',
+        ],
+      },
+      cno: {
+        title: 'Chief Nursing Officer (CNO)',
+        description: 'Patient safety, nurse workload, quality, and care team performance.',
+        focus: 'Clinical quality & nursing excellence',
+        pain: 'Burnout and staffing pressure',
+        points: [
+          'Reduce frontline burden and connect to quality.',
+          'Show impact on retention and care-team effectiveness.',
+          'Emphasize patient safety and care continuity.',
+        ],
+        questions: [
+          'What is your greatest concern around care-team burden?',
+          'What would help nurses spend more time on patient care?',
+          'How are you addressing workforce stability in clinical roles?',
+        ],
+      },
+      chro: {
+        title: 'Chief Human Resources Officer (CHRO)',
+        description: 'Workforce engagement, retention, culture, and talent strategy.',
+        focus: 'Workforce experience',
+        pain: 'Retention and burnout',
+        points: [
+          'Connect to engagement, retention, and employee experience.',
+          'Position the solution as enabling higher-value work.',
+          'Show impact on talent attraction and development.',
+        ],
+        questions: [
+          'What is your biggest workforce challenge today?',
+          'How do you measure engagement and retention?',
+          'Where are talent or leadership gaps most acute?',
+        ],
+      },
+      cxo: {
+        title: 'Chief Experience Officer (CXO)',
+        description: 'Patient-centered experience, satisfaction, and accessibility.',
+        focus: 'Patient experience',
+        pain: 'Experience inconsistency and patient friction',
+        points: [
+          'Keep the patient at the center.',
+          'Connect to satisfaction, loyalty, and personalization.',
+          'Show impact on Net Promoter Score or similar metrics.',
+        ],
+        questions: [
+          'Where does the patient journey feel most fragmented?',
+          'What would create the greatest improvement in patient experience?',
+          'How are you measuring and acting on patient feedback?',
+        ],
+      },
+      cmo: {
+        title: 'Chief Medical Officer',
+        description: 'Clinical strategy, physician alignment, quality, and outcomes.',
+        focus: 'Medical leadership & clinical outcomes',
+        pain: 'Clinical variation and physician alignment',
+        points: [
+          'Connect to clinical outcomes, evidence, and physician engagement.',
+          'Respect clinical governance and patient safety.',
+          'Show data alignment with best practice.',
+        ],
+        questions: [
+          'Which clinical outcomes or quality priorities are most important right now?',
+          'Where could physician alignment improve care delivery?',
+          'How do you approach evidence-based adoption and standardization?',
+        ],
+      },
+      supply: {
+        title: 'Supply Chain Leader',
+        description: 'Procurement efficiency, inventory, reliability, and vendor performance.',
+        focus: 'Supply chain optimization',
+        pain: 'Cost, inventory, and continuity',
+        points: [
+          'Quantify savings and reliability impact.',
+          'Connect to procurement discipline and continuity.',
+          'Show impact on inventory turns and waste reduction.',
+        ],
+        questions: [
+          'Where are the greatest cost or reliability issues?',
+          'How do you track supplier performance and inventory risk?',
+          'What procurement or inventory priorities are most urgent?',
+        ],
+      },
+      language: {
+        title: 'Language Access Leader',
+        description: 'Equitable communication, interpretation, and patient access.',
+        focus: 'Language access & health equity',
+        pain: 'Communication barriers and unequal access',
+        points: [
+          'Connect to equitable care, patient understanding, and compliance.',
+          'Show how access improves trust and care coordination.',
+          'Demonstrate impact on health outcomes and equity.',
+        ],
+        questions: [
+          'Where do language barriers most affect the patient journey?',
+          'How do you measure the quality and reach of language access services?',
+          'What gaps or compliance challenges exist today?',
+        ],
+      },
+    };
+
+    let selectedRole = 'ceo';
+
+    function renderRoleButtons() {
+      const container = document.getElementById('roleButtons');
+      Object.keys(executives).forEach((key) => {
+        const btn = document.createElement('button');
+        btn.className = `role-btn ${key === 'ceo' ? 'active' : ''}`;
+        btn.textContent = executives[key].title.split(' (')[0];
+        btn.addEventListener('click', () => selectRole(key));
+        container.appendChild(btn);
+      });
+    }
+
+    function renderTabs() {
+      const container = document.getElementById('tabButtons');
+      const tabs = [
+        { id: 'pointsTab', label: 'Talking Points' },
+        { id: 'questionsTab', label: 'Discovery Questions' },
+        { id: 'guidanceTab', label: "Do's & Don'ts" },
+      ];
+
+      tabs.forEach((tab, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `tab-btn ${idx === 0 ? 'active' : ''}`;
+        btn.textContent = tab.label;
+        btn.addEventListener('click', () => switchTab(tab.id));
+        container.appendChild(btn);
+      });
+    }
+
+    function selectRole(role) {
+      selectedRole = role;
+      const exec = executives[role];
+
+      document.querySelectorAll('.role-btn').forEach((btn) => {
+        btn.classList.remove('active');
+      });
+
+      event.target.classList.add('active');
+
+      document.getElementById('executiveTitle').textContent = exec.title;
+      document.getElementById('executiveDescription').textContent = exec.description;
+      document.getElementById('primaryFocus').textContent = exec.focus;
+      document.getElementById('painPoint').textContent = exec.pain;
+
+      document.getElementById('pointsList').innerHTML = exec.points
+        .map((point) => `<li>${point}</li>`)
+        .join('');
+
+      document.getElementById('questionsList').innerHTML = exec.questions
+        .map((q) => `<li>${q}</li>`)
+        .join('');
+
+      document.getElementById('dosList').innerHTML = `
+        <li>Lead with outcomes relevant to the ${exec.title.split(' (')[0]}.</li>
+        <li>Use specific evidence and measurable impact.</li>
+        <li>Reference their strategic priorities or business challenges.</li>
+      `;
+
+      document.getElementById('dontsList').innerHTML = `
+        <li>Avoid feature-heavy language without buyer context.</li>
+        <li>Do not assume the executive's priorities without discovery.</li>
+        <li>Never lead with your solution—start with their business outcome.</li>
+      `;
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach((tab) => {
+        tab.classList.remove('active');
+      });
+
+      document.querySelectorAll('.tab-btn').forEach((btn) => {
+        btn.classList.remove('active');
+      });
+
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function generateOutreach() {
+      const message = document.getElementById('userMessage').value.trim();
+      const context = document.getElementById('userContext').value.trim();
+
+      if (!message) {
+        alert('Please enter your current message first.');
+        return;
+      }
+
+      const exec = executives[selectedRole];
+
+      const emailBody = `Hi [Name],\n\nI'm reaching out because we help healthcare organizations address ${exec.pain.toLowerCase()} while advancing ${exec.focus.toLowerCase()}.\n\n${message}\n\n${
+        context ? `Given your context—${context}—` : 'I believe'
+      } this could support your priorities, and I'd welcome a brief conversation to explore whether we're a fit.\n\nWould you be open to 15 minutes in the next two weeks?\n\nBest regards,\n[Your Name]`;
+
+      const voicemail = `Hi [Name], this is [Your Name] with [Company]. We help healthcare leaders address ${exec.pain.toLowerCase()} and improve ${exec.focus.toLowerCase()}. ${message} I'd like to explore whether we could support [Organization]. My number is [Your Phone]. I'll follow up by email. Thanks.`;
+
+      document.getElementById('emailSubject').textContent = `Subject: Exploring ${exec.focus.toLowerCase()} priorities`;
+      document.getElementById('emailSubject').classList.add('show');
+      document.getElementById('emailText').textContent = emailBody;
+      document.getElementById('emailCard').classList.add('show');
+
+      document.getElementById('voicemailText').textContent = voicemail;
+      document.getElementById('voicemailCard').classList.add('show');
+    }
+
+    function copyToClipboard(target) {
+      const text = document.getElementById(target).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => {
+          btn.textContent = originalText;
+        }, 1500);
+      });
+    }
+
+    function resetForm() {
+      document.getElementById('userMessage').value = '';
+      document.getElementById('userContext').value = '';
+      document.getElementById('emailCard').classList.remove('show');
+      document.getElementById('voicemailCard').classList.remove('show');
+      document.getElementById('emailSubject').classList.remove('show');
+      selectedRole = 'ceo';
+      selectRole('ceo');
+    }
+
+    // Event Listeners
+    document.getElementById('generateBtn').addEventListener('click', generateOutreach);
+    document.getElementById('resetBtn').addEventListener('click', resetForm);
+
+    document.querySelectorAll('.copy-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const target = e.target.getAttribute('data-target');
+        copyToClipboard(target);
+      });
+    });
+
+    // Initialize
+    renderRoleButtons();
+    renderTabs();
+    selectRole('ceo');
+  </script>
+</body>
+</html>

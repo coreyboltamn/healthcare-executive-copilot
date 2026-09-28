@@ -135,288 +135,15 @@
       box-shadow: var(--shadow-soft);
     }
 
-    .hero {
-      padding: 72px 0 34px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 38px;
-      align-items: center;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-weight: 800;
-      color: var(--blue-700);
-      background: rgba(42, 140, 255, 0.10);
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(42, 140, 255, 0.15);
-      margin-bottom: 18px;
-    }
-
-    h1 {
-      margin: 0 0 18px;
-      font-size: clamp(2.5rem, 5vw, 4.1rem);
-      line-height: 1.04;
-      letter-spacing: -0.05em;
-      color: var(--slate-900);
-    }
-
-    .hero-copy {
-      margin: 0 0 26px;
-      font-size: 1.08rem;
-      color: var(--slate-600);
-      max-width: 680px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 26px;
-    }
-
-    .primary-btn, .secondary-btn, .mini-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border: none;
-      border-radius: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-    }
-
-    .primary-btn {
-      padding: 14px 22px;
-      background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
-      color: white;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .secondary-btn {
-      padding: 14px 22px;
-      background: rgba(255,255,255,0.9);
-      color: var(--slate-800);
-      border: 1px solid rgba(17,24,39,0.08);
-    }
-
-    .mini-btn {
-      padding: 9px 14px;
-      border-radius: 10px;
-      background: var(--slate-100);
-      color: var(--slate-700);
-      font-size: 13px;
-    }
-
-    .primary-btn:hover, .secondary-btn:hover, .mini-btn:hover {
-      transform: translateY(-1px);
-    }
-
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      color: var(--slate-600);
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-
-    .hero-meta strong {
-      color: var(--slate-900);
-      font-size: 1.2rem;
-      display: block;
-      margin-bottom: 3px;
-    }
-
-    .hero-panel {
-      background: linear-gradient(180deg, rgba(10,37,64,0.98), rgba(19,61,102,0.96));
-      border-radius: 28px;
-      padding: 26px 22px;
-      color: white;
-      box-shadow: var(--shadow-strong);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-panel::before {
-      content: "";
-      position: absolute;
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: rgba(84, 211, 255, 0.18);
-      right: -60px;
-      top: -60px;
-      filter: blur(12px);
-    }
-
-    .mini-card {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 16px;
-    }
-
-    .mini-card h3 {
-      margin: 0 0 10px;
-      font-size: 15px;
-      color: rgba(255,255,255,0.86);
-      letter-spacing: 0.02em;
-    }
-
-    .mini-card p {
-      margin: 0;
-      color: rgba(255,255,255,0.76);
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    .score-strip {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 4px;
-    }
-
-    .score {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 12px 10px;
+    .footer {
+      padding: 22px 0 36px;
+      color: var(--slate-500);
+      font-size: 0.92rem;
       text-align: center;
-    }
-
-    .score strong {
-      display: block;
-      font-size: 1.3rem;
-      color: white;
-      margin-bottom: 4px;
-    }
-
-    .score span {
-      font-size: 11px;
-      color: rgba(255,255,255,0.72);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
     }
 
     .section {
       padding: 34px 0 14px;
-    }
-
-    .section-heading {
-      text-align: center;
-      max-width: 780px;
-      margin: 0 auto 24px;
-    }
-
-    .section-heading h2 {
-      margin: 0 0 12px;
-      font-size: clamp(2rem, 4vw, 2.8rem);
-      letter-spacing: -0.04em;
-      color: var(--slate-900);
-    }
-
-    .section-heading p {
-      margin: 0 auto;
-      color: var(--slate-600);
-      font-size: 1.02rem;
-      max-width: 700px;
-    }
-
-    .feature-grid, .playbook-grid, .use-case-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 24px;
-      margin-top: 22px;
-    }
-
-    .feature-card, .playbook-card, .use-case-card {
-      background: rgba(255,255,255,0.9);
-      border: 1px solid rgba(17,24,39,0.06);
-      border-radius: 18px;
-      padding: 22px 20px 18px;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .icon-badge {
-      width: 56px;
-      height: 56px;
-      display: grid;
-      place-items: center;
-      border-radius: 16px;
-      margin-bottom: 14px;
-      font-size: 26px;
-      background: linear-gradient(135deg, rgba(42,140,255,0.16), rgba(84,211,255,0.11));
-      border: 1px solid rgba(42,140,255,0.12);
-    }
-
-    .feature-card h3, .playbook-card h3, .use-case-card h3 {
-      margin: 0 0 8px;
-      font-size: 1.12rem;
-      color: var(--slate-800);
-    }
-
-    .feature-card p, .playbook-card p, .use-case-card p {
-      margin: 0;
-      color: var(--slate-600);
-      font-size: 0.96rem;
-      line-height: 1.72;
-    }
-
-    .how-it-works {
-      padding-top: 24px;
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 22px;
-      margin-top: 26px;
-    }
-
-    .step {
-      background: white;
-      border-radius: 22px;
-      padding: 24px 20px;
-      border: 1px solid rgba(17,24,39,0.06);
-      box-shadow: var(--shadow-soft);
-      position: relative;
-    }
-
-    .step-number {
-      display: inline-flex;
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
-      color: white;
-      margin-bottom: 14px;
-    }
-
-    .step h3 {
-      margin: 0 0 8px;
-      font-size: 1.08rem;
-    }
-
-    .step p {
-      margin: 0;
-      color: var(--slate-600);
-      line-height: 1.7;
     }
 
     .coach-shell {
@@ -432,14 +159,6 @@
       padding: 24px 28px 18px;
       border-bottom: 1px solid rgba(17,24,39,0.06);
       background: linear-gradient(135deg, rgba(17,76,140,0.06), rgba(84,211,255,0.08));
-    }
-
-    .coach-header-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
     }
 
     .coach-header h2 {
@@ -541,9 +260,11 @@
       display: flex;
       flex-direction: column;
       gap: 18px;
+      max-height: 85vh;
+      overflow-y: auto;
     }
 
-    .output-card {
+    .output-section {
       border-radius: 18px;
       background: linear-gradient(180deg, rgba(42,140,255,0.06), rgba(84,211,255,0.03));
       border: 1px solid rgba(42,140,255,0.10);
@@ -557,15 +278,57 @@
       letter-spacing: 0.12em;
       color: var(--blue-700);
       font-weight: 800;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .output-text {
       margin: 0;
-      font-size: 0.98rem;
+      font-size: 0.95rem;
       color: var(--slate-700);
       line-height: 1.8;
       white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .email-template {
+      background: white;
+      border: 1px solid rgba(17,24,39,0.08);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-top: 8px;
+    }
+
+    .email-subject {
+      background: rgba(17,24,39,0.04);
+      padding: 10px 12px;
+      border-radius: 8px;
+      border-left: 3px solid var(--blue-700);
+      margin-bottom: 12px;
+      font-weight: 700;
+      color: var(--slate-800);
+    }
+
+    .email-body {
+      color: var(--slate-700);
+      line-height: 1.8;
+    }
+
+    .email-body p {
+      margin: 0 0 12px;
+    }
+
+    .voicemail-script {
+      background: rgba(255,193,7,0.06);
+      border: 1px solid rgba(255,193,7,0.2);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 8px;
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--slate-700);
+      font-style: italic;
     }
 
     .tab-list {
@@ -607,7 +370,7 @@
       padding-left: 18px;
       color: var(--slate-700);
       line-height: 1.9;
-      font-size: 0.96rem;
+      font-size: 0.94rem;
     }
 
     .tip-list li + li {
@@ -664,47 +427,55 @@
       font-weight: 700;
     }
 
-    .cta-band {
-      margin: 48px auto 28px;
-      background: linear-gradient(135deg, var(--blue-900), var(--blue-700));
+    .primary-btn, .secondary-btn, .mini-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .primary-btn {
+      padding: 11px 16px;
+      background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
       color: white;
-      border-radius: 24px;
-      padding: 30px 26px;
-      box-shadow: var(--shadow-strong);
-      text-align: center;
+      box-shadow: var(--shadow-soft);
+      font-size: 13px;
     }
 
-    .cta-band h3 {
-      margin: 0 0 10px;
-      font-size: clamp(1.6rem, 3vw, 2.25rem);
-      letter-spacing: -0.04em;
+    .secondary-btn {
+      padding: 11px 16px;
+      background: rgba(255,255,255,0.9);
+      color: var(--slate-800);
+      border: 1px solid rgba(17,24,39,0.08);
+      font-size: 13px;
     }
 
-    .cta-band p {
-      margin: 0 auto 18px;
-      max-width: 760px;
-      color: rgba(255,255,255,0.8);
-      font-size: 1rem;
+    .mini-btn {
+      padding: 9px 14px;
+      border-radius: 10px;
+      background: var(--slate-100);
+      color: var(--slate-700);
+      font-size: 13px;
     }
 
-    .footer {
-      padding: 22px 0 36px;
-      color: var(--slate-500);
-      font-size: 0.92rem;
-      text-align: center;
+    .primary-btn:hover, .secondary-btn:hover, .mini-btn:hover {
+      transform: translateY(-1px);
     }
 
-    .hidden {
-      display: none !important;
+    .copy-success {
+      color: var(--success);
+      font-size: 12px;
+      margin-top: 6px;
     }
 
     @media (max-width: 980px) {
-      .hero-grid, .coach-body, .feature-grid, .playbook-grid, .use-case-grid, .steps {
+      .coach-body {
         grid-template-columns: 1fr;
-      }
-
-      .nav-links {
-        display: none;
       }
 
       .role-grid {
@@ -713,20 +484,17 @@
     }
 
     @media (max-width: 520px) {
-      .hero {
-        padding-top: 42px;
-      }
-
       .role-grid {
         grid-template-columns: 1fr 1fr;
       }
 
-      .profile-grid {
-        grid-template-columns: 1fr;
-      }
-
       .coach-panel, .coach-output {
         padding: 18px;
+      }
+
+      .coach-output {
+        max-height: none;
+        overflow-y: visible;
       }
     }
   </style>
@@ -738,15 +506,12 @@
         <div class="brand-mark">✚</div>
         <div class="brand-text">
           Healthcare Executive Copilot
-          <small>Executive Engagement</small>
+          <small>Dynamic Outreach Messaging</small>
         </div>
       </div>
 
       <nav class="nav-links" aria-label="Main navigation">
-        <a href="#how-it-works">How it works</a>
-        <a href="#roles">Roles</a>
         <a href="#coach">Coach</a>
-        <a href="#examples">Examples</a>
       </nav>
 
       <a class="nav-cta" href="#coach">Launch Coach</a>
@@ -754,132 +519,11 @@
   </header>
 
   <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <div class="eyebrow">Buyer-centric conversation coaching</div>
-          <h1>Turn feature-heavy pitches into executive conversations that resonate.</h1>
-          <p class="hero-copy">
-            Built for healthcare sales teams that need to prepare smarter conversations with CEOs, CFOs, COOs,
-            CHROs, CNOs, CX leaders, CMOs, and Supply Chain executives. This tool helps translate product language into
-            business outcomes, operational priorities, and executive-level value.
-          </p>
-
-          <div class="hero-actions">
-            <a href="#coach" class="primary-btn">Open the coach</a>
-            <a href="#how-it-works" class="secondary-btn">See how it works</a>
-          </div>
-
-          <div class="hero-meta">
-            <div>
-              <strong>8</strong>
-              executive roles
-            </div>
-            <div>
-              <strong>3-step</strong>
-              conversation prep
-            </div>
-            <div>
-              <strong>1-click</strong>
-              copy-ready outputs
-            </div>
-          </div>
-        </div>
-
-        <aside class="hero-panel" aria-label="Executive engagement summary">
-          <div class="mini-card">
-            <h3>Executive focus</h3>
-            <p>Shift from product features to enterprise value, operating performance, and strategic outcomes.</p>
-          </div>
-
-          <div class="mini-card">
-            <h3>Best use</h3>
-            <p>Prepare for executive conversations, craft stronger discovery questions, and move from solution-first to buyer-first messaging.</p>
-          </div>
-
-          <div class="score-strip">
-            <div class="score">
-              <strong>30%</strong>
-              <span>Faster prep</span>
-            </div>
-            <div class="score">
-              <strong>8</strong>
-              <span>Roles</span>
-            </div>
-            <div class="score">
-              <strong>1</strong>
-              <span>Conversation</span>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="section" id="roles">
-      <div class="container">
-        <div class="section-heading">
-          <h2>Built for the way healthcare executives actually buy</h2>
-          <p>Different leaders care about different outcomes. The app helps tailor your message to what matters most—financial performance, patient experience, operational efficiency, workforce strategy, and growth.</p>
-        </div>
-
-        <div class="feature-grid">
-          <article class="feature-card">
-            <div class="icon-badge">💰</div>
-            <h3>Financial leaders</h3>
-            <p>Translate value into margin improvement, efficiency, risk reduction, and measurable ROI for CFOs and operating executives.</p>
-          </article>
-
-          <article class="feature-card">
-            <div class="icon-badge">🏥</div>
-            <h3>Care and experience leaders</h3>
-            <p>Frame your value around quality, patient experience, clinical outcomes, and workforce resilience for CNOs and CX leaders.</p>
-          </article>
-
-          <article class="feature-card">
-            <div class="icon-badge">📈</div>
-            <h3>Strategic growth leaders</h3>
-            <p>Position your solution for CEO and CMO conversations focused on strategic differentiation, growth, and competitive advantage.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section how-it-works" id="how-it-works">
-      <div class="container">
-        <div class="section-heading">
-          <h2>How to use this tool in under 5 minutes</h2>
-        </div>
-
-        <div class="steps">
-          <div class="step">
-            <div class="step-number">1</div>
-            <h3>Select the executive</h3>
-            <p>Choose the leader you are meeting with—CEO, CFO, COO, CHRO, CNO, CXO, CMO, or Supply Chain.</p>
-          </div>
-
-          <div class="step">
-            <div class="step-number">2</div>
-            <h3>Paste your current pitch</h3>
-            <p>Drop in your current solution-focused language or use one of the built-in scenarios to see a stronger buyer-first version.</p>
-          </div>
-
-          <div class="step">
-            <div class="step-number">3</div>
-            <h3>Review and adapt</h3>
-            <p>Use the refreshed opening, discovery questions, and talking points to guide the conversation and tailor your approach.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="section" id="coach">
       <div class="container">
         <div class="coach-shell">
           <div class="coach-header">
-            <div class="coach-header-inner">
-              <h2>Healthcare Executive Engagement Coach</h2>
-              <button type="button" class="mini-btn" id="load-sample-btn">Load sample message</button>
-            </div>
+            <h2>Healthcare Executive Engagement Coach</h2>
           </div>
 
           <div class="coach-body">
@@ -907,7 +551,7 @@
               </div>
 
               <div class="action-row">
-                <button class="primary-btn" id="transform-btn">Transform message</button>
+                <button class="primary-btn" id="transform-btn">Generate Outreach</button>
                 <button class="secondary-btn" id="reset-btn">Reset</button>
               </div>
             </div>
@@ -928,11 +572,24 @@
                 </div>
               </div>
 
-              <div class="output-card">
-                <div class="output-label">Buyer-centric opening</div>
-                <p class="output-text" id="result-output">Your re-framed executive message will appear here.</p>
+              <!-- Email Suggestion -->
+              <div class="output-section" id="email-section" style="display:none;">
+                <div class="output-label">📧 Email Suggestion</div>
+                <div class="email-template">
+                  <div class="email-subject" id="email-subject">Subject: [Subject line will appear here]</div>
+                  <div class="email-body" id="email-body">Email body will appear here</div>
+                </div>
+                <button class="primary-btn" onclick="copyToClipboard('email-body')">Copy Email</button>
               </div>
 
+              <!-- Voicemail Script -->
+              <div class="output-section" id="voicemail-section" style="display:none;">
+                <div class="output-label">📞 Voicemail Script</div>
+                <div class="voicemail-script" id="voicemail-script">Voicemail script will appear here</div>
+                <button class="primary-btn" onclick="copyToClipboard('voicemail-script')">Copy Voicemail</button>
+              </div>
+
+              <!-- Talking Points & Questions -->
               <div>
                 <div class="tab-list" aria-label="Conversation guidance tabs">
                   <button type="button" class="tab-btn active" data-tab="talking-points">Talking points</button>
@@ -953,53 +610,15 @@
                   <ul class="tip-list" id="donts-list" style="margin-top:10px;"></ul>
                 </div>
               </div>
-
-              <div class="action-row" style="margin-top:0;">
-                <button class="primary-btn" id="copy-btn">Copy opening</button>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-
-    <section class="section" id="examples">
-      <div class="container">
-        <div class="section-heading">
-          <h2>Quick playbooks for common executive scenarios</h2>
-        </div>
-
-        <div class="playbook-grid">
-          <article class="playbook-card">
-            <div class="icon-badge">💸</div>
-            <h3>Cost reduction</h3>
-            <p>Prepare CFO and COO conversations focused on margin, productivity, and operational efficiency.</p>
-          </article>
-          <article class="playbook-card">
-            <div class="icon-badge">🧑‍⚕️</div>
-            <h3>Patient experience</h3>
-            <p>Shift language toward patient satisfaction, retention, and care experience improvement for CX and clinical leaders.</p>
-          </article>
-          <article class="playbook-card">
-            <div class="icon-badge">🚀</div>
-            <h3>Growth & strategy</h3>
-            <p>Help CEOs and CMOs position the solution as a strategic lever for competitive differentiation and performance outcomes.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <div class="container">
-      <div class="cta-band">
-        <h3>Your sales team can use this before every executive conversation.</h3>
-        <p>Use the coach to shape more relevant language, ask better questions, and create a stronger executive narrative without sounding overly product-driven.</p>
-        <a class="primary-btn" href="#coach" style="background: white; color: var(--blue-700);">Open the coach now</a>
-      </div>
-    </div>
   </main>
 
   <footer class="footer">
-    Healthcare Executive Engagement Copilot • Built for healthcare sales teams preparing executive conversations
+    Healthcare Executive Engagement Copilot • Dynamic outreach messaging for healthcare sales teams
   </footer>
 
   <script>
@@ -1054,7 +673,7 @@
         ],
         donts: [
           'Do not lead with feature-only value statements.',
-          'Avoid vague references to “better” without numbers.',
+          'Avoid vague references to "better" without numbers.',
           'Do not ignore risk, compliance, or operational cost considerations.'
         ]
       },
@@ -1188,7 +807,7 @@
           'Show how intelligence supports better decision-making.'
         ],
         donts: [
-          'Do not lead with operational efficiency without growth implications.',
+          'Do not lead with operational efficiency alone.',
           'Avoid speaking only to internal process metrics.',
           'Do not ignore brand and patient journey implications.'
         ]
@@ -1215,22 +834,11 @@
           'Keep the focus on inventory and procurement discipline.'
         ],
         donts: [
-          'Do not rely on generic “efficiency” language without specifics.',
+          'Do not rely on generic "efficiency" language without specifics.',
           'Avoid overlooking supply continuity and vendor dynamics.',
           'Do not discuss only technology without business continuity impact.'
         ]
       }
-    };
-
-    const sampleMessages = {
-      ceo: "Our platform helps health systems improve operating performance, strengthen strategic execution, and create a more resilient model for growth in a changing market.",
-      cfo: "Our solution reduces administrative burden and improves revenue cycle performance to create measurable savings and better financial visibility across the organization.",
-      coo: "Our platform streamlines clinical and operational workflows so teams can work more efficiently, reduce manual effort, and improve throughput across departments.",
-      cno: "Our solution reduces clinician burden, supports care team efficiency, and helps improve nursing retention and patient care experience.",
-      chro: "Our platform reduces administrative complexity for leaders and teams, improves employee experience, and supports stronger retention and workforce engagement.",
-      cxo: "Our solution helps organizations deliver a more consistent, personalized patient experience while improving satisfaction and engagement.",
-      cmo: "Our platform helps health systems strengthen patient engagement and acquisition strategies while improving data-driven decision-making and brand differentiation.",
-      supply: "Our solution improves inventory visibility, streamlines procurement, and reduces supply chain friction while strengthening continuity and cost control."
     };
 
     let activeRole = 'ceo';
@@ -1247,72 +855,114 @@
       document.getElementById('focus-value').textContent = profile.focus;
       document.getElementById('pain-value').textContent = profile.pain;
 
-      const sample = sampleMessages[role];
-      const messageInput = document.getElementById('message-input');
-      if (!messageInput.value.trim()) {
-        messageInput.value = sample;
-      }
       renderTabs(role);
     }
 
     function renderTabs(role) {
       const profile = executiveProfiles[role];
-      const points = profile.talkingPoints;
-      const questions = profile.questions;
-      const dos = profile.dos;
-      const donts = profile.donts;
-
-      document.getElementById('talking-points-list').innerHTML = points.map(item => `<li>${item}</li>`).join('');
-      document.getElementById('questions-list').innerHTML = questions.map(item => `<li>${item}</li>`).join('');
-      document.getElementById('dos-list').innerHTML = dos.map(item => `<li>${item}</li>`).join('');
-      document.getElementById('donts-list').innerHTML = donts.map(item => `<li>${item}</li>`).join('');
+      document.getElementById('talking-points-list').innerHTML = profile.talkingPoints.map(item => `<li>${item}</li>`).join('');
+      document.getElementById('questions-list').innerHTML = profile.questions.map(item => `<li>${item}</li>`).join('');
+      document.getElementById('dos-list').innerHTML = profile.dos.map(item => `<li>${item}</li>`).join('');
+      document.getElementById('donts-list').innerHTML = profile.donts.map(item => `<li>${item}</li>`).join('');
     }
 
-    function generateBuyerMessage() {
+    function generateEmail(role, message, context) {
+      const subjects = {
+        ceo: `Strategic Partnership Opportunity: Driving Enterprise Performance`,
+        cfo: `Improving Financial Performance & Operating Margin`,
+        coo: `Operational Excellence & Execution Efficiency`,
+        cno: `Strengthening Clinical Quality & Care Team Resilience`,
+        chro: `Supporting Workforce Retention & Engagement`,
+        cxo: `Enhancing Patient Experience & Satisfaction`,
+        cmo: `Market Differentiation & Patient Acquisition Strategy`,
+        supply: `Supply Chain Optimization & Cost Efficiency`
+      };
+
+      const openings = {
+        ceo: `Hi [Name],\n\nI wanted to reach out because we've been working with enterprise health systems like yours to strengthen strategic performance and competitive positioning in this evolving market.`,
+        cfo: `Hi [Name],\n\nWe specialize in helping CFOs improve financial outcomes and operating margin. I'd like to explore how we might help [Organization] achieve stronger financial performance this year.`,
+        coo: `Hi [Name],\n\nWe partner with COOs to eliminate operational friction and improve execution efficiency. I think there might be a real opportunity for [Organization] to improve throughput and resource utilization.`,
+        cno: `Hi [Name],\n\nWe help nursing leaders reduce clinical burden and support team retention. I'd like to discuss how we might help strengthen your care team's effectiveness and resilience.`,
+        chro: `Hi [Name],\n\nWe work with CHROs to improve workforce engagement and retention by reducing administrative burden. I'd like to explore how we might support your talent strategy at [Organization].`,
+        cxo: `Hi [Name],\n\nWe specialize in helping health systems create more consistent, personalized patient experiences. I think [Organization] could benefit from our approach to patient engagement.`,
+        cmo: `Hi [Name],\n\nWe partner with health system CMOs to strengthen patient acquisition and market differentiation. I'd like to discuss strategy for [Organization].`,
+        supply: `Hi [Name],\n\nWe help supply chain leaders optimize procurement and improve continuity. I'd like to explore how we might help [Organization] achieve stronger supply chain performance.`
+      };
+
+      const closings = {
+        ceo: `I'd welcome a brief conversation to explore whether there's a fit. Would you have 15 minutes in the next two weeks?\n\nBest regards,\n[Your Name]`,
+        cfo: `I'd love to share a couple of specific financial impact scenarios we've achieved with similar organizations. Do you have 15 minutes this or next week?\n\nBest regards,\n[Your Name]`,
+        coo: `Would you be open to a 15-minute call to discuss? I think you'll find it valuable.\n\nBest regards,\n[Your Name]`,
+        cno: `I'd welcome a brief conversation about how we might help. Do you have 15 minutes this week?\n\nBest regards,\n[Your Name]`,
+        chro: `I'd like to show you how we've helped similar organizations strengthen retention and engagement. Do you have 15 minutes this week?\n\nBest regards,\n[Your Name]`,
+        cxo: `I'd welcome a quick conversation about your experience strategy. Are you available for 15 minutes this week?\n\nBest regards,\n[Your Name]`,
+        cmo: `I'd love to share how we help health systems win more market share. Do you have 15 minutes soon?\n\nBest regards,\n[Your Name]`,
+        supply: `I'd welcome a brief conversation about supply chain optimization opportunities. Do you have 15 minutes this week?\n\nBest regards,\n[Your Name]`
+      };
+
+      return {
+        subject: subjects[role],
+        body: `${openings[role]}\n\n${message}\n\n${closings[role]}`
+      };
+    }
+
+    function generateVoicemail(role, message, context) {
+      const scripts = {
+        ceo: `Hi [Name], this is [Your Name] with [Company]. I'm calling because we work with enterprise health systems to strengthen strategic performance and competitive positioning. I think there's a real opportunity for [Organization], and I'd like to share it with you. My number is [Your Phone]. I'll follow up via email, but if you get a moment, I'd appreciate a call back.`,
+        cfo: `Hi [Name], this is [Your Name] with [Company]. We've helped CFOs improve financial outcomes and operating margin at health systems similar to yours. I'd like to explore if there's an opportunity at [Organization]. My number is [Your Phone]. I'll send an email with more details.`,
+        coo: `Hi [Name], this is [Your Name] with [Company]. We help COOs eliminate operational friction and improve execution efficiency. I think [Organization] could benefit from our approach. My number is [Your Phone]. I'll follow up with more information.`,
+        cno: `Hi [Name], this is [Your Name] with [Company]. We partner with nursing leaders to reduce clinical burden and support team retention. I'd like to discuss how we might help strengthen your care team at [Organization]. My number is [Your Phone].`,
+        chro: `Hi [Name], this is [Your Name] with [Company]. We specialize in helping CHROs improve workforce engagement and retention. I think there's a real opportunity for [Organization], and I'd like to explore it with you. My number is [Your Phone].`,
+        cxo: `Hi [Name], this is [Your Name] with [Company]. We help health systems create more consistent, personalized patient experiences. I'd like to share how we might help [Organization] strengthen patient satisfaction. My number is [Your Phone].`,
+        cmo: `Hi [Name], this is [Your Name] with [Company]. We partner with CMOs to strengthen patient acquisition and market differentiation. I think this could be valuable for [Organization]. My number is [Your Phone]. I'll follow up with details.`,
+        supply: `Hi [Name], this is [Your Name] with [Company]. We help supply chain leaders optimize procurement and improve continuity. I'd like to discuss if there's an opportunity at [Organization]. My number is [Your Phone].`
+      };
+
+      return scripts[role];
+    }
+
+    function generateOutreach() {
       const message = document.getElementById('message-input').value.trim();
       const context = document.getElementById('context-input').value.trim();
-      const profile = executiveProfiles[activeRole];
 
       if (!message) {
-        document.getElementById('result-output').textContent = 'Please paste the solution-focused message you want to reframe.';
+        alert('Please paste your current message to generate outreach materials.');
         return;
       }
 
-      const normalized = message.toLowerCase();
-      const contextualSentence = context ? `Given the current context—${context}—` : '';
+      const profile = executiveProfiles[activeRole];
+      const emailData = generateEmail(activeRole, message, context);
+      const voicemail = generateVoicemail(activeRole, message, context);
 
-      const roleOpeners = {
-        ceo: `${contextualSentence}we can help your organization pursue stronger strategic performance by aligning this capability with the priorities that matter most to leadership: enterprise growth, operational resilience, and competitive differentiation. The key is less about the technology itself and more about the business outcomes it enables for your team and your market position.`,
-        cfo: `${contextualSentence}the real question is not whether the platform has features, but whether it creates measurable financial value. We help finance leaders improve margin, create clarity around performance, and reduce unnecessary cost while supporting stronger operational execution.`,
-        coo: `${contextualSentence}the value is in how the solution reduces friction across operations and improves execution at scale. We help teams move faster, remove manual work, and create more consistent performance across key processes and workflows.`,
-        cno: `${contextualSentence}the value is in reducing clinical burden while improving quality and care experience. This helps your team spend more time on patient-centered care and less time on process friction that slows teams down.`,
-        chro: `${contextualSentence}the value is in how the solution supports workforce experience, reduces administrative burden, and strengthens retention and engagement across the organization. It gives leaders and employees more time to focus on meaningful work.`,
-        cxo: `${contextualSentence}the most important opportunity is improving the experience patients and members have throughout their journey. This solution helps create more consistent, personalized, accessible engagement that builds trust and strengthens loyalty.`,
-        cmo: `${contextualSentence}the value is in how this capability strengthens patient acquisition, engagement, and brand differentiation in a competitive market. It gives your team more clarity into what is driving growth and how to optimize the patient journey.`,
-        supply: `${contextualSentence}the value is in improving continuity, visibility, and cost control across the supply chain. This helps your team reduce avoidable friction, support stronger vendor performance, and improve inventory and procurement outcomes.`
-      };
+      // Show email section
+      document.getElementById('email-subject').textContent = `Subject: ${emailData.subject}`;
+      document.getElementById('email-body').textContent = emailData.body;
+      document.getElementById('email-section').style.display = 'block';
 
-      const finalMessage = `“${roleOpeners[activeRole]} ${normalized.includes('cost') || normalized.includes('reduction') ? 'For a leader focused on performance, the conversation is about controlling cost without sacrificing service or quality.' : 'The conversation is about business impact, not simply technology capability.'}”`;
+      // Show voicemail section
+      document.getElementById('voicemail-script').textContent = voicemail;
+      document.getElementById('voicemail-section').style.display = 'block';
 
-      document.getElementById('result-output').textContent = finalMessage;
+      renderTabs(activeRole);
     }
 
-    function copyResult() {
-      const text = document.getElementById('result-output').textContent;
+    function copyToClipboard(elementId) {
+      const text = document.getElementById(elementId).textContent;
       navigator.clipboard.writeText(text).then(() => {
-        const btn = document.getElementById('copy-btn');
-        const original = btn.textContent;
+        const btn = event.target;
+        const originalText = btn.textContent;
         btn.textContent = 'Copied!';
-        setTimeout(() => { btn.textContent = original; }, 1300);
+        setTimeout(() => { btn.textContent = originalText; }, 2000);
       }).catch(() => {
-        alert('Copy failed. You can still highlight and copy the text manually.');
+        alert('Copy failed. Please try again.');
       });
     }
 
     function resetForm() {
       document.getElementById('message-input').value = '';
       document.getElementById('context-input').value = '';
-      document.getElementById('result-output').textContent = 'Your re-framed executive message will appear here.';
+      document.getElementById('email-section').style.display = 'none';
+      document.getElementById('voicemail-section').style.display = 'none';
       setActiveRole('ceo');
     }
 
@@ -1320,18 +970,13 @@
       btn.addEventListener('click', () => setActiveRole(btn.dataset.role));
     });
 
-    document.getElementById('transform-btn').addEventListener('click', generateBuyerMessage);
-    document.getElementById('copy-btn').addEventListener('click', copyResult);
+    document.getElementById('transform-btn').addEventListener('click', generateOutreach);
     document.getElementById('reset-btn').addEventListener('click', resetForm);
-    document.getElementById('load-sample-btn').addEventListener('click', () => {
-      const sample = sampleMessages[activeRole];
-      document.getElementById('message-input').value = sample;
-      generateBuyerMessage();
-    });
 
     document.querySelectorAll('.tab-btn').forEach((button) => {
       button.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn === button));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
         const selected = button.dataset.tab;
         document.querySelectorAll('.tab-panel').forEach(panel => {
           panel.classList.toggle('active', panel.id === `${selected}-panel`);

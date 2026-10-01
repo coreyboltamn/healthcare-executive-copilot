@@ -55,6 +55,9 @@
         width: 38px; height: 38px; background: linear-gradient(135deg, var(--blue-600), var(--cyan-400));
         border-radius: 12px; color: white; display: grid; place-items: center; font-size: 18px; font-weight: 800;
       }
+      .brand small {
+        display: block; color: var(--slate-500); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 3px; font-weight: 700;
+      }
       .nav-links { display: flex; gap: 24px; }
       .nav-link {
         font-size: 13px; font-weight: 600; color: var(--slate-700); transition: all 0.2s ease; position: relative;
@@ -70,15 +73,61 @@
         background: linear-gradient(135deg, var(--blue-700), var(--blue-500)); color: white; font-weight: 700; font-size: 13px;
         box-shadow: var(--shadow-soft); cursor: pointer;
       }
+
+      .hero-grid {
+        display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 28px; margin-top: 22px; align-items: stretch;
+      }
+      .hero-panel, .info-section {
+        background: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(246,249,252,0.98));
+        border: 1px solid rgba(17,24,39,0.05); border-radius: 28px; box-shadow: var(--shadow-soft);
+      }
+      .hero-panel {
+        padding: 28px 30px; display: flex; flex-direction: column; justify-content: center;
+      }
+      .eyebrow {
+        display: inline-block; color: var(--blue-600); background: rgba(27,117,208,0.08); border: 1px solid rgba(27,117,208,0.12);
+        padding: 7px 12px; border-radius: 999px; font-size: 11px; letter-spacing: 0.08em; font-weight: 800; text-transform: uppercase;
+        margin-bottom: 16px; width: fit-content;
+      }
+      .hero-panel h1 {
+        margin: 0 0 14px 0; font-size: clamp(2.4rem, 4vw, 4.1rem); line-height: 1.06; color: var(--slate-900); letter-spacing: -0.05em;
+      }
+      .hero-panel p {
+        margin: 0; font-size: 1.06rem; color: var(--slate-600); max-width: 60ch;
+      }
+      .hero-metrics {
+        display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin-top: 20px;
+      }
+      .metric {
+        background: rgba(11,92,170,0.04); border: 1px solid rgba(27,117,208,0.12); border-radius: 16px; padding: 14px 12px;
+      }
+      .metric strong { display: block; font-size: 1.4rem; color: var(--slate-900); }
+      .metric span { display: block; font-size: 12px; color: var(--slate-500); text-transform: uppercase; letter-spacing: 0.08em; }
+
+      .info-panel {
+        padding: 28px 30px; display: flex; flex-direction: column; justify-content: center;
+      }
+      .info-panel h3 {
+        margin: 0 0 10px 0; color: var(--slate-900); font-size: 1.2rem;
+      }
+      .step-list { margin: 0; padding-left: 20px; color: var(--slate-700); line-height: 1.9; }
+      .step-list li { margin-bottom: 4px; }
       .section { padding: 34px 0 14px; }
       .info-section {
-        margin-top: 18px; padding: 24px 28px 22px; background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(246,249,252,0.98));
-        border: 1px solid rgba(17,24,39,0.05); border-radius: 28px; box-shadow: var(--shadow-soft);
+        margin-top: 18px; padding: 24px 28px 22px;
       }
       .info-section h2 {
         margin: 0 0 12px 0; font-size: clamp(2rem, 2.2vw, 2.8rem); color: var(--slate-900); font-weight: 800; letter-spacing: -0.04em;
       }
       .info-section p { margin: 0; font-size: 1.06rem; color: var(--slate-700); line-height: 1.7; }
+
+      .role-grid {
+        display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; margin-top: 18px;
+      }
+      .role-chip {
+        background: rgba(27,117,208,0.04); border: 1px solid rgba(27,117,208,0.12); border-radius: 16px; padding: 12px 14px;
+        color: var(--slate-700); font-weight: 600; font-size: 0.95rem;
+      }
 
       .coach-shell {
         margin-top: 22px; background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(246,249,252,0.98));
@@ -184,12 +233,13 @@
       }
 
       @media (max-width: 950px) {
-        .coach-body { grid-template-columns: 1fr; min-height: auto; }
+        .hero-grid, .coach-body { grid-template-columns: 1fr; min-height: auto; }
         .coach-input, .coach-output { padding: 24px 28px; }
         .role-buttons { grid-template-columns: repeat(2, 1fr); }
         .nav-links { gap: 12px; }
         .nav-link { font-size: 11px; }
         .info-section { padding: 20px 22px; }
+        .role-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
       }
       @media (max-width: 768px) {
         .nav-links { display: none; }
@@ -197,12 +247,12 @@
       }
       @media (max-width: 640px) {
         .coach-head { padding: 24px 20px; }
-        .coach-input, .coach-output { padding: 20px; }
-        .coach-head h1 { font-size: 1.5rem; }
+        .coach-input, .coach-output, .hero-panel, .info-panel { padding: 20px; }
+        .hero-head h1, .coach-head h1 { font-size: 1.5rem; }
         .role-buttons { grid-template-columns: 1fr; }
         .button-group { flex-direction: column; }
         .btn-primary { min-width: auto; }
-        .stat-group { grid-template-columns: 1fr; }
+        .stat-group, .hero-metrics, .role-grid { grid-template-columns: 1fr; }
         .nav { min-height: 64px; }
         .nav-cta { padding: 9px 14px; font-size: 12px; }
         .info-section { padding: 18px 20px; }
@@ -236,14 +286,55 @@
 
     <main class="section">
       <div class="container">
+        <div class="hero-grid">
+          <div class="hero-panel">
+            <div class="eyebrow">Buyer-centric outreach</div>
+            <h1>Speak to healthcare leaders in their language.</h1>
+            <p>Turn solution-focused messaging into executive-ready outreach that reflects strategic priorities, operational realities, and patient-centered outcomes.</p>
+            <div class="hero-metrics">
+              <div class="metric">
+                <strong>12+</strong>
+                <span>stakeholder lenses</span>
+              </div>
+              <div class="metric">
+                <strong>3</strong>
+                <span>ready-to-use outputs</span>
+              </div>
+              <div class="metric">
+                <strong>1</strong>
+                <span>more relevant message</span>
+              </div>
+            </div>
+          </div>
+          <div class="info-panel">
+            <h3>How it works</h3>
+            <ol class="step-list">
+              <li>Select the executive role most relevant to your outreach.</li>
+              <li>Add your current message and the context behind the opportunity.</li>
+              <li>Generate buyer-centric email and voicemail language in seconds.</li>
+            </ol>
+          </div>
+        </div>
+
         <div class="info-section" id="how-it-works">
-          <h2>How It Works</h2>
-          <p>Learn how to select an executive role, add your message and context, and generate tailored outreach.</p>
+          <h2>Why this matters</h2>
+          <p>Healthcare leaders respond when the conversation starts with outcomes, not features. This tool helps sales teams reframe their message around strategic priorities, performance pressure, and measurable business impact.</p>
         </div>
 
         <div class="info-section" id="executive-roles">
-          <h2>Executive Roles</h2>
+          <h2>Executive roles</h2>
           <p>Choose the healthcare leader you want to engage so the tool can tailor priorities, pain points, and questions.</p>
+          <div class="role-grid">
+            <div class="role-chip">CEO</div>
+            <div class="role-chip">CFO</div>
+            <div class="role-chip">COO</div>
+            <div class="role-chip">CNO</div>
+            <div class="role-chip">CHRO</div>
+            <div class="role-chip">CXO</div>
+            <div class="role-chip">CMO</div>
+            <div class="role-chip">Supply Chain</div>
+            <div class="role-chip">Language Access</div>
+          </div>
         </div>
 
         <div class="coach-shell" id="outreach-builder">
@@ -266,7 +357,7 @@
 
               <div class="input-group">
                 <label class="input-label">3. Context or situation (optional)</label>
-                <textarea class="input-field" id="userContext" placeholder="Example: The health system is focused on margin pressure and patient access."></textarea>
+                <textarea class="input-field" id="userContext" placeholder="Example: The health system is focused on margin pressure, staffing strain, and patient access."></textarea>
               </div>
 
               <div class="button-group">
@@ -640,21 +731,33 @@
         return (value || '').trim() || 'Our platform helps improve operational efficiency and patient experience.';
       }
 
+      function normaliseForSentence(value) {
+        const clean = String(value || '').trim();
+        if (!clean) return 'our solution';
+        return clean.replace(/\s+/g, ' ');
+      }
+
       function buildEmailContent() {
         const exec = executives[selectedRole];
+        const roleLabel = exec.title.split(' (')[0];
         const originalMessage = sanitizeText(document.getElementById('userMessage').value);
         const context = sanitizeText(document.getElementById('userContext').value);
+        const messageSentence = normaliseForSentence(originalMessage);
+        const contextSentence = context && context !== 'Our platform helps improve operational efficiency and patient experience.' ? normaliseForSentence(context) : '';
 
-        const subject = `Let’s explore support for ${exec.title.split(' (')[0]} priorities`;
+        const valueHeadline = exec.focus.toLowerCase();
+        const painPoint = exec.pain.toLowerCase();
+
+        const subject = `Quick question on ${valueHeadline} for ${roleLabel}`;
         const body = [
           'Hi [Name],',
           '',
-          `I wanted to connect on a timely topic for ${exec.title.split(' (')[0]} leadership.`,
+          `I wanted to reach out because I believe there may be a timely opportunity to support ${roleLabel.toLowerCase()} priorities around ${painPoint}.`,
           '',
-          `The challenge we are seeing in healthcare organizations today is that teams need a way to ${originalMessage.toLowerCase()}.`,
-          context && context !== 'Our platform helps improve operational efficiency and patient experience.' ? `In your environment, ${context.toLowerCase()}, which makes this especially relevant.` : '',
+          `The challenge in healthcare today is that teams need a way to ${messageSentence.toLowerCase()}.`,
+          contextSentence ? `In your environment, ${contextSentence.toLowerCase()}, which makes this especially relevant.` : 'This is particularly important as organizations continue to balance performance, access, and patient experience goals.',
           '',
-          'I believe there may be a strong fit between your priorities and the support we provide, and I would welcome a brief conversation to explore where this creates the most value.',
+          `I think there could be a strong fit between your priorities and what we help organizations accomplish around ${valueHeadline}. I would welcome a brief conversation to explore where that value may be most meaningful.`,
           '',
           'Would you be open to a short discussion next week?',
           '',
@@ -667,9 +770,9 @@
 
       function buildVoicemail() {
         const exec = executives[selectedRole];
-        const roleName = exec.title.split(' (')[0];
+        const roleLabel = exec.title.split(' (')[0];
         const message = sanitizeText(document.getElementById('userMessage').value);
-        return `Hi [Name], this is [Your Name]. I’m reaching out because I believe we can help support ${roleName.toLowerCase()} priorities around improving operational performance and patient experience. Specifically, the opportunity is to help with ${message.toLowerCase()}. I’d welcome a quick conversation when it makes sense. Thank you and I’ll follow up by email.`;
+        return `Hi [Name], this is [Your Name]. I’m reaching out because I believe we can help support ${roleLabel.toLowerCase()} priorities around ${exec.pain.toLowerCase()}. Specifically, the opportunity is to help organizations ${message.toLowerCase()}. I’d welcome a quick conversation when it makes sense. Thank you and I’ll send a follow-up note by email.`;
       }
 
       function showGeneratedContent() {

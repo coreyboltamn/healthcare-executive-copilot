@@ -125,17 +125,20 @@
         display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; margin-top: 18px;
       }
       .role-chip {
-        display: flex; align-items: center; gap: 12px; min-width: 0;
-        background: rgba(27,117,208,0.04); border: 1px solid rgba(27,117,208,0.12); border-radius: 16px; padding: 12px 14px;
-        color: var(--slate-700); font-weight: 600; font-size: 0.95rem;
+        display: flex; align-items: center; gap: 11px; min-width: 0; width: 100%;
+        background: rgba(27,117,208,0.04); border: 1px solid rgba(27,117,208,0.12); border-radius: 16px; padding: 9px 12px;
+        color: var(--slate-700); font-family: inherit; font-weight: 600; font-size: 0.95rem; text-align: left; cursor: pointer; transition: all 0.2s ease;
       }
+      .role-chip:hover { transform: translateY(-2px); border-color: rgba(27,117,208,0.35); background: rgba(27,117,208,0.08); }
+      .role-chip.active { background: rgba(27,117,208,0.12); border-color: var(--blue-600); box-shadow: 0 4px 14px rgba(13,94,168,0.12); }
       .role-icon {
-        display: inline-grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px;
+        display: inline-grid; place-items: center; flex: 0 0 38px; width: 38px; height: 38px;
         border-radius: 13px; background: rgba(27,117,208,0.09); color: var(--blue-700);
       }
       .role-icon svg { display: block; width: 24px; height: 24px; }
       .role-chip-label { min-width: 0; }
-      .role-chip-label small { display: block; margin-top: 2px; color: var(--slate-500); font-size: 0.78rem; font-weight: 500; line-height: 1.4; }
+      .role-chip-label small { display: block; margin-top: 1px; color: var(--slate-500); font-size: 0.76rem; font-weight: 500; line-height: 1.3; }
+      .role-chip.active .role-chip-label small { color: var(--blue-800); }
       .guide-legend {
         display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 0; padding: 0; list-style: none;
       }
@@ -351,7 +354,7 @@
 
         <div class="info-section" id="executive-roles">
           <h2>Executive roles</h2>
-          <p>Choose the healthcare leader you want to engage so the tool can tailor priorities, pain points, and questions.</p>
+          <p>Select a buyer persona to tailor priorities, discovery questions, and outreach messaging.</p>
           <div class="role-grid" id="executiveRoleGrid"></div>
         </div>
 
@@ -737,11 +740,18 @@
         const container = document.getElementById(containerId);
         Object.keys(executives).forEach((key) => {
           const detail = roleDetails[key];
-          const item = document.createElement(guide ? 'li' : 'div');
+          const item = document.createElement(guide ? 'li' : 'button');
           item.className = guide ? 'guide-legend-item' : 'role-chip';
+          if (!guide) {
+            item.type = 'button';
+            item.dataset.role = key;
+            item.setAttribute('aria-pressed', String(key === selectedRole));
+            item.classList.toggle('active', key === selectedRole);
+            item.addEventListener('click', () => selectRole(key));
+          }
           item.innerHTML = guide
             ? `${roleIcon(key)}<span class="guide-legend-role">${detail.label}</span><span class="guide-legend-separator" aria-hidden="true">—</span><span class="guide-legend-cue">${detail.cue}</span>`
-            : `${roleIcon(key)}<span class="role-chip-label"><span>${detail.label}</span></span>`;
+            : `${roleIcon(key)}<span class="role-chip-label"><span>${detail.label}</span><small>${detail.cue}</small></span>`;
           container.appendChild(item);
         });
       }
@@ -797,6 +807,10 @@
         const exec = executives[role];
 
         document.querySelectorAll('.role-btn').forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.role === role);
+          btn.setAttribute('aria-pressed', String(btn.dataset.role === role));
+        });
+        document.querySelectorAll('.role-chip').forEach((btn) => {
           btn.classList.toggle('active', btn.dataset.role === role);
           btn.setAttribute('aria-pressed', String(btn.dataset.role === role));
         });

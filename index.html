@@ -559,16 +559,6 @@
       display: none;
     }
 
-    @media (max-width: 1024px) {
-      .nav-links {
-        gap: 16px;
-      }
-
-      .nav-link {
-        font-size: 12px;
-      }
-    }
-
     @media (max-width: 950px) {
       .coach-body {
         grid-template-columns: 1fr;
@@ -950,9 +940,11 @@
       const container = document.getElementById('roleButtons');
       Object.keys(executives).forEach((key) => {
         const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.dataset.role = key;
         btn.className = `role-btn ${key === 'ceo' ? 'active' : ''}`;
         btn.textContent = executives[key].title.split(' (')[0];
-        btn.addEventListener('click', () => selectRole(key));
+        btn.addEventListener('click', (event) => selectRole(key, event));
         container.appendChild(btn);
       });
     }
@@ -967,14 +959,16 @@
 
       tabs.forEach((tab, idx) => {
         const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.dataset.tab = tab.id;
         btn.className = `tab-btn ${idx === 0 ? 'active' : ''}`;
         btn.textContent = tab.label;
-        btn.addEventListener('click', () => switchTab(tab.id));
+        btn.addEventListener('click', (event) => switchTab(tab.id, event));
         container.appendChild(btn);
       });
     }
 
-    function selectRole(role) {
+    function selectRole(role, event = null) {
       selectedRole = role;
       const exec = executives[role];
 
@@ -982,7 +976,10 @@
         btn.classList.remove('active');
       });
 
-      event.target.classList.add('active');
+      const selectedButton = document.querySelector(`.role-btn[data-role="${role}"]`);
+      if (selectedButton) {
+        selectedButton.classList.add('active');
+      }
 
       document.getElementById('executiveTitle').textContent = exec.title;
       document.getElementById('executiveDescription').textContent = exec.description;
@@ -1010,7 +1007,7 @@
       `;
     }
 
-    function switchTab(tabId) {
+    function switchTab(tabId, event = null) {
       document.querySelectorAll('.tab-content').forEach((tab) => {
         tab.classList.remove('active');
       });
@@ -1019,8 +1016,15 @@
         btn.classList.remove('active');
       });
 
-      document.getElementById(tabId).classList.add('active');
-      event.target.classList.add('active');
+      const activeTab = document.getElementById(tabId);
+      if (activeTab) {
+        activeTab.classList.add('active');
+      }
+
+      const activeButton = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+      if (activeButton) {
+        activeButton.classList.add('active');
+      }
     }
 
     function generateOutreach() {
@@ -1058,10 +1062,10 @@ Best regards,
       document.getElementById('voicemailCard').classList.add('show');
     }
 
-    function copyToClipboard(target) {
+    function copyToClipboard(target, event = null) {
       const text = document.getElementById(target).textContent;
       navigator.clipboard.writeText(text).then(() => {
-        const btn = event.target;
+        const btn = event ? event.target : document.querySelector(`.copy-btn[data-target="${target}"]`);
         const originalText = btn.textContent;
         btn.textContent = 'Copied!';
         setTimeout(() => {
@@ -1086,13 +1090,14 @@ Best regards,
     document.querySelectorAll('.copy-btn').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         const target = e.target.getAttribute('data-target');
-        copyToClipboard(target);
+        copyToClipboard(target, e);
       });
     });
 
     renderRoleButtons();
     renderTabs();
     selectRole('ceo');
+    switchTab('pointsTab');
   </script>
 </body>
 </html>

@@ -828,8 +828,86 @@
         switchTab('pointsTab');
       }
 
+      const emailProfiles = {
+        ceo: {
+          greeting: 'Hi [Name],',
+          hook: 'Leadership teams are balancing growth, margin, and access, and strategic execution is rarely simple.',
+          outcome: 'The aim is to support enterprise priorities without adding operating complexity.',
+          proof: 'We typically frame results around a few measurable enterprise outcomes agreed with leadership up front.',
+          ctas: ['Would a 15-minute conversation next week be useful to compare priorities?', 'If this is relevant, I can share a short strategic overview for your review.'],
+          subjects: ['Supporting enterprise priorities at [Organization]', 'A perspective on strategic execution', 'Strategy and execution: a brief idea']
+        },
+        cfo: {
+          greeting: 'Hi [Name],',
+          hook: 'With margin pressure and cost scrutiny continuing, finance leaders need clarity on where investment returns value.',
+          outcome: 'The focus is on a measurable, defensible impact on cost, risk, and return.',
+          proof: 'We build the business case with your baseline data so assumptions can be reviewed and tested.',
+          ctas: ['Would you be open to a 20-minute review of the financial assumptions?', 'I can send a one-page summary of how we model impact if that is easier.'],
+          subjects: ['Margin and ROI considerations at [Organization]', 'A practical view of cost and return', 'Financial impact, with assumptions you can test']
+        },
+        coo: {
+          greeting: 'Hi [Name],',
+          hook: 'Operational leaders are asked to improve throughput and reliability while teams are stretched.',
+          outcome: 'The goal is a smoother day-to-day workflow that staff can adopt without added disruption.',
+          proof: 'Implementation is typically phased and scoped with your operations team to limit workflow disruption.',
+          ctas: ['Could we take 15 minutes to walk through where this might fit your operations?', 'If helpful, I can outline a phased approach for your team to react to.'],
+          subjects: ['Reliable operations at [Organization]', 'Throughput and adoption: a short idea', 'Reducing operational friction']
+        },
+        cno: {
+          greeting: 'Hi [Name],',
+          hook: 'Nursing leaders are protecting care quality and safety while managing workload and staffing strain.',
+          outcome: 'The intent is to support bedside teams and quality outcomes without adding to their workload.',
+          proof: 'We work with frontline input so the approach reflects how nurses actually deliver care.',
+          ctas: ['Would you be open to a brief conversation about what would help your nursing teams most?', 'I would welcome your view on whether this is worth a deeper look.'],
+          subjects: ['Supporting nursing teams and care quality', 'Care quality and workload: a short note', 'A frontline-informed approach for nursing']
+        },
+        chro: {
+          greeting: 'Hi [Name],',
+          hook: 'Retention, burnout, and recruitment remain central workforce concerns across healthcare.',
+          outcome: 'The objective is a better employee experience and sustained productivity.',
+          proof: 'We typically start with the retention and engagement indicators you already track.',
+          ctas: ['Would a 15-minute call to hear how your workforce priorities are evolving be useful?', 'I can share a short example of how others approach this if you prefer to read first.'],
+          subjects: ['Workforce experience at [Organization]', 'Retention and engagement: a brief thought', 'Supporting your people priorities']
+        },
+        cxo: {
+          greeting: 'Hi [Name],',
+          hook: 'Patient expectations for access, communication, and trust keep rising.',
+          outcome: 'The aim is a more consistent, respectful experience at each point of the patient journey.',
+          proof: 'Progress is typically tracked with the experience and access measures your teams already use.',
+          ctas: ['Would you be open to a short conversation about your experience priorities?', 'I can send a brief overview if you would like to review it first.'],
+          subjects: ['Patient experience priorities at [Organization]', 'Access and trust across the patient journey', 'A note on improving patient experience']
+        },
+        cmo: {
+          greeting: 'Hi [Name],',
+          hook: 'Medical leaders are focused on clinical outcomes, consistency of care, and physician engagement.',
+          outcome: 'The goal is to support clinical decision-making and outcomes with evidence clinicians can review.',
+          proof: 'We share the supporting evidence and methods openly so your clinical leaders can assess fit.',
+          ctas: ['Would you be willing to spend 15 minutes on whether this aligns with your clinical priorities?', 'I can forward the supporting evidence for your clinical team to review.'],
+          subjects: ['Clinical outcomes and consistency of care', 'Evidence for your clinical priorities', 'Supporting physician leadership at [Organization]']
+        },
+        supply: {
+          greeting: 'Hi [Name],',
+          hook: 'Supply continuity and cost-to-serve are under pressure from variability across vendors and demand.',
+          outcome: 'The objective is more reliable supply and clearer visibility without adding procurement burden.',
+          proof: 'We start from your current supply and utilization data to identify practical opportunities.',
+          ctas: ['Could we schedule 15 minutes to discuss where reliability is most at risk?', 'I can share a brief example of how similar teams approached this.'],
+          subjects: ['Supply continuity at [Organization]', 'Cost-to-serve and reliability: a short idea', 'Strengthening supply visibility']
+        },
+        language: {
+          greeting: 'Hi [Name],',
+          hook: 'Ensuring patients understand their care, regardless of language, is both an equity and a compliance priority.',
+          outcome: 'The aim is clear, timely communication that supports patient understanding and regulatory expectations.',
+          proof: 'We would align with your current language service model and compliance requirements before suggesting changes.',
+          ctas: ['Would you be open to a brief discussion on language access at your organization?', 'I can send a short overview of how this fits within existing interpreter workflows.'],
+          subjects: ['Language access at [Organization]', 'Patient understanding and access for all languages', 'Supporting equitable communication']
+        }
+      };
+
+      const defaultMessage = 'Our platform helps improve operational efficiency and patient experience.';
+      const hypePattern = /\b(revolutionary|game[- ]chang(?:ing|er)|best[- ]in[- ]class|guaranteed?|100%|cutting[- ]edge|world[- ]class|transformative|unmatched|skyrocket|dramatically|always|never)\b/gi;
+
       function sanitizeText(value) {
-        return (value || '').trim() || 'Our platform helps improve operational efficiency and patient experience.';
+        return (value || '').trim() || defaultMessage;
       }
 
       function normaliseForSentence(value) {
@@ -838,33 +916,82 @@
         return clean.replace(/\s+/g, ' ');
       }
 
+      const verbPattern = /^(?:reduce|improve|increase|streamline|support|strengthen|simplify|automate|enable|help|lower|enhance|cut|shorten|identify)\b/i;
+
+      function toBaseVerb(verb) {
+        const v = verb.toLowerCase();
+        if (/(ss|sh|ch|x|z|o)es$/.test(v)) return v.slice(0, -2);
+        if (/ies$/.test(v)) return v.slice(0, -3) + 'y';
+        return v.replace(/s$/, '');
+      }
+
+      // Returns { text, isAction }: isAction means text starts with a verb ("reduce costs ...")
+      function parseMessage(value) {
+        let text = normaliseForSentence(value).split(/(?<=[.!?])\s+/)[0];
+        text = text.replace(hypePattern, '').replace(/\s+([,.;])/g, '$1').replace(/\s+/g, ' ').trim().replace(/[.!?\s]+$/, '');
+        let isAction = false;
+        const subject = text.match(/^(?:our|the|this)\s+(?:\w+\s+)?(?:platform|solution|product|tool|service|team|software)\s+(\w+)\s+(.*)$/i);
+        const we = text.match(/^we\s+(?:help|enable|support)\s+(?:you\s+|organizations\s+|teams\s+)?(?:to\s+)?(.*)$/i);
+        const helps = text.match(/^(?:our|the|this)\s+(?:\w+\s+)?(?:platform|solution|product|tool|service)\s+(?:helps?|enables?|allows?)\s+(?:you\s+|organizations\s+|teams\s+)?(?:to\s+)?(.*)$/i);
+        if (helps) { text = helps[1]; isAction = true; }
+        else if (subject) { text = toBaseVerb(subject[1]) + ' ' + subject[2]; isAction = true; }
+        else if (we && verbPattern.test(we[1])) { text = we[1]; isAction = true; }
+        if (verbPattern.test(text.replace(/^to\s+/i, ''))) {
+          text = text.replace(/^to\s+/i, '');
+          isAction = true;
+        }
+        if (/^[A-Z][a-z]/.test(text) && !/^(I|We|Our)\b/.test(text)) text = text.charAt(0).toLowerCase() + text.slice(1);
+        return { text, isAction };
+      }
+
+      function cleanPhrase(value) {
+        return parseMessage(value).text;
+      }
+
+      function capitaliseSentence(value) {
+        const text = String(value || '').trim();
+        if (!text) return '';
+        const sentence = text.charAt(0).toUpperCase() + text.slice(1);
+        return /[.!?]$/.test(sentence) ? sentence : sentence + '.';
+      }
+
+      function pickVariant(list, seed) {
+        let hash = 0;
+        for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+        return list[hash % list.length];
+      }
+
       function buildEmailContent() {
         const exec = executives[selectedRole];
-        const roleLabel = exec.title.split(' (')[0];
-        const originalMessage = sanitizeText(document.getElementById('userMessage').value);
-        const context = sanitizeText(document.getElementById('userContext').value);
-        const messageSentence = normaliseForSentence(originalMessage);
-        const contextSentence = context && context !== 'Our platform helps improve operational efficiency and patient experience.' ? normaliseForSentence(context) : '';
+        const profile = emailProfiles[selectedRole];
+        const rawMessage = document.getElementById('userMessage').value;
+        const rawContext = document.getElementById('userContext').value;
+        const parsed = parseMessage(sanitizeText(rawMessage));
+        const context = rawContext.trim() ? cleanPhrase(rawContext) : '';
+        const seed = selectedRole + '|' + rawMessage.trim() + '|' + rawContext.trim();
 
-        const valueHeadline = exec.focus.toLowerCase();
-        const painPoint = exec.pain.toLowerCase();
+        const hook = context
+          ? `${capitaliseSentence('I understand ' + context)} ${profile.hook}`
+          : profile.hook;
+        let outcome = profile.outcome;
+        if (rawMessage.trim()) {
+          outcome = (parsed.isAction ? `We help organizations ${parsed.text}.` : capitaliseSentence(/^(?:we|our|i)\b/i.test(parsed.text) ? parsed.text : `in short, ${parsed.text}`)) + ' ' + profile.outcome;
+        }
 
-        const subject = `Quick question on ${valueHeadline} for ${roleLabel}`;
+        const subject = pickVariant(profile.subjects, seed);
         const body = [
-          'Hi [Name],',
+          profile.greeting,
           '',
-          `I wanted to reach out because I believe there may be a timely opportunity to support ${roleLabel.toLowerCase()} priorities around ${painPoint}.`,
+          hook,
           '',
-          `The challenge in healthcare today is that teams need a way to ${messageSentence.toLowerCase()}.`,
-          contextSentence ? `In your environment, ${contextSentence.toLowerCase()}, which makes this especially relevant.` : 'This is particularly important as organizations continue to balance performance, access, and patient experience goals.',
+          outcome,
+          profile.proof,
           '',
-          `I think there could be a strong fit between your priorities and what we help organizations accomplish around ${valueHeadline}. I would welcome a brief conversation to explore where that value may be most meaningful.`,
+          pickVariant(profile.ctas, seed + 'cta'),
           '',
-          'Would you be open to a short discussion next week?',
-          '',
-          'Best,',
+          'Best regards,',
           '[Your Name]'
-        ].filter(Boolean).join('\n');
+        ].join('\n');
 
         return { subject, body };
       }
@@ -872,8 +999,9 @@
       function buildVoicemail() {
         const exec = executives[selectedRole];
         const roleLabel = exec.title.split(' (')[0];
-        const message = sanitizeText(document.getElementById('userMessage').value);
-        return `Hi [Name], this is [Your Name]. I’m reaching out because I believe we can help support ${roleLabel.toLowerCase()} priorities around ${exec.pain.toLowerCase()}. Specifically, the opportunity is to help organizations ${message.toLowerCase()}. I’d welcome a quick conversation when it makes sense. Thank you and I’ll send a follow-up note by email.`;
+        const parsed = parseMessage(sanitizeText(document.getElementById('userMessage').value));
+        const what = parsed.isAction ? `how organizations ${parsed.text}` : parsed.text;
+        return `Hi [Name], this is [Your Name] from [Company]. I'm calling because we work with ${roleLabel} teams on ${exec.pain.toLowerCase()}, specifically ${what}. I'll send a short email with more detail. If it's relevant, I'd welcome a brief conversation. Thank you.`;
       }
 
       function showGeneratedContent() {

@@ -199,6 +199,9 @@
       .input-field:focus {
         outline: none; border-color: var(--blue-600); box-shadow: 0 0 0 4px rgba(27, 117, 208, 0.1);
       }
+      select.input-field { min-height: 0; resize: none; background: white; cursor: pointer; }
+      select.input-field:focus-visible { outline: 3px solid var(--orange-500); outline-offset: 3px; }
+      .input-hint { font-size: 12px; color: var(--slate-600, #475569); }
       .button-group { display: flex; gap: 12px; flex-wrap: wrap; }
       .btn-primary, .btn-secondary, .copy-btn {
         border-radius: 14px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s ease;
@@ -328,12 +331,12 @@
                 <span>stakeholder lenses</span>
               </div>
               <div class="metric">
-                <strong>3</strong>
-                <span>ready-to-use outputs</span>
+                <strong>2</strong>
+                <span>ready-to-send outreach drafts</span>
               </div>
               <div class="metric">
                 <strong>1</strong>
-                <span>more relevant message</span>
+                <span>role-specific conversation guide</span>
               </div>
             </div>
           </div>
@@ -372,12 +375,24 @@
               </div>
 
               <div class="input-group">
-                <label class="input-label">2. Your current message</label>
+                <label class="input-label" for="solutionFocus">2. Solution Focus</label>
+                <select class="input-field" id="solutionFocus" aria-describedby="solutionHint">
+                  <option value="">Select a solution</option>
+                  <option value="remote">Remote Interpreting</option>
+                  <option value="ipi">IPI (In-Person Interpreting)</option>
+                  <option value="ai">AI Translation</option>
+                  <option value="msp">IPI MSP Management Platform</option>
+                </select>
+                <span class="input-hint" id="solutionHint">Used to tailor outcomes and language in drafts.</span>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label" for="userMessage">3. Your current message</label>
                 <textarea class="input-field" id="userMessage" placeholder="Example: Our platform reduces operational costs through workflow automation and real-time analytics."></textarea>
               </div>
 
               <div class="input-group">
-                <label class="input-label">3. Context or situation (optional)</label>
+                <label class="input-label" for="userContext">4. Context or situation (optional)</label>
                 <textarea class="input-field" id="userContext" placeholder="Example: The health system is focused on margin pressure, staffing strain, and patient access."></textarea>
               </div>
 
@@ -1076,8 +1091,15 @@
         const hook = [variant(profile.hooks, 'hook'), theme && theme.hook].filter(Boolean).join(' ');
         const outcome = [theme && theme.outcome, variant(profile.outcomes, 'outcome')].filter(Boolean).join(' ');
         const proof = [theme && theme.proof, variant(profile.proofs, 'proof')].filter(Boolean).join(' ');
+        const solution = getSelectedSolution();
+        const solutionOutcome = solution && solution.angles[selectedRole];
         const subject = theme ? `${theme.subject}: ${variant(profile.subjects, 'subject')}` : variant(profile.subjects, 'subject');
-        const cta = theme
+        const cta = solution
+          ? pickVariant([
+            `Would a brief conversation about ${solution.topic} and ${profile.ctaFocus} be useful?`,
+            `Could we set aside 15 minutes to discuss ${solution.topic} in relation to ${profile.ctaFocus}?`
+          ], `${seed}|solution-cta`, rotation)
+          : theme
           ? pickVariant([
             `Would a brief conversation about ${theme.ctaTopic} and ${profile.ctaFocus} be useful?`,
             `Could we set aside 15 minutes to discuss ${theme.ctaTopic} in relation to ${profile.ctaFocus}?`
@@ -1091,7 +1113,8 @@
           message ? `Message focus: ${capitaliseSentence(message)}` : null,
           '',
           outcome,
-          proof,
+          solutionOutcome || null,
+          solution ? solution.proof : proof,
           '',
           cta,
           '',
@@ -1102,7 +1125,7 @@
           body += '\n\nAn initial review can clarify the current baseline, practical constraints, and measures your team would use to assess fit. From there, we can determine whether a focused next step is warranted and which stakeholders should be involved in a follow-up discussion.';
         }
 
-        return { subject, body };
+        return { subject: solution ? `${solution.name}: ${subject}` : subject, body };
       }
 
       function buildVoicemail(rotation) {
@@ -1111,6 +1134,7 @@
         const rawMessage = document.getElementById('userMessage').value;
         const rawContext = document.getElementById('userContext').value;
         const theme = detectContextTheme(`${rawMessage} ${rawContext}`);
+        const solution = getSelectedSolution();
         const focus = theme ? theme.name : exec.pain.toLowerCase();
         const seed = `${selectedRole}|${rawMessage.trim()}|${rawContext.trim()}|voicemail`;
         const introduction = pickVariant(profile.voicemail, seed, rotation);
@@ -1118,7 +1142,99 @@
           'I will send a short email with more detail; if it is relevant, would a brief conversation be useful?',
           'I will follow up by email. If this aligns with your priorities, I would welcome a short conversation.'
         ], `${seed}|followup`, rotation);
-        return `Hi [Name], this is [Your Name] from [Company]. ${introduction} I am especially interested in your focus on ${focus}. ${followUp} Thank you.`;
+        return `Hi [Name], this is [Your Name] from [Company]. ${introduction} ${solution ? `I am reaching out about ${solution.voicemail}, and how it relates to ${exec.focus.toLowerCase()}. ` : ''}I am especially interested in your focus on ${focus}. ${followUp} Thank you.`;
+      }
+
+      const solutionProfiles = {
+        remote: {
+          name: 'Remote Interpreting',
+          proof: 'Review current language-access demand, response times, and coverage gaps to see where on-demand video and phone support could help.',
+          topic: 'on-demand remote interpreting access',
+          voicemail: 'on-demand interpreter access',
+          angles: {
+            ceo: 'Consistent, on-demand language access can support patient access and enterprise quality goals without adding fixed overhead.',
+            cfo: 'Remote interpreting can convert a variable, hard-to-forecast language-access cost into a more predictable, usage-based model.',
+            coo: 'Faster interpreter connection times can reduce visit delays and scheduling friction across service lines.',
+            cno: 'Nurses can reach a qualified interpreter quickly at the bedside, reducing time spent finding language support.',
+            chro: 'Reliable interpreter access can reduce the ad hoc burden on bilingual staff who are pulled away from their own roles.',
+            cxo: 'Timely interpreter access helps patients feel understood from the first interaction, supporting experience scores.',
+            cmo: 'Prompt, qualified interpretation supports accurate histories and consent, which are central to safe clinical care.',
+            supply: 'A consolidated remote interpreting model can simplify vendor coverage and make utilization easier to track.',
+            language: 'Wider language and modality coverage can help your team meet demand across more languages and hours.',
+            equity: 'Consistent access across languages and sites can help narrow gaps in how patients experience care.'
+          }
+        },
+        ipi: {
+          name: 'In-Person Interpreting',
+          proof: 'Identify the appointment types where in-person interpreting matters most, such as complex consent, behavioral health, or end-of-life conversations.',
+          topic: 'in-person interpreting for high-stakes encounters',
+          voicemail: 'in-person interpreting for complex encounters',
+          angles: {
+            ceo: 'In-person interpreting for high-stakes encounters can support trust and quality in the moments that shape reputation.',
+            cfo: 'Targeting in-person support to the encounters that need it can help balance service quality against spend.',
+            coo: 'Reliable scheduling of on-site interpreters can reduce last-minute cancellations and rework for complex appointments.',
+            cno: 'On-site interpreters can support nuanced bedside conversations, from discharge teaching to family meetings.',
+            chro: 'Dependable on-site support can reduce strain on staff handling sensitive conversations without qualified help.',
+            cxo: 'A present, qualified interpreter can make sensitive visits feel more personal and respectful for patients and families.',
+            cmo: 'In-person interpretation can support accuracy in informed consent and complex clinical discussions.',
+            supply: 'A clear fulfilment model for on-site requests can improve visibility into fill rates and cost per encounter.',
+            language: 'Qualified on-site interpreters can extend your team\'s reach for encounters that need in-person presence.',
+            equity: 'In-person support can help ensure patients with the greatest communication needs are not left behind.'
+          }
+        },
+        ai: {
+          name: 'AI Translation',
+          proof: 'Start with a defined set of low-risk written materials, with human review where clinical accuracy matters, and compare turnaround time and quality.',
+          topic: 'AI-assisted translation of patient materials',
+          voicemail: 'AI-assisted translation with human oversight',
+          angles: {
+            ceo: 'AI-assisted translation can help extend language access across the enterprise while keeping appropriate human oversight.',
+            cfo: 'Faster translation turnaround can reduce per-document effort, with spend that scales to volume.',
+            coo: 'Shorter turnaround on patient-facing documents can remove a recurring bottleneck in discharge and intake workflows.',
+            cno: 'Translated discharge and education materials available sooner can support clearer instructions at transition points.',
+            chro: 'Automating routine translation can free language-services staff to focus on higher-value work.',
+            cxo: 'Patient communications in a preferred language, delivered faster, can improve clarity across the journey.',
+            cmo: 'Clinical content can be translated faster with clinician or linguist review, keeping accuracy and safety in view.',
+            supply: 'A governed translation workflow can consolidate scattered requests and make volume and cost easier to see.',
+            language: 'AI translation can handle routine volume so linguists concentrate on review, quality, and complex content.',
+            equity: 'Faster translation of patient materials can help more patients receive information in a language they understand.'
+          }
+        },
+        msp: {
+          name: 'IPI MSP Management Platform',
+          proof: 'Map current in-person interpreting vendors and request volume to see where a single platform could improve scheduling, fill-rate visibility, and invoicing.',
+          topic: 'managing in-person interpreting vendors through one platform',
+          voicemail: 'managing in-person interpreting vendors through a single platform',
+          angles: {
+            ceo: 'A single management platform can bring in-person interpreting under clearer governance and performance reporting.',
+            cfo: 'Consolidating vendors and invoicing can improve spend visibility and support more predictable interpreting costs.',
+            coo: 'Centralized scheduling and fill-rate tracking can reduce coordination effort across sites and departments.',
+            cno: 'Less time spent arranging interpreters means unit teams can focus on patient care.',
+            chro: 'Reducing manual scheduling and vendor follow-up can lighten administrative load on coordinators and managers.',
+            cxo: 'More dependable interpreter fulfilment can support a more consistent patient experience across locations.',
+            cmo: 'Standardized vendor quality and credentialing oversight can support consistent clinical communication.',
+            supply: 'Vendor consolidation, rate standardization, and SLA reporting are central to how this platform is evaluated.',
+            language: 'One view of requests, vendors, and fill rates can make language-services performance easier to manage.',
+            equity: 'Utilization and fulfilment data by language and site can show where access gaps persist.'
+          }
+        }
+      };
+
+      // Solution-persona fit hooks for future predictive scoring: 0 (weak) to 3 (strong).
+      const solutionPersonaFit = {
+        remote: { ceo: 2, cfo: 2, coo: 3, cno: 3, chro: 1, cxo: 3, cmo: 2, supply: 2, language: 3, equity: 3 },
+        ipi: { ceo: 1, cfo: 1, coo: 2, cno: 3, chro: 1, cxo: 3, cmo: 3, supply: 1, language: 3, equity: 3 },
+        ai: { ceo: 2, cfo: 3, coo: 3, cno: 1, chro: 1, cxo: 2, cmo: 1, supply: 2, language: 3, equity: 3 },
+        msp: { ceo: 2, cfo: 3, coo: 3, cno: 1, chro: 2, cxo: 1, cmo: 1, supply: 3, language: 2, equity: 2 }
+      };
+
+      function getSelectedSolution() {
+        const key = document.getElementById('solutionFocus').value;
+        return solutionProfiles[key] ? { key, ...solutionProfiles[key] } : null;
+      }
+
+      function getSolutionFit(solutionKey, role) {
+        return (solutionPersonaFit[solutionKey] || {})[role] || 0;
       }
 
       let generationCount = 0;
@@ -1144,6 +1260,7 @@
       function resetForm() {
         document.getElementById('userMessage').value = '';
         document.getElementById('userContext').value = '';
+        document.getElementById('solutionFocus').value = '';
         document.getElementById('emailCard').classList.remove('show');
         document.getElementById('voicemailCard').classList.remove('show');
         document.getElementById('emailSubject').classList.remove('show');

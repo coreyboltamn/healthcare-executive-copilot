@@ -251,6 +251,32 @@
       .copy-btn { padding: 10px 16px; border: none; background: var(--blue-600); color: white; }
       .copy-btn:hover { background: var(--blue-700); transform: translateY(-1px); }
 
+      select.input-field, input.input-field { min-height: 0; }
+      input.input-field { resize: none; }
+      .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .option-field { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 700; color: var(--slate-700); min-width: 0; }
+      .option-field:last-child { grid-column: 1 / -1; }
+      .scorecard {
+        display: none; margin-top: 20px; padding: 18px; background: white; border: 1px solid rgba(27,117,208,0.25); border-radius: 14px;
+      }
+      .scorecard.show { display: block; }
+      .scorecard h3 { margin: 0 0 12px 0; font-size: 16px; color: var(--slate-900); }
+      .scorecard h4 { margin: 16px 0 6px 0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate-500); }
+      .scorecard-tag { color: var(--blue-700); }
+      .score-top { display: flex; align-items: center; gap: 18px; }
+      .score-number { font-size: 2.6rem; font-weight: 800; color: var(--slate-900); line-height: 1; white-space: nowrap; }
+      .score-number small { font-size: 0.9rem; color: var(--slate-500); font-weight: 600; margin-left: 4px; }
+      .score-meta { flex: 1; min-width: 0; }
+      .meter { height: 14px; border-radius: 999px; background: var(--slate-200); overflow: hidden; border: 1px solid var(--slate-300); }
+      .meter-fill { height: 100%; width: 0; background: repeating-linear-gradient(135deg, var(--blue-700), var(--blue-700) 8px, var(--blue-500) 8px, var(--blue-500) 16px); transition: width 0.4s ease; }
+      .score-line { margin: 8px 0 0 0; font-size: 13px; color: var(--slate-700); }
+      .variant-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+      .variant-btn { padding: 8px 12px; border: 1px solid var(--slate-300); background: white; color: var(--slate-800); border-radius: 10px; font-weight: 700; font-size: 12px; cursor: pointer; }
+      .variant-btn.active { background: rgba(27,117,208,0.12); border-color: var(--blue-600); color: var(--blue-800); }
+      .score-note { margin: 10px 0 0 0; font-size: 12px; color: var(--slate-700); }
+      .scorecard .pos { color: #0b6b3a; }
+      .scorecard .neg { color: #9a3412; }
+      .scorecard .btn-secondary { margin-top: 14px; }
       .tabs { display: flex; gap: 8px; margin-top: 20px; border-bottom: 1px solid var(--slate-200); flex-wrap: wrap; }
       .tab-btn {
         padding: 11px 12px; border: none; background: transparent; border-radius: 10px 10px 0 0; color: var(--slate-500);
@@ -285,6 +311,9 @@
         .hero-head h1, .coach-head h1 { font-size: 1.5rem; }
         .role-buttons { grid-template-columns: 1fr; }
         .button-group { flex-direction: column; }
+        .option-grid { grid-template-columns: 1fr; }
+        .score-top { flex-direction: column; align-items: flex-start; }
+        .score-meta { width: 100%; }
         .btn-primary { min-width: auto; }
         .stat-group, .hero-metrics, .role-grid { grid-template-columns: 1fr; }
         .nav { min-height: 64px; }
@@ -396,6 +425,25 @@
                 <textarea class="input-field" id="userContext" placeholder="Example: The health system is focused on margin pressure, staffing strain, and patient access."></textarea>
               </div>
 
+              <div class="input-group">
+                <span class="input-label" id="optionsLabel">5. Draft options (optional)</span>
+                <div class="option-grid" role="group" aria-labelledby="optionsLabel">
+                  <label class="option-field">Recipient first name
+                    <input class="input-field" id="recipientName" type="text" maxlength="40" autocomplete="off" placeholder="Leave blank for “Hello,”" />
+                  </label>
+                  <label class="option-field">Your name
+                    <input class="input-field" id="senderName" type="text" maxlength="40" autocomplete="off" placeholder="Used in the sign-off" />
+                  </label>
+                  <label class="option-field">Tone
+                    <select class="input-field" id="toneSelect">
+                      <option value="consultative">Consultative</option>
+                      <option value="concise">Concise</option>
+                      <option value="direct">Direct</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
               <div class="button-group">
                 <button class="btn-primary" id="generateBtn">Generate Outreach</button>
                 <button class="btn-secondary" id="resetBtn">Reset</button>
@@ -424,6 +472,31 @@
                 <div class="message-text" id="emailText"></div>
                 <button class="copy-btn" data-target="emailText">Copy Email</button>
               </div>
+
+              <section class="scorecard" id="scorecard" aria-labelledby="scorecardTitle">
+                <div class="message-tag scorecard-tag">📊 Message Scorecard</div>
+                <h3 id="scorecardTitle">Predicted engagement for the email draft</h3>
+                <div class="score-top">
+                  <div class="score-number"><span id="scoreValue">0</span><small>/ 100</small></div>
+                  <div class="score-meta">
+                    <div id="scoreMeter" class="meter" role="meter" aria-label="Engagement likelihood score" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0 out of 100">
+                      <div class="meter-fill" id="scoreFill"></div>
+                    </div>
+                    <p class="score-line"><b>Engagement Likelihood:</b> <span id="scoreBand"></span> &middot; <b>Confidence:</b> <span id="scoreConfidence"></span> &middot; <span id="scoreWords"></span></p>
+                  </div>
+                </div>
+                <div class="variant-row" role="group" aria-label="Draft variants" id="variantList"></div>
+                <p class="score-note" id="bestDraftNote"></p>
+                <h4>Top score drivers</h4>
+                <ul class="list" id="scoreDrivers"></ul>
+                <h4>Risk flags</h4>
+                <ul class="list" id="scoreFlags"></ul>
+                <h4>Recommended improvements</h4>
+                <ol class="list" id="scoreRecs"></ol>
+                <button class="btn-secondary" id="improveBtn" type="button">Improve draft</button>
+                <p class="score-note" id="improveStatus" role="status" aria-live="polite"></p>
+                <p class="score-note">This score is a heuristic estimate based on message wording and persona/solution fit, not a guarantee of response.</p>
+              </section>
 
               <div class="message-card voicemail" id="voicemailCard">
                 <div class="message-tag voicemail">📞 Recommended voicemail</div>
@@ -881,7 +954,7 @@
           proofs: ['Agree on a small set of baseline measures and review progress with the leaders accountable for them.', 'Use current organizational data to test assumptions before defining a business case.'],
           ctas: ['Would a 15-minute conversation next week be useful to compare priorities?', 'If relevant, could I send a short strategic overview for your review?'],
           ctaFocus: 'enterprise priorities',
-          subjects: ['Supporting enterprise priorities at [Organization]', 'A perspective on strategic execution', 'Strategy and execution: a brief idea'],
+          subjects: ['Supporting enterprise priorities', 'A perspective on strategic execution', 'Strategy and execution: a brief idea'],
           voicemail: ['I am calling with a brief idea related to enterprise priorities and measurable execution.', 'I wanted to compare notes on strategic priorities and how you are measuring progress.']
         },
         cfo: {
@@ -890,7 +963,7 @@
           proofs: ['Build the case with your baseline data so assumptions can be reviewed and tested.', 'Separate established costs from modeled opportunities and agree how each would be measured.'],
           ctas: ['Would you be open to a 20-minute review of the financial assumptions?', 'I can send a one-page summary of how we would model impact if that is easier.'],
           ctaFocus: 'financial assumptions',
-          subjects: ['Margin and ROI considerations at [Organization]', 'A practical view of cost and return', 'Financial impact, with assumptions to test'],
+          subjects: ['Margin and ROI considerations', 'A practical view of cost and return', 'Financial impact, with assumptions to test'],
           voicemail: ['I am calling with a brief thought on measuring financial impact against your current baseline.', 'I wanted to see if a short review of the cost and return assumptions would be useful.']
         },
         coo: {
@@ -917,7 +990,7 @@
           proofs: ['Start with the retention, engagement, and workload indicators you already track.', 'Assess the opportunity with workforce data and input from the employees affected.'],
           ctas: ['Would a 15-minute call to hear how your workforce priorities are evolving be useful?', 'I can share a short example for your review if reading first is easier.'],
           ctaFocus: 'workforce priorities',
-          subjects: ['Workforce experience at [Organization]', 'Retention and engagement: a brief thought', 'Supporting your people priorities'],
+          subjects: ['Workforce experience', 'Retention and engagement: a brief thought', 'Supporting your people priorities'],
           voicemail: ['I am calling with a short thought on workforce experience and retention.', 'I wanted to compare notes on the workforce measures most important to your team.']
         },
         cxo: {
@@ -926,7 +999,7 @@
           proofs: ['Track progress with the experience and access measures your teams already use.', 'Review patient feedback and journey data to identify where barriers or friction remain.'],
           ctas: ['Would you be open to a short conversation about your patient experience priorities?', 'I can send a brief overview if you would prefer to review it first.'],
           ctaFocus: 'patient experience priorities',
-          subjects: ['Patient experience priorities at [Organization]', 'Access and trust across the patient journey', 'A note on patient experience'],
+          subjects: ['Patient experience priorities', 'Access and trust across the patient journey', 'A note on patient experience'],
           voicemail: ['I am calling with a brief idea related to patient access and experience.', 'I wanted to compare notes on how your team is measuring patient experience.']
         },
         cmo: {
@@ -935,7 +1008,7 @@
           proofs: ['Share the supporting evidence and methods so clinical leaders can assess fit.', 'Review relevant clinical measures and implementation assumptions with physician stakeholders.'],
           ctas: ['Would you be willing to spend 15 minutes on whether this aligns with your clinical priorities?', 'I can forward the supporting evidence for your clinical team to review.'],
           ctaFocus: 'clinical priorities',
-          subjects: ['Clinical outcomes and consistency of care', 'Evidence for your clinical priorities', 'Supporting physician leadership at [Organization]'],
+          subjects: ['Clinical outcomes and consistency of care', 'Evidence for your clinical priorities', 'Supporting physician leadership'],
           voicemail: ['I am calling with a brief thought on clinical outcomes and evidence review.', 'I wanted to ask if a short discussion about fit with clinical priorities would be useful.']
         },
         supply: {
@@ -944,7 +1017,7 @@
           proofs: ['Start with current supply, purchasing, and utilization data to test savings assumptions.', 'Make cost baselines and continuity measures visible before prioritizing opportunities.'],
           ctas: ['Could we schedule 15 minutes to discuss where procurement savings may be possible?', 'I can share a brief outline of a cost-to-serve review for your team to consider.'],
           ctaFocus: 'procurement savings',
-          subjects: ['Procurement savings at [Organization]', 'Cost-to-serve: a practical discussion', 'Reducing supply spend while protecting continuity'],
+          subjects: ['Procurement savings', 'Cost-to-serve: a practical discussion', 'Reducing supply spend while protecting continuity'],
           voicemail: ['I am calling with a brief idea on procurement efficiency and cost-to-serve.', 'I wanted to compare notes on savings opportunities that preserve supply continuity.']
         },
         language: {
@@ -953,7 +1026,7 @@
           proofs: ['Align any evaluation with your language service model and compliance requirements.', 'Review access, service quality, and patient feedback across the languages you support.'],
           ctas: ['Would you be open to a brief discussion on language access at your organization?', 'I can send a short overview of how this could fit existing interpreter workflows.'],
           ctaFocus: 'language access priorities',
-          subjects: ['Language access at [Organization]', 'Patient understanding and language access', 'Supporting equitable communication'],
+          subjects: ['Language access', 'Patient understanding and language access', 'Supporting equitable communication'],
           voicemail: ['I am calling with a brief thought on language access and patient understanding.', 'I wanted to ask whether a short discussion about interpreter workflows would be useful.']
         },
         equity: {
@@ -969,79 +1042,204 @@
 
       const contextThemes = [
         {
+          name: 'vendor',
+          label: 'vendor management',
+          pattern: /\b(vendors?|suppliers?|msp|manag(?:e|es|ed|ing|ement))\b/i,
+          subject: 'Vendor management',
+          statement: (n) => `Many organizations are reassessing how they manage ${n.vendors}.`,
+          outcome: 'The aim is clearer oversight of vendor performance without adding administrative work.',
+          proof: 'Compare vendor performance against a clear baseline before changing the model.'
+        },
+        {
+          name: 'fillrate',
+          label: 'fill rates and coverage',
+          pattern: /\b(fill[- ]?rates?|fulfil\w*|coverage|no[- ]shows?|cancell\w*|response times?|availability)\b/i,
+          subject: 'Fill rates and coverage',
+          statement: (n) => `Fill rates and coverage are becoming a closer measure of how well ${n.service} keeps pace with demand.`,
+          outcome: 'The focus is on where requests go unfilled and what that costs patients and staff.',
+          proof: 'Start with current request volume and fill-rate data to see where gaps occur.'
+        },
+        {
           name: 'cost',
-          pattern: /\b(cost|costs|spend|savings|margin|budget|procurement|expense|roi|financial)\b/i,
-          subject: 'Cost and savings priorities',
-          ctaTopic: 'the cost drivers you mentioned',
-          hook: 'The cost and spend priorities you mentioned are a useful place to focus.',
+          label: 'cost and spend',
+          pattern: /\b(cost|costs|spend|savings|margin|budget|procurement|expense|roi|financial|invoic\w*)\b/i,
+          subject: 'Cost and spend',
+          statement: (n) => `Spend on ${n.service} is getting closer scrutiny as budgets tighten.`,
           outcome: 'We can examine where avoidable expense or cost-to-serve may be addressed.',
-          proof: 'Compare any opportunity with a clear baseline and transparent assumptions.',
+          proof: 'Compare any opportunity with a clear baseline and transparent assumptions.'
+        },
+        {
+          name: 'compliance',
+          label: 'compliance',
+          pattern: /\b(complian\w*|regulat\w*|1557|title vi|joint commission|audit\w*|accreditation|legal|requirements?)\b/i,
+          subject: 'Compliance and consistency',
+          statement: (n) => `Regulatory expectations are making consistent, well-documented ${n.service} a growing priority.`,
+          outcome: 'The goal is a consistent, auditable approach that holds up to review.',
+          proof: 'Map current practices to the requirements your organization is held to.'
         },
         {
           name: 'staffing',
-          pattern: /\b(staff|staffing|nurse|nursing|workforce|burnout|capacity|recruitment)\b/i,
-          subject: 'Staffing and workforce priorities',
-          ctaTopic: 'the staffing pressures you described',
-          hook: 'The staffing pressures you described make workforce capacity an important lens.',
+          label: 'staffing and capacity',
+          pattern: /\b(staff|staffing|nurse|nursing|workforce|burnout|recruitment)\b/i,
+          subject: 'Staffing and capacity',
+          statement: (n) => `With staffing stretched, teams have little time to spare on coordinating ${n.service}.`,
           outcome: 'We can focus on workload and capacity without losing sight of staff experience.',
-          proof: 'Review workforce indicators alongside input from the teams doing the work.',
+          proof: 'Review workforce indicators alongside input from the teams doing the work.'
         },
         {
           name: 'quality',
+          label: 'quality and safety',
           pattern: /\b(quality|safety|clinical|outcome|care standard|variation)\b/i,
           subject: 'Quality and care outcomes',
-          ctaTopic: 'the quality measures you raised',
-          hook: 'The quality and care priorities you raised call for a measured, evidence-aware discussion.',
+          statement: (n) => `Quality and safety expectations are shaping how organizations evaluate ${n.service}.`,
           outcome: 'We can evaluate fit against the quality and safety outcomes that matter to your team.',
-          proof: 'Use agreed clinical or operational measures and avoid assumptions about impact.',
+          proof: 'Use agreed clinical or operational measures and avoid assumptions about impact.'
         },
         {
           name: 'access',
-          pattern: /\b(access|appointment|wait|language|interpret|barrier|patient reach)\b/i,
-          subject: 'Patient access priorities',
-          ctaTopic: 'the access barriers you noted',
-          hook: 'The access barriers you mentioned are a meaningful starting point for the discussion.',
+          label: 'patient access',
+          pattern: /\b(access|appointment|wait|language barrier|barrier|patient reach)\b/i,
+          subject: 'Patient access',
+          statement: (n) => `Access barriers for patients who need language support are drawing more attention, and ${n.service} is part of the answer.`,
           outcome: 'We can explore where the patient journey has friction and what access measures reflect it.',
-          proof: 'Compare access data and patient feedback across the populations you serve.',
+          proof: 'Compare access data and patient feedback across the populations you serve.'
         },
         {
           name: 'equity',
-          pattern: /\b(equity|equitable|disparit|social determinant|sdoh|community trust|cultur)\b/i,
-          subject: 'Health equity and community priorities',
-          ctaTopic: 'the equity priorities you shared',
-          hook: 'The equity priorities you shared deserve a discussion grounded in community context.',
+          label: 'health equity',
+          pattern: /\b(equity|equitable|disparit\w*|social determinant|sdoh|community trust|cultur\w*)\b/i,
+          subject: 'Health equity',
+          statement: (n) => `Health equity goals depend on patients getting the same quality of communication, and ${n.service} plays a direct role.`,
           outcome: 'We can focus on measurable differences in access and outcomes across populations.',
-          proof: 'Consider stratified measures, data quality, and community input when assessing progress.',
+          proof: 'Consider stratified measures, data quality, and community input when assessing progress.'
         },
         {
           name: 'technology',
-          pattern: /\b(technology|tech|digital|automation|analytics|integration|software)\b/i,
-          subject: 'Technology fit and implementation',
-          ctaTopic: 'the technology context you described',
-          hook: 'The technology context you described makes practical fit and integration important.',
+          label: 'technology fit',
+          pattern: /\b(technology|tech|digital|automation|analytics|integration|software|platform)\b/i,
+          subject: 'Technology fit',
+          statement: (n) => `Technology choices for ${n.service} are being weighed against workflow fit and integration effort.`,
           outcome: 'We can assess workflow fit, implementation effort, and the intended use of data.',
-          proof: 'Review requirements and assumptions with the teams responsible for implementation.',
+          proof: 'Review requirements and assumptions with the teams responsible for implementation.'
         },
         {
           name: 'throughput',
-          pattern: /\b(throughput|flow|turnaround|wait time|capacity|bottleneck|productivity)\b/i,
-          subject: 'Throughput and patient flow',
-          ctaTopic: 'the throughput constraints you mentioned',
-          hook: 'The throughput challenge you mentioned points to a need to understand process constraints.',
+          label: 'throughput',
+          pattern: /\b(throughput|flow|turnaround|bottleneck|productivity|capacity)\b/i,
+          subject: 'Throughput and flow',
+          statement: (n) => `Delays in ${n.service} can ripple into scheduling and patient flow.`,
           outcome: 'We can identify where workflow or handoffs may affect flow and capacity.',
-          proof: 'Use current process and wait-time measures to establish a baseline before evaluating change.',
+          proof: 'Use current process and wait-time measures to establish a baseline before evaluating change.'
         },
         {
           name: 'retention',
+          label: 'retention',
           pattern: /\b(retention|turnover|engagement|employee experience|attrition)\b/i,
           subject: 'Retention and employee experience',
-          ctaTopic: 'the retention priorities you raised',
-          hook: 'The retention priorities you raised connect directly to workforce experience and stability.',
+          statement: () => 'Retention and employee experience remain closely tied to how manageable day-to-day work feels.',
           outcome: 'We can explore the work conditions and measures linked to retaining valued staff.',
-          proof: 'Start with existing retention data and input from the teams affected.',
+          proof: 'Start with existing retention data and input from the teams affected.'
         }
       ];
       const hypePattern = /\b(revolutionary|game[- ]chang(?:ing|er)|best[- ]in[- ]class|guaranteed?|100%|cutting[- ]edge|world[- ]class|transformative|unmatched|skyrocket|dramatically|always|never)\b/gi;
+
+      const solutionNouns = {
+        none: {
+          service: 'language services',
+          vendors: 'language-services vendors',
+          review: [],
+          vm: ''
+        },
+        remote: {
+          service: 'remote interpreting',
+          vendors: 'remote interpreting vendors and coverage',
+          mix: 'language and after-hours coverage',
+          review: [
+            'A quick look at current demand, response times, and coverage gaps would show where on-demand video and phone support could help.',
+            'Comparing language demand by hour and site against current response times is a practical way to size the opportunity.'
+          ]
+        },
+        ipi: {
+          service: 'in-person interpreting',
+          vendors: 'in-person interpreting vendors',
+          mix: 'high-stakes encounters',
+          review: [
+            'Identifying the appointment types where in-person interpreting matters most, such as complex consent, behavioral health, or end-of-life conversations, is a practical first step.',
+            'Looking at which encounters need an interpreter on site, and how reliably those requests are filled today, would show where to focus.'
+          ]
+        },
+        ai: {
+          service: 'translation of patient materials',
+          vendors: 'translation vendors and review workflows',
+          mix: 'translation volume',
+          review: [
+            'A sensible start is a defined set of low-risk written materials, with human review where clinical accuracy matters, comparing turnaround time and quality.',
+            'Sampling current translation requests by type and turnaround would show where AI-assisted drafts with human review could fit.'
+          ]
+        },
+        msp: {
+          service: 'in-person interpreting',
+          vendors: 'multiple in-person interpreting vendors',
+          mix: 'vendor mix',
+          review: [
+            'A short review that maps current in-person interpreting vendors and request volume would show where a single platform could improve scheduling, fill-rate visibility, and invoicing.',
+            'Mapping today\'s vendors, request volume, and invoicing process side by side would show where one platform could simplify scheduling and reporting.'
+          ]
+        }
+      };
+
+      const solutionPersonaFocus = {
+        remote: {
+          ceo: 'access and quality across sites without added fixed overhead',
+          cfo: 'usage-based cost, predictability, and utilization',
+          coo: 'connection times, scheduling friction, and coverage by hour',
+          cno: 'bedside response time and unit workload',
+          chro: 'reducing ad hoc interpreting by bilingual staff',
+          cxo: 'wait time for language support and patient understanding',
+          cmo: 'accuracy in histories and consent',
+          supply: 'vendor coverage, utilization, and rates',
+          language: 'language and modality coverage, response times, and quality',
+          equity: 'consistent access across languages and sites'
+        },
+        ipi: {
+          ceo: 'trust and quality in high-stakes encounters',
+          cfo: 'cost per encounter and avoidable cancellations',
+          coo: 'scheduling reliability and last-minute cancellations',
+          cno: 'discharge teaching and family meetings',
+          chro: 'support for staff in sensitive conversations',
+          cxo: 'dignity and understanding in sensitive visits',
+          cmo: 'accuracy in consent and complex clinical discussions',
+          supply: 'fill rates, rates, and cost per encounter',
+          language: 'in-person coverage, fill rates, and interpreter quality',
+          equity: 'reaching patients with the greatest communication needs'
+        },
+        ai: {
+          ceo: 'extending access to written information with human oversight',
+          cfo: 'turnaround, per-document cost, and volume-based spend',
+          coo: 'intake and discharge document turnaround',
+          cno: 'timely discharge and education materials',
+          chro: 'moving routine translation off language-services staff',
+          cxo: 'clear written communication in a preferred language',
+          cmo: 'clinical accuracy and review of translated content',
+          supply: 'translation volume, cost visibility, and governance',
+          language: 'routine volume, linguist review, and quality control',
+          equity: 'how many patients receive materials in their language'
+        },
+        msp: {
+          ceo: 'governance and performance reporting across interpreting vendors',
+          cfo: 'vendor spend, invoicing accuracy, and cost-to-serve',
+          coo: 'centralized scheduling, fill rates, and coordination effort',
+          cno: 'the time unit teams spend arranging interpreters',
+          chro: 'manual scheduling and vendor follow-up for coordinators',
+          cxo: 'consistent interpreter fulfilment across locations',
+          cmo: 'vendor quality and credentialing oversight',
+          supply: 'vendor consolidation, rate standardization, and SLA reporting',
+          language: 'fill rates, coverage, and vendor quality',
+          equity: 'utilization and fulfilment by language and site'
+        }
+      };
+
+      const toneOptions = ['consultative', 'concise', 'direct'];
 
       function normaliseForSentence(value) {
         const clean = String(value || '').trim();
@@ -1049,26 +1247,22 @@
         return clean.replace(/\s+/g, ' ').replace(/\s+([,.;!?])/g, '$1');
       }
 
-      function cleanUserText(value) {
-        return normaliseForSentence(value).replace(hypePattern, '').replace(/\s+/g, ' ').trim();
+      function cleanName(value) {
+        return normaliseForSentence(value).replace(/[<>[\]{}]/g, '').slice(0, 40).trim();
       }
 
-      function capitaliseSentence(value) {
-        const text = String(value || '').trim();
-        if (!text) return '';
-        const sentence = text.charAt(0).toUpperCase() + text.slice(1);
-        return /[.!?…]$/.test(sentence) ? sentence : sentence + '.';
+      function wordCount(value) {
+        return String(value || '').split(/\s+/).filter(Boolean).length;
       }
 
-      function limitInput(value, maxWords) {
-        const words = cleanUserText(value).split(/\s+/).filter(Boolean);
-        return words.length > maxWords ? `${words.slice(0, maxWords).join(' ')}…` : words.join(' ');
-      }
-
-      function pickVariant(list, seed, rotation = 0) {
+      function hashSeed(seed) {
         let hash = 0;
         for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
-        return list[(hash + rotation) % list.length];
+        return hash;
+      }
+
+      function pickVariant(list, seed, rotation = 0, offset = 0) {
+        return list[(hashSeed(seed) + rotation + offset) % list.length];
       }
 
       function detectContextTheme(value) {
@@ -1079,70 +1273,119 @@
         return matches.length ? matches[0].theme : null;
       }
 
-      function buildEmailContent(rotation) {
-        const profile = emailProfiles[selectedRole];
-        const rawMessage = document.getElementById('userMessage').value;
-        const rawContext = document.getElementById('userContext').value;
-        const message = limitInput(rawMessage, 14);
-        const context = limitInput(rawContext, 14);
-        const seed = `${selectedRole}|${rawMessage.trim()}|${rawContext.trim()}`;
-        const theme = detectContextTheme(`${rawMessage} ${rawContext}`);
-        const variant = (list, suffix) => pickVariant(list, `${seed}|${suffix}`, rotation);
-        const hook = [variant(profile.hooks, 'hook'), theme && theme.hook].filter(Boolean).join(' ');
-        const outcome = [theme && theme.outcome, variant(profile.outcomes, 'outcome')].filter(Boolean).join(' ');
-        const proof = [theme && theme.proof, variant(profile.proofs, 'proof')].filter(Boolean).join(' ');
-        const solution = getSelectedSolution();
-        const solutionOutcome = solution && solution.angles[selectedRole];
-        const subject = theme ? `${theme.subject}: ${variant(profile.subjects, 'subject')}` : variant(profile.subjects, 'subject');
-        const cta = solution
-          ? pickVariant([
-            `Would a brief conversation about ${solution.topic} and ${profile.ctaFocus} be useful?`,
-            `Could we set aside 15 minutes to discuss ${solution.topic} in relation to ${profile.ctaFocus}?`
-          ], `${seed}|solution-cta`, rotation)
-          : theme
-          ? pickVariant([
-            `Would a brief conversation about ${theme.ctaTopic} and ${profile.ctaFocus} be useful?`,
-            `Could we set aside 15 minutes to discuss ${theme.ctaTopic} in relation to ${profile.ctaFocus}?`
-          ], `${seed}|theme-cta`, rotation)
-          : variant(profile.ctas, 'cta');
-        let body = [
-          variant(['Hi [Name],', 'Hello [Name],'], 'greeting'),
-          '',
-          hook,
-          context ? `Context shared: ${capitaliseSentence(context)}` : null,
-          message ? `Message focus: ${capitaliseSentence(message)}` : null,
-          '',
-          outcome,
-          solutionOutcome || null,
-          solution ? solution.proof : proof,
-          '',
-          cta,
-          '',
-          'Best regards,',
-          '[Your Name]'
-        ].filter((line) => line !== null).join('\n');
-        if (body.split(/\s+/).filter(Boolean).length < 90) {
-          body += '\n\nAn initial review can clarify the current baseline, practical constraints, and measures your team would use to assess fit. From there, we can determine whether a focused next step is warranted and which stakeholders should be involved in a follow-up discussion.';
-        }
-
-        return { subject: solution ? `${solution.name}: ${subject}` : subject, body };
+      function readInputs() {
+        const key = document.getElementById('solutionFocus').value;
+        const tone = document.getElementById('toneSelect').value;
+        return {
+          role: selectedRole,
+          solution: solutionProfiles[key] ? { key, ...solutionProfiles[key] } : null,
+          message: document.getElementById('userMessage').value.trim(),
+          context: document.getElementById('userContext').value.trim(),
+          name: cleanName(document.getElementById('recipientName').value),
+          sender: cleanName(document.getElementById('senderName').value),
+          tone: toneOptions.includes(tone) ? tone : 'consultative'
+        };
       }
 
-      function buildVoicemail(rotation) {
-        const exec = executives[selectedRole];
-        const profile = emailProfiles[selectedRole];
-        const rawMessage = document.getElementById('userMessage').value;
-        const rawContext = document.getElementById('userContext').value;
-        const theme = detectContextTheme(`${rawMessage} ${rawContext}`);
-        const solution = getSelectedSolution();
-        const focus = theme ? theme.name : exec.pain.toLowerCase();
-        const seed = `${selectedRole}|${rawMessage.trim()}|${rawContext.trim()}|voicemail`;
-        const introduction = pickVariant(profile.voicemail, seed, rotation);
-        const followUp = pickVariant([
-          'I will send a short email with more detail; if it is relevant, would a brief conversation be useful?',
-          'I will follow up by email. If this aligns with your priorities, I would welcome a short conversation.'
-        ], `${seed}|followup`, rotation);
-        return `Hi [Name], this is [Your Name] from [Company]. ${introduction} ${solution ? `I am reaching out about ${solution.voicemail}, and how it relates to ${exec.focus.toLowerCase()}. ` : ''}I am especially interested in your focus on ${focus}. ${followUp} Thank you.`;
+      function uniqueSentences(list) {
+        const seen = new Set();
+        return list.filter((sentence) => {
+          const key = sentence.toLowerCase().replace(/[^a-z0-9 ]/g, '');
+          if (!sentence || seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+      }
+
+      function buildEmailContent(ctx, rotation, opts = {}) {
+        const profile = emailProfiles[ctx.role];
+        const sol = ctx.solution;
+        const nouns = sol ? solutionNouns[sol.key] : solutionNouns.none;
+        const theme = detectContextTheme(`${ctx.message} ${ctx.context}`);
+        const seed = `${ctx.role}|${ctx.message}|${ctx.context}|${sol ? sol.key : ''}`;
+        const v = (list, suffix, offset = 0) => pickVariant(list, `${seed}|${suffix}`, rotation, offset);
+        const target = sol ? `how this could look for your ${nouns.mix}` : `your ${profile.ctaFocus}`;
+        const ctas = {
+          consultative: [
+            `Would you be open to a 15-minute conversation next week to walk through ${target}?`,
+            `Would it be useful to spend 15 minutes next week talking through ${target}?`
+          ],
+          direct: [
+            `I would like to schedule 15 minutes next week to review ${target}. What day works best?`,
+            `Could we book 15 minutes next week to go through ${target}?`
+          ],
+          concise: [`Open to a 15-minute call next week to discuss ${target}?`]
+        };
+        const cta = v(opts.strongCta ? ctas.consultative : ctas[ctx.tone], 'cta');
+        const greeting = ctx.name ? `Hi ${ctx.name},` : 'Hello,';
+        const signature = ctx.sender || '[Your Name]';
+        const minWords = ctx.tone === 'concise' ? 70 : 90;
+        const hook = theme ? theme.statement(nouns) : v(profile.hooks, 'hook');
+        const focusSentence = sol ? v([
+          `In practice, this usually comes down to ${solutionPersonaFocus[sol.key][ctx.role]}.`,
+          `The areas that tend to matter most are ${solutionPersonaFocus[sol.key][ctx.role]}.`
+        ], 'focus') : '';
+
+        const assemble = (opening, details) => [
+          greeting, '', opening.join(' '), '', details.join(' '), '', cta, '', 'Best regards,', signature
+        ].join('\n');
+
+        const compose = (includeFocus) => {
+          const opening = [hook];
+          if (sol) {
+            if (includeFocus) opening.push(focusSentence);
+          } else if (theme) {
+            opening.push(v(profile.hooks, 'hook'));
+          }
+          const details = sol
+            ? [sol.angles[ctx.role], v(nouns.review, 'review')]
+            : [theme ? theme.outcome : '', v(profile.outcomes, 'outcome'), theme ? theme.proof : '', v(profile.proofs, 'proof')];
+          if (opts.extraOutcome) details.splice(1, 0, v(profile.outcomes, 'outcome', sol ? 0 : 1));
+          if (opts.extraProof) details.push(v(profile.proofs, 'proof', sol ? 0 : 1));
+          const spare = sol
+            ? [{ text: v(profile.proofs, 'proof') }, { text: v(profile.outcomes, 'outcome', 1) }, { text: v(profile.proofs, 'proof', 1) }]
+            : [{ text: v(profile.hooks, 'hook', 1), opening: true }, { text: v(profile.outcomes, 'outcome', 1) }, { text: v(profile.proofs, 'proof', 1) }];
+          let o = uniqueSentences(opening);
+          let d = uniqueSentences(details.filter(Boolean));
+          while (wordCount(assemble(o, d)) < minWords && spare.length) {
+            const extra = spare.shift();
+            if (extra.opening) o = uniqueSentences([...o, extra.text]);
+            else d = uniqueSentences([...d, extra.text].filter((s) => !o.includes(s)));
+          }
+          return assemble(o, d);
+        };
+
+        const includeFocus = opts.includeFocus || ctx.tone !== 'concise';
+        let body = compose(includeFocus);
+        if (wordCount(body) > 140 && includeFocus && sol) body = compose(false);
+
+        const subjectBase = theme ? theme.subject : v(profile.subjects, 'subject');
+        return { subject: sol ? `${sol.name}: ${subjectBase}` : subjectBase, body };
+      }
+
+      function buildVoicemail(ctx, rotation) {
+        const exec = executives[ctx.role];
+        const profile = emailProfiles[ctx.role];
+        const sol = ctx.solution;
+        const theme = detectContextTheme(`${ctx.message} ${ctx.context}`);
+        const seed = `${ctx.role}|${ctx.message}|${ctx.context}|${sol ? sol.key : ''}|voicemail`;
+        const v = (list, suffix) => pickVariant(list, `${seed}|${suffix}`, rotation);
+        const focus = sol
+          ? solutionPersonaFocus[sol.key][ctx.role]
+          : theme ? theme.label : exec.focus.toLowerCase();
+        const greeting = ctx.name ? `Hi ${ctx.name}, this is ${ctx.sender || '[Your Name]'}.` : `Hello, this is ${ctx.sender || '[Your Name]'}.`;
+        const intro = sol
+          ? v([`I am calling about ${sol.voicemail}.`, `I wanted to reach out about ${sol.voicemail}.`], 'intro')
+          : v(profile.voicemail, 'intro');
+        const lens = v([
+          `Many leaders in your position are focused on ${focus}, and I would like to share a few ideas.`,
+          `Teams in your position are often weighing ${focus}, and I have a few thoughts to share.`
+        ], 'lens');
+        const followUp = v([
+          'I will send a short email with more detail. If it is relevant, could we find 15 minutes next week?',
+          'I will follow up by email. If this fits your priorities, I would welcome a 15-minute conversation next week.'
+        ], 'followup');
+        return `${greeting} ${intro} ${lens} ${followUp} Thank you.`;
       }
 
       const solutionProfiles = {
@@ -1220,7 +1463,7 @@
         }
       };
 
-      // Solution-persona fit hooks for future predictive scoring: 0 (weak) to 3 (strong).
+      // Solution-persona fit used by the Message Scorecard: 0 (weak) to 3 (strong).
       const solutionPersonaFit = {
         remote: { ceo: 2, cfo: 2, coo: 3, cno: 3, chro: 1, cxo: 3, cmo: 2, supply: 2, language: 3, equity: 3 },
         ipi: { ceo: 1, cfo: 1, coo: 2, cno: 3, chro: 1, cxo: 3, cmo: 3, supply: 1, language: 3, equity: 3 },
@@ -1228,42 +1471,306 @@
         msp: { ceo: 2, cfo: 3, coo: 3, cno: 1, chro: 2, cxo: 1, cmo: 1, supply: 3, language: 2, equity: 2 }
       };
 
-      function getSelectedSolution() {
-        const key = document.getElementById('solutionFocus').value;
-        return solutionProfiles[key] ? { key, ...solutionProfiles[key] } : null;
-      }
-
       function getSolutionFit(solutionKey, role) {
         return (solutionPersonaFit[solutionKey] || {})[role] || 0;
+      }
+
+      // Message Scorecard configuration. Tune weights/keywords here; every factor scores 0-1 and is multiplied by its weight.
+      const scoreConfig = {
+        base: 10,
+        weights: { personaFit: 15, specificity: 15, clarity: 12, cta: 15, jargon: 8, overclaim: 10, solutionFit: 15 },
+        targetWords: { min: 90, max: 140 },
+        bands: [
+          { min: 75, label: 'Strong' },
+          { min: 55, label: 'Moderate' },
+          { min: 0, label: 'Needs work' }
+        ],
+        personas: {
+          ceo: { keywords: ['strategy', 'enterprise', 'performance', 'governance', 'priorities', 'access', 'quality'] },
+          cfo: { keywords: ['cost', 'spend', 'invoicing', 'return', 'margin', 'budget', 'financial', 'cost-to-serve', 'predictable'], weights: { specificity: 18, solutionFit: 17, personaFit: 13 } },
+          coo: { keywords: ['workflow', 'throughput', 'scheduling', 'operations', 'coordination', 'fill rate', 'process'] },
+          cno: { keywords: ['nurs', 'bedside', 'workload', 'frontline', 'care quality', 'unit'] },
+          chro: { keywords: ['workforce', 'staff', 'retention', 'burnout', 'employee', 'administrative'] },
+          cxo: { keywords: ['patient experience', 'experience', 'trust', 'journey', 'access', 'communication', 'understanding'] },
+          cmo: { keywords: ['clinical', 'evidence', 'consent', 'physician', 'outcomes', 'accuracy', 'quality'] },
+          supply: { keywords: ['vendor', 'procurement', 'rates', 'savings', 'cost-to-serve', 'sla', 'utilization'], weights: { specificity: 17, solutionFit: 16 } },
+          language: { keywords: ['language', 'interpret', 'fill rate', 'coverage', 'vendor quality', 'access', 'linguist'], weights: { personaFit: 16 } },
+          equity: { keywords: ['equity', 'disparit', 'access', 'community', 'outcomes', 'language', 'populations'] }
+        },
+        solutions: {
+          remote: { keywords: ['remote', 'on-demand', 'video', 'phone', 'response time', 'coverage'] },
+          ipi: { keywords: ['in-person', 'on site', 'on-site', 'consent', 'encounter', 'fill rate'] },
+          ai: { keywords: ['translation', 'turnaround', 'written', 'human review', 'materials'], weights: { overclaim: 12 } },
+          msp: { keywords: ['vendor', 'platform', 'invoic', 'fill rate', 'scheduling', 'in-person'], weights: { specificity: 16 } }
+        },
+        anchors: /\b(fill[- ]rates?|invoic\w*|vendors?|spend|cost[- ]to[- ]serve|savings?|turnaround|response times?|coverage|scheduling|throughput|cancellations?|consent|access|utilization|retention|quality|accuracy|sla|workload|visibility)\b/gi,
+        jargon: /\b(leverage|synerg\w*|paradigm|holistic|ecosystem|robust|seamless\w*|best[- ]of[- ]breed|end[- ]to[- ]end|scalable|turnkey|move the needle|low[- ]hanging fruit|bandwidth)\b/gi,
+        neutralFit: 0.4
+      };
+
+      const scoreFactors = {
+        personaFit: {
+          label: 'Persona fit',
+          good: 'Wording speaks directly to this executive\'s priorities.',
+          bad: 'Few terms reflect what this executive cares about.',
+          fix: 'Add a sentence tying the message to this persona\'s core priorities.'
+        },
+        specificity: {
+          label: 'Specificity and outcome anchor',
+          good: 'Names concrete outcomes such as fill rates, spend, or turnaround.',
+          bad: 'Few concrete outcomes are named.',
+          fix: 'Anchor the message to one measurable outcome the buyer already tracks.'
+        },
+        clarity: {
+          label: 'Clarity and length',
+          good: 'Length is in the 90-140 word target with readable sentences.',
+          bad: 'Length or sentence structure falls outside the 90-140 word target.',
+          fix: 'Bring the draft to roughly 90-140 words with shorter sentences.'
+        },
+        cta: {
+          label: 'Call to action',
+          good: 'Makes a clear, low-friction ask with a time frame.',
+          bad: 'The ask is vague or has no time frame.',
+          fix: 'End with one specific ask, such as 15 minutes next week.'
+        },
+        jargon: {
+          label: 'Jargon density',
+          good: 'Plain language with little jargon.',
+          bad: 'Jargon makes the message harder to read.',
+          fix: 'Replace buzzwords with plain, specific wording.'
+        },
+        overclaim: {
+          label: 'Overclaim and hype check',
+          good: 'No hype or unsupported claims detected.',
+          bad: 'Hype or absolute claims may reduce credibility.',
+          fix: 'Remove absolute or hype language and keep claims supportable.'
+        },
+        solutionFit: {
+          label: 'Solution-persona fit',
+          good: 'This solution is a strong match for this persona.',
+          bad: 'This solution is a weaker match for this persona or none is selected.',
+          fix: 'Select a solution that matches this persona, or lead with the persona\'s priority before the solution.'
+        }
+      };
+
+      function countKeywordHits(text, keywords) {
+        const lower = text.toLowerCase();
+        return keywords.filter((word) => lower.includes(word)).length;
+      }
+
+      function getScoreWeights(role, solutionKey) {
+        const persona = scoreConfig.personas[role] || {};
+        const solution = scoreConfig.solutions[solutionKey] || {};
+        return Object.assign({}, scoreConfig.weights, persona.weights, solution.weights);
+      }
+
+      function scoreDraft(ctx, email) {
+        const text = `${email.subject} ${email.body}`;
+        const body = email.body;
+        const sol = ctx.solution;
+        const weights = getScoreWeights(ctx.role, sol && sol.key);
+        const words = wordCount(body);
+        const sentences = body.split(/(?<=[.!?])\s+/).filter(Boolean);
+        const longest = Math.max(...sentences.map(wordCount));
+        const anchorHits = new Set((text.match(scoreConfig.anchors) || []).map((m) => m.toLowerCase())).size;
+        const personaHits = countKeywordHits(text, scoreConfig.personas[ctx.role].keywords);
+        const solutionHits = sol ? countKeywordHits(text, scoreConfig.solutions[sol.key].keywords) : 0;
+        const jargonHits = (body.match(scoreConfig.jargon) || []).length;
+        const hypeHits = (body.match(hypePattern) || []).length;
+        const placeholders = body.match(/\[[^\]]+\]/g) || [];
+        const dist = words < scoreConfig.targetWords.min ? scoreConfig.targetWords.min - words : Math.max(0, words - scoreConfig.targetWords.max);
+        const hasAsk = body.includes('?') && /\b(conversation|call|minutes|discuss|review|walk through)\b/i.test(body);
+        const hasTime = /\b\d+[- ]minute|\b\d+ minutes/i.test(body);
+        const hasWhen = /\bnext week|this week|tomorrow|today\b/i.test(body);
+
+        const fit = sol ? getSolutionFit(sol.key, ctx.role) / 3 : scoreConfig.neutralFit;
+        const ratios = {
+          personaFit: personaHits >= 3 ? 1 : personaHits === 2 ? 0.75 : personaHits === 1 ? 0.45 : 0.1,
+          specificity: anchorHits >= 4 ? 1 : anchorHits === 3 ? 0.8 : anchorHits === 2 ? 0.55 : anchorHits === 1 ? 0.3 : 0,
+          clarity: Math.max(0, 1 - dist / 60) * (longest > 32 ? 0.8 : 1),
+          cta: (hasAsk ? 0.4 : 0) + (hasTime ? 0.3 : 0) + (hasWhen ? 0.3 : 0),
+          jargon: Math.max(0, 1 - jargonHits * 0.5),
+          overclaim: hypeHits ? 0 : 1,
+          solutionFit: sol ? Math.min(1, fit * 0.85 + (solutionHits >= 2 ? 0.15 : solutionHits === 1 ? 0.07 : 0)) : fit
+        };
+
+        const factors = Object.keys(ratios).map((key) => {
+          const points = ratios[key] * weights[key];
+          return { key, ratio: ratios[key], weight: weights[key], points, delta: points - weights[key] / 2 };
+        });
+        const placeholderPenalty = Math.min(6, placeholders.length * 3);
+        const score = Math.max(0, Math.min(100, Math.round(scoreConfig.base + factors.reduce((sum, f) => sum + f.points, 0) - placeholderPenalty)));
+        const band = scoreConfig.bands.find((b) => score >= b.min).label;
+
+        const inputSignal = (sol ? 1 : 0) + (ctx.message ? 1 : 0) + (ctx.context ? 0.75 : 0) + (ctx.name ? 0.5 : 0);
+        const confidence = inputSignal >= 2.5 ? 'High' : inputSignal >= 1.5 ? 'Medium' : 'Low';
+
+        const drivers = factors.slice().sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)).slice(0, 3).map((f) => ({
+          label: scoreFactors[f.key].label,
+          positive: f.delta >= 0,
+          text: f.delta >= 0 ? scoreFactors[f.key].good : scoreFactors[f.key].bad,
+          points: Math.round(f.delta * 10) / 10
+        }));
+
+        const flags = [];
+        if (!sol && !detectContextTheme(`${ctx.message} ${ctx.context}`)) flags.push('Too generic: no solution or specific theme is guiding the draft.');
+        if (anchorHits === 0) flags.push('No outcome anchor: no measurable outcome is named.');
+        if (ratios.cta < 0.7) flags.push('Weak ask: the call to action lacks a clear request or time frame.');
+        if (placeholders.length) flags.push(`Unfilled placeholder: ${placeholders.join(', ')}.`);
+        if (hypeHits) flags.push('Overclaim language: hype or absolute terms detected.');
+        if (jargonHits) flags.push('Heavy jargon: simplify buzzwords.');
+        if (dist > 0) flags.push(`Length off target: ${words} words (target ${scoreConfig.targetWords.min}-${scoreConfig.targetWords.max}).`);
+        if (sol && getSolutionFit(sol.key, ctx.role) <= 1) flags.push('Low solution-persona fit: lead with the persona\'s priority.');
+
+        const gaps = factors.slice().sort((a, b) => (b.weight - b.points) - (a.weight - a.points));
+        const recommendations = gaps.filter((f) => f.ratio < 1).slice(0, 2).map((f) => scoreFactors[f.key].fix);
+        const spare = [
+          'Reference a specific detail about the recipient\'s organization to strengthen relevance.',
+          'Offer to share a one-page summary after the call.'
+        ];
+        while (recommendations.length < 2) recommendations.push(spare.shift());
+
+        return { score, band, confidence, drivers, flags, recommendations, words, weakest: gaps.filter((f) => f.ratio < 1).map((f) => f.key) };
+      }
+
+      function el(tag, className, text) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined) node.textContent = text;
+        return node;
+      }
+
+      const scorecardState = { ctx: null, variants: [], active: 0, base: 0, improve: {} };
+
+      function renderScorecard() {
+        const state = scorecardState;
+        const variant = state.variants[state.active];
+        const card = document.getElementById('scorecard');
+        const result = variant.result;
+
+        const meter = document.getElementById('scoreMeter');
+        meter.setAttribute('aria-valuenow', String(result.score));
+        meter.setAttribute('aria-valuetext', `${result.score} out of 100, ${result.band}`);
+        document.getElementById('scoreFill').style.width = `${result.score}%`;
+        document.getElementById('scoreValue').textContent = String(result.score);
+        document.getElementById('scoreBand').textContent = result.band;
+        document.getElementById('scoreConfidence').textContent = result.confidence;
+        document.getElementById('scoreWords').textContent = `${result.words} words`;
+        card.dataset.band = result.band.toLowerCase().replace(' ', '-');
+
+        const drivers = document.getElementById('scoreDrivers');
+        drivers.replaceChildren(...result.drivers.map((d) => {
+          const li = el('li');
+          li.append(el('strong', d.positive ? 'pos' : 'neg', `${d.positive ? '▲ Positive' : '▼ Negative'} (${d.points > 0 ? '+' : ''}${d.points}): `), `${d.label}. ${d.text}`);
+          return li;
+        }));
+
+        const flags = document.getElementById('scoreFlags');
+        flags.replaceChildren(...(result.flags.length ? result.flags : ['No major risk flags detected.']).map((f) => el('li', result.flags.length ? 'flag' : '', result.flags.length ? `⚠ ${f}` : f)));
+
+        document.getElementById('scoreRecs').replaceChildren(...result.recommendations.map((r) => el('li', '', r)));
+
+        const variantList = document.getElementById('variantList');
+        const bestIndex = state.variants.reduce((best, item, i, all) => (item.result.score > all[best].result.score ? i : best), 0);
+        variantList.replaceChildren(...state.variants.map((item, i) => {
+          const btn = el('button', 'variant-btn', `Draft ${String.fromCharCode(65 + i)} · ${item.result.score}${i === bestIndex ? ' · Best predicted draft' : ''}`);
+          btn.type = 'button';
+          btn.setAttribute('aria-pressed', String(i === state.active));
+          btn.classList.toggle('active', i === state.active);
+          btn.addEventListener('click', () => { state.active = i; showVariant(); });
+          return btn;
+        }));
+        document.getElementById('bestDraftNote').textContent = state.active === bestIndex
+          ? 'This is the best predicted draft of the variants generated.'
+          : `Draft ${String.fromCharCode(65 + bestIndex)} has the highest predicted score.`;
+      }
+
+      function showVariant() {
+        const variant = scorecardState.variants[scorecardState.active];
+        document.getElementById('emailSubject').textContent = variant.email.subject;
+        document.getElementById('emailText').textContent = variant.email.body;
+        renderScorecard();
+      }
+
+      function buildVariants(ctx, base, opts, count = 3) {
+        return Array.from({ length: count }, (_, i) => {
+          const email = buildEmailContent(ctx, base + i, opts);
+          return { rotation: base + i, email, result: scoreDraft(ctx, email) };
+        });
       }
 
       let generationCount = 0;
 
       function showGeneratedContent() {
+        const state = scorecardState;
+        state.ctx = readInputs();
+        state.improve = {};
+        state.base = generationCount * 2;
         generationCount += 1;
-        const email = buildEmailContent(generationCount - 1);
-        const voicemail = buildVoicemail(generationCount - 1);
+        state.variants = buildVariants(state.ctx, state.base, state.improve);
+        state.active = state.variants.reduce((best, item, i, all) => (item.result.score > all[best].result.score ? i : best), 0);
 
-        const emailSubjectEl = document.getElementById('emailSubject');
-        const emailTextEl = document.getElementById('emailText');
-        const voicemailTextEl = document.getElementById('voicemailText');
-
-        emailSubjectEl.textContent = email.subject;
-        emailTextEl.textContent = email.body;
-        voicemailTextEl.textContent = voicemail;
-
+        document.getElementById('voicemailText').textContent = buildVoicemail(state.ctx, state.base);
         document.getElementById('emailCard').classList.add('show');
         document.getElementById('voicemailCard').classList.add('show');
-        emailSubjectEl.classList.add('show');
+        document.getElementById('emailSubject').classList.add('show');
+        document.getElementById('scorecard').classList.add('show');
+        document.getElementById('improveStatus').textContent = '';
+        showVariant();
+      }
+
+      const improveActions = {
+        personaFit: { includeFocus: true, extraOutcome: true },
+        specificity: { includeFocus: true, extraProof: true },
+        clarity: { includeFocus: true, extraProof: true },
+        cta: { strongCta: true },
+        solutionFit: { includeFocus: true },
+        jargon: {},
+        overclaim: {}
+      };
+
+      function improveDraft() {
+        const state = scorecardState;
+        if (!state.ctx) return;
+        const status = document.getElementById('improveStatus');
+        const current = state.variants[state.active];
+        const trimmed = current.result.words > scoreConfig.targetWords.max;
+        const candidates = current.result.weakest.filter((key) => {
+          const action = improveActions[key];
+          return Object.keys(action).some((flag) => !state.improve[flag]) || (key === 'clarity' && trimmed);
+        });
+        if (!candidates.length) {
+          status.textContent = 'This draft is already close to the strongest version this tool can produce. Try editing the inputs for more specific context.';
+          return;
+        }
+        const target = candidates[0];
+        const before = current.result.score;
+        const next = Object.assign({}, state.improve, improveActions[target]);
+        if (target === 'clarity' && trimmed) { next.includeFocus = false; next.extraProof = false; next.extraOutcome = false; }
+        const email = buildEmailContent(state.ctx, current.rotation, next);
+        const result = scoreDraft(state.ctx, email);
+        if (result.score < before) {
+          state.improve = Object.assign({}, state.improve, improveActions[target]);
+          status.textContent = `Reviewed "${scoreFactors[target].label}"; the current draft already scores best on that factor, so no change was made.`;
+          return;
+        }
+        state.improve = next;
+        state.variants[state.active] = { rotation: current.rotation, email, result };
+        status.textContent = `Improved "${scoreFactors[target].label}": score ${before} to ${result.score}.`;
+        showVariant();
       }
 
       function resetForm() {
-        document.getElementById('userMessage').value = '';
-        document.getElementById('userContext').value = '';
+        ['userMessage', 'userContext', 'recipientName', 'senderName'].forEach((id) => { document.getElementById(id).value = ''; });
         document.getElementById('solutionFocus').value = '';
+        document.getElementById('toneSelect').value = 'consultative';
         document.getElementById('emailCard').classList.remove('show');
         document.getElementById('voicemailCard').classList.remove('show');
         document.getElementById('emailSubject').classList.remove('show');
+        document.getElementById('scorecard').classList.remove('show');
+        document.getElementById('improveStatus').textContent = '';
+        Object.assign(scorecardState, { ctx: null, variants: [], active: 0, base: 0, improve: {} });
+        generationCount = 0;
         selectRole('ceo');
       }
 
@@ -1284,6 +1791,7 @@
 
       document.getElementById('generateBtn').addEventListener('click', showGeneratedContent);
       document.getElementById('resetBtn').addEventListener('click', resetForm);
+      document.getElementById('improveBtn').addEventListener('click', improveDraft);
 
       document.querySelectorAll('.copy-btn').forEach((button) => {
         button.addEventListener('click', () => copyText(button.dataset.target));

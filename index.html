@@ -155,6 +155,33 @@
       .guide-legend-separator { color: var(--slate-500); }
       .guide-legend-cue { color: var(--slate-500); }
 
+      .guide-legend-item { padding: 0; }
+      .guide-legend-btn {
+        display: inline-flex; align-items: center; gap: 9px; min-height: 44px; min-width: 44px; max-width: 100%; padding: 7px 14px 7px 12px;
+        border: 0; border-radius: 999px; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer;
+      }
+      .guide-legend-btn:hover, .guide-legend-btn[aria-expanded="true"] { background: rgba(27,117,208,0.10); }
+      .guide-legend-btn:focus-visible, .guide-popover-close:focus-visible { outline: 3px solid var(--blue-600); outline-offset: 2px; }
+      .guide-legend-btn[aria-expanded="true"] .guide-legend-cue { color: var(--blue-800); font-weight: 600; text-decoration: underline; }
+      .guide-popover {
+        position: fixed; z-index: 1000; width: min(340px, calc(100vw - 24px)); max-height: calc(100vh - 24px); overflow-y: auto;
+        background: #fff; color: var(--slate-800); border: 1px solid rgba(27,117,208,0.25); border-radius: 16px;
+        box-shadow: var(--shadow-strong); padding: 16px 18px 16px; font-size: 0.92rem; line-height: 1.5;
+        animation: guidePop 0.15s ease-out;
+      }
+      .guide-popover[hidden] { display: none; }
+      .guide-popover h3 { margin: 0 34px 6px 0; font-size: 1.05rem; color: var(--slate-900); }
+      .guide-popover p { margin: 0 0 10px; font-size: 0.92rem; line-height: 1.5; color: var(--slate-700); }
+      .guide-popover p strong { display: block; color: var(--blue-800); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 2px; }
+      .guide-popover p:last-child { margin-bottom: 0; }
+      .guide-popover-close {
+        position: absolute; top: 4px; right: 4px; width: 44px; height: 44px; border: 0; border-radius: 50%;
+        background: transparent; color: var(--slate-700); font-size: 1.5rem; line-height: 1; cursor: pointer;
+      }
+      .guide-popover-close:hover { background: var(--slate-100); }
+      @keyframes guidePop { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+      @media (prefers-reduced-motion: reduce) { .guide-popover { animation: none; } }
+
       .coach-shell {
         margin-top: 22px; background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(246,249,252,0.98));
         border: 1px solid rgba(17,24,39,0.05); border-radius: 28px; box-shadow: var(--shadow-soft); overflow: hidden;
@@ -855,6 +882,89 @@
         return `<span class="role-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false">${roleDetails[role].icon}</svg></span>`;
       }
 
+      let guideTrigger = null;
+
+      function getGuidePopover() {
+        let pop = document.getElementById('guidePopover');
+        if (!pop) {
+          pop = document.createElement('div');
+          pop.id = 'guidePopover';
+          pop.className = 'guide-popover';
+          pop.setAttribute('role', 'dialog');
+          pop.setAttribute('aria-labelledby', 'guidePopoverTitle');
+          pop.hidden = true;
+          document.body.appendChild(pop);
+          pop.addEventListener('click', (event) => event.stopPropagation());
+        }
+        return pop;
+      }
+
+      function positionGuidePopover() {
+        const pop = getGuidePopover();
+        if (!guideTrigger || pop.hidden) return;
+        const margin = 12;
+        const rect = guideTrigger.getBoundingClientRect();
+        const vw = document.documentElement.clientWidth;
+        const vh = window.innerHeight;
+        const w = pop.offsetWidth;
+        const h = pop.offsetHeight;
+        let left;
+        let top;
+        if (vw < 600) {
+          left = (vw - w) / 2;
+          top = Math.max(margin, (vh - h) / 2);
+        } else {
+          left = Math.min(Math.max(margin, rect.left), vw - w - margin);
+          top = rect.bottom + 8;
+          if (top + h > vh - margin) top = rect.top - h - 8;
+          top = Math.min(Math.max(margin, top), Math.max(margin, vh - h - margin));
+        }
+        pop.style.left = `${Math.max(0, left)}px`;
+        pop.style.top = `${top}px`;
+      }
+
+      function closeGuidePopover(returnFocus = true) {
+        const pop = getGuidePopover();
+        if (!guideTrigger) return;
+        const trigger = guideTrigger;
+        guideTrigger = null;
+        pop.hidden = true;
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.removeAttribute('aria-describedby');
+        if (returnFocus) trigger.focus();
+      }
+
+      function toggleGuidePopover(trigger, role) {
+        if (guideTrigger === trigger) {
+          closeGuidePopover();
+          return;
+        }
+        if (guideTrigger) closeGuidePopover(false);
+        const pop = getGuidePopover();
+        const exec = executives[role];
+        const detail = roleDetails[role];
+        const esc = (text) => String(text).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+        pop.innerHTML = `<button type="button" class="guide-popover-close" aria-label="Close guidance">&times;</button>
+          <h3 id="guidePopoverTitle">${esc(detail.label)} — ${esc(detail.cue)}</h3>
+          <p><strong>What this cue means</strong>${esc(exec.description)} Focus area: ${esc(exec.focus)}.</p>
+          <p><strong>How to use it</strong>${esc(exec.points[0])}</p>
+          <p><strong>Sample question</strong>${esc(exec.questions[0])}</p>`;
+        pop.querySelector('.guide-popover-close').addEventListener('click', () => closeGuidePopover());
+        guideTrigger = trigger;
+        trigger.setAttribute('aria-expanded', 'true');
+        trigger.setAttribute('aria-describedby', 'guidePopover');
+        pop.hidden = false;
+        positionGuidePopover();
+        pop.querySelector('.guide-popover-close').focus({ preventScroll: true });
+      }
+
+      document.addEventListener('click', () => closeGuidePopover(false));
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && guideTrigger) closeGuidePopover();
+      });
+      window.addEventListener('resize', positionGuidePopover);
+      window.addEventListener('scroll', positionGuidePopover, { passive: true });
+
       function renderRoleCards(containerId, guide = false) {
         const container = document.getElementById(containerId);
         Object.keys(executives).forEach((key) => {
@@ -868,9 +978,15 @@
             item.classList.toggle('active', key === selectedRole);
             item.addEventListener('click', () => selectRole(key));
           }
-          item.innerHTML = guide
-            ? `${roleIcon(key)}<span class="guide-legend-role">${detail.label}</span><span class="guide-legend-separator" aria-hidden="true">—</span><span class="guide-legend-cue">${detail.cue}</span>`
-            : `${roleIcon(key)}<span class="role-chip-label"><span>${detail.label}</span><small>${detail.cue}</small></span>`;
+          if (guide) {
+            item.innerHTML = `<button type="button" class="guide-legend-btn" data-role="${key}" aria-haspopup="dialog" aria-expanded="false" aria-controls="guidePopover" aria-label="${detail.label}: ${detail.cue}. Show guidance">${roleIcon(key)}<span class="guide-legend-role">${detail.label}</span><span class="guide-legend-separator" aria-hidden="true">—</span><span class="guide-legend-cue">${detail.cue}</span></button>`;
+            item.firstElementChild.addEventListener('click', (event) => {
+              event.stopPropagation();
+              toggleGuidePopover(item.firstElementChild, key);
+            });
+          } else {
+            item.innerHTML = `${roleIcon(key)}<span class="role-chip-label"><span>${detail.label}</span><small>${detail.cue}</small></span>`;
+          }
           container.appendChild(item);
         });
       }
